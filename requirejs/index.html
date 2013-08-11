@@ -1,0 +1,348 @@
+<!doctype html>
+<html lang="de">
+    <head>
+        <meta charset="utf-8">
+        <title>Einführung in Require.js</title>
+        <meta name="author" content="Frederic Hemberger">
+
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+        <link rel="stylesheet" href="css/reveal.min.css">
+        <link rel="stylesheet" href="css/theme/default.css" id="theme">
+
+        <!-For syntax highlighting -->
+        <link rel="stylesheet" href="lib/css/monokai.css">
+
+        <!- If the query includes 'print-pdf', use the PDF print sheet -->
+        <script>
+            document.write( '<link rel="stylesheet" href="css/print/' + ( window.location.search.match( /print-pdf/gi ) ? 'pdf' : 'paper' ) + '.css" type="text/css" media="print">' );
+        </script>
+
+        <!--[if lt IE 9]>
+        <script src="lib/js/html5shiv.js"></script>
+        <![endif]-->
+    </head>
+
+    <body>
+        <div class="reveal">
+            <div class="slides">
+
+                <section>
+                    <h1>Einführung in Require.js</h1>
+                </section>
+
+                <section>
+                    <h2>Das Problem</h2>
+                    <h3>Wie binden wir normalerweise Scripte ein?</h3>
+                    <pre><code class="html">    &lt;script src="js/jquery.js"&gt;
+    &lt;script src="js/app.js"&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+                    <p>Das ist der Idealfall …</p>
+                </section>
+
+                <section>
+                    <pre><code class="html">    &lt;script src="js/jquery-ui.js"&gt;
+    &lt;script src="js/jquery.js"&gt;
+    &lt;script src="js/jquery.validate.min.js"&gt;
+    &lt;script src="js/jquery.imageslider.js"&gt;
+    &lt;script src="js/modul2.js"&gt;
+    &lt;script src="js/modul1.js"&gt;
+    &lt;script src="js/app.js"&gt;
+    &lt;script src="js/myOwnFunctions.js"&gt;
+    &lt;script src="js/init.js"&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+                    <p>… aber in der Regel sieht es doch eher so aus.</p>
+                </section>
+
+                <section>
+                    <ul>
+                        <li>Websites werden immer komplexer</li>
+                        <li class="fragment">Komplexer Code ist schlechter zu warten</li>
+                        <li class="fragment">Komplexer Code ist schlechter zu testen</li>
+                        <li class="fragment">Verwaltung der Abhängigkeiten von Hand ist fehleranfällig</li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h2>Kleiner Test:</h2>
+                    <h3>Hat jemand den Fehler im Code bemerkt?</h3>
+                </section>
+
+                <section>
+                    <pre style="background:#272822">    &lt;script src="js/<span style="color:red">jquery-ui.js</span>"&gt;
+    &lt;script src="js/<span style="color:red">jquery.js</span>"&gt;
+    &lt;script src="js/jquery.validate.min.js"&gt;
+    &lt;script src="js/jquery.imageslider.js"&gt;
+    &lt;script src="js/modul2.js"&gt;
+    &lt;script src="js/modul1.js"&gt;
+    &lt;script src="js/app.js"&gt;
+    &lt;script src="js/myOwnFunctions.js"&gt;
+    &lt;script src="js/init.js"&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre>
+                </section>
+
+                <section>
+                    <o>Wir brauchen etwas, dass unseren Code übersichtlich hält und sich um die Verwaltung von Abhängigkeiten kümmert.</p>
+                </section>
+
+                <section>
+                    <h2>AMD</h2>
+                    <p>Asynchronous Module Definition</p>
+                </section>
+
+                <section>
+                    <h2>Was ist AMD?</h2>
+                    <ul>
+                        <li>Ein Standard für JavaScript-Module</li>
+                        <li class="fragment">Abhängigkeiten werden in jedem Modul definiert</li>
+                        <li class="fragment">Module werden asynchron geladen</li>
+                        <li class="fragment">Einfach zu verwenden</li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h2>Vorteile</h2>
+                    <ul>
+                        <li>Kleine Module sind einfacher zu warten<br>als riesige Code-Monster</li>
+                        <li class="fragment">Jedes Modul sollte nur eine Funktion erfüllen</li>
+                        <li class="fragment">Module sind als Einzelbausteine leichter zu testen</li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h2>Require.js</h2>
+                    <h3>Ein Loader für AMD-Module</h3>
+                    <p><a href="http://requirejs.org">requirejs.org</a></p>
+                </section>
+
+                <section>
+                    <ul>
+                        <li><code>define()</code> wird verwendet, um Module zu definieren</li>
+                        <li><code>require()</code> lädt diese Module asynchron und führt danach Code aus</li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h2>define(): Module definieren</h2>
+                    <pre><code class="javascript" data-trim>
+define('mymodule', ['module1', 'module2'], function( m1, m2 ) {
+    return m1 + m2;
+});
+                    </code></pre>
+                </section>
+
+                <section>
+                    <pre><code class="javascript" data-trim>
+define(
+    'mymodule',             // Modulname (optional)
+    ['module1', 'module2'], // Abhängigkeiten
+    function( m1, m2 ) {}   // Code
+);
+                    </code></pre>
+                </section>
+
+                <section>
+                    Module sollten immer eine Funktion/einen Constructor oder ein Objekt zurückgeben, aber sich nicht selbst initialisieren.
+                    <pre><code class="javascript" data-trim>
+// Meh.
+define(function() {
+    var Foo = function() { … };
+    return new Foo();
+});
+
+// Yay!
+define(function() {
+    var Foo = function() { … };
+    return Foo;
+});
+                    </code></pre>
+                </section>
+
+                <section>
+                    <h2>require(): Module asynchron laden</h2>
+                    <pre><code class="javascript" data-trim>
+require(['jquery', 'myapp'], function($, myApp) {
+    // Wird erst ausgeführt, wenn beide Module geladen sind
+    myApp.init();
+    $('body').append( myApp.html );
+});
+                    </code></pre>
+                    <p><small>jQuery und viele andere Bibliotheken bringen AMD-Unterstützung schon mit</small></p>
+                </section>
+
+                <section>
+                    Um alles zu laden wird nur noch ein<br>einzelner <code>&lt;script&gt;</code> Tag benötigt:
+                    <pre><code class="html">    &lt;script src="js/require.js" data-main="js/main"&gt;&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+                </section>
+
+                <section>
+                    <section>
+                        <h2>Zwei Tipps zur Konfiguration</h2>
+                    </section>
+
+                    <section>
+                        <h2>paths</h2>
+                        <pre><code class="javascript" data-trim>
+require.config({
+    paths: {
+        // Core libraries
+        'jquery'             : 'lib/jquery/jquery.min',
+        'jquery-ui'          : 'lib/jquery-ui-1.10.3.custom.min',
+        'underscore'         : 'vendor/lodash',
+    }
+});
+                        </code></pre>
+
+                        Bibliotheken am besten mit 'path' als Dependency angeben, z.B. 'jquery-ui'.
+                        Ändert sich die Version, muss der Pfad nur an einer Stelle geändert werden.
+                    </section>
+
+                    <section>
+                        <h2>shim</h2>
+
+                        Scripte verwenden, die kein AMD unterstützen:
+                        <pre><code class="javascript" data-trim>
+require.config({
+    shim : {
+        'backbone': {
+
+            // Abhängigkeiten
+            deps: ['jquery', 'underscore']
+
+            // Globales Objekt zur Rückgabe
+            exports: 'Backbone'
+        }
+    }
+});
+                            </code></pre>
+                    </section>
+                </section>
+
+                <section>
+                    <section>
+                        <h2>Buildprozess</h2>
+                    </section>
+                    <section>
+                        <h3>r.js ist ein Kommandozeilentool,<br>dass die einzelnen Module zusammenfasst:</h3>
+                        <a href="https://github.com/jrburke/r.js/">github.com/jrburke/r.js</a>
+                    </section>
+                    <section>
+                        <h3>Alternative: Require.js + Grunt = &lt;3</h3>
+                        <a href="https://github.com/gruntjs/grunt-contrib-requirejs">github.com/gruntjs/grunt-contrib-requirejs</a>
+                    </section>
+                </section>
+
+                <section>
+                    <h1>Demo-Time!</h1>
+                </section>
+
+                <section>
+                    <section>
+                        <h2>Coole Extras</h2>
+                    </section>
+
+                    <section>
+                        <h2>Module abhängig von<br>der Umgebung laden</h2>
+
+                        <p>Development</p>
+                        <pre><code class="javascript" data-trim>
+// main.js
+require.config({
+    paths: { 'config' : 'config/app.development' }
+});
+                        </code></pre>
+
+                        <p>Build</p>
+                        <pre><code class="javascript" data-trim>
+// build.js / Gruntfile.js
+{
+    paths: { 'config' : 'config/app.production' }
+}
+                        </code></pre>
+                    </section>
+
+                    <section>
+                        <h2>Lazy Loading von Modulen</h2>
+                        <pre><code class="javascript" data-trim>
+var datePicker;
+$('input.date').on('click', function() {
+    if (!datePicker) {
+        require(['jquery-datepicker'], function(pick) {
+            datePicker = pick;
+            pick.init();
+        });
+    } else {
+        datePicker.init();
+    }
+});
+                        </code></pre>
+                    </section>
+
+                    <section>
+                        <h2>Plugins</h2>
+
+                        … für Texte, JSON, Template-Engines, etc.
+                        <pre><code class="javascript" data-trim>
+require(['json!package.json'], function (package) {
+    console.log(package.name);
+});
+                        </code></pre>
+                    </section>
+                </section>
+
+                <section>
+                    <h2>Zusammenfassung</h2>
+
+                    <ul>
+                        <li>AMD-Module sind kompakt und in sich geschlossen</li>
+                        <li class="fragment">Jedes AMD-Modul definiert seine eigenen Abhängigkeiten</li>
+                        <li class="fragment">Require.js lädt Module und Abhängigkeiten in der richtigen Reihenfolge</li>
+                        <li class="fragment">Der Optimizer fasst Module in einer oder mehreren Dateien zusammen</li>
+                        <li class="fragment">Module können auch "bei Bedarf" nachgeladen werden</li>
+                        <li class="fragment">Verschafft Übersicht in komplexen Projekten</li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h2>That's all folks!</h2>
+                    <h3>Fragen?</h3>
+
+                    <p>Frederic Hemberger (<a href="https://twitter.com/fhemberger">@fhemberger</a>)</p>
+                </section>
+
+            </div>
+        </div>
+
+        <script src="lib/js/head.min.js"></script>
+        <script src="js/reveal.min.js"></script>
+        <script>
+            // Full list of configuration options available here:
+            // https://github.com/hakimel/reveal.js#configuration
+            Reveal.initialize({
+                controls: true,
+                progress: true,
+                history: true,
+                center: true,
+
+                theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
+                transition: 'none', // default/cube/page/concave/zoom/linear/fade/none
+
+                // Optional libraries used to extend on reveal.js
+                dependencies: [
+                    { src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+                    { src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+                    { src: 'plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
+                ]
+            });
+        </script>
+
+    </body>
+</html>
