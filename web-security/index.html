@@ -1,0 +1,677 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>Digitale Selbstverteidigung – Mehr Sicherheit auf der eigenen Website</title>
+        <meta name="author" content="Frederic Hemberger">
+
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+        <link rel="stylesheet" href="../reveal.js/css/reveal.min.css">
+        <link rel="stylesheet" href="../reveal.js/css/theme/night.css">
+
+        <!-- For syntax highlighting -->
+        <link rel="stylesheet" href="../reveal.js/lib/css/sunburst.css">
+
+        <style>
+            .reveal pre code { background-color: transparent; }
+            .reveal pre { font-size: 0.85em; width: 100%; }
+            .reveal p { line-height: 1.5em; }
+            .reveal li { padding-bottom: 0.5em; }
+            .reveal table th, td { padding: 0.25em 0.4em !important; }
+            .reveal h1, .reveal h2, .reveal h3, .reveal h4, .reveal h5, .reveal h6 { line-height: 1.2em !important; }
+            .reveal strong,
+            .reveal b { color: #e7ad52; }
+
+            #cover * {
+                text-shadow: 0px 0px 5px #000
+            }
+
+            button {
+                font-size: 0.8em;
+                padding: 0.25em 0.5em;
+                background-color: #e7ad52;
+                border: 0 none;
+                border-radius: 0.25em;
+            }
+        </style>
+
+        <!-- If the query includes 'print-pdf', use the PDF print sheet -->
+        <script>
+            document.write( '<link rel="stylesheet" href="../reveal.js/css/print/' + ( window.location.search.match( /print-pdf/gi ) ? 'pdf' : 'paper' ) + '.css" type="text/css" media="print">' );
+        </script>
+
+        <!--[if lt IE 9]>
+        <script src="../reveal.js/lib/js/html5shiv.js"></script>
+        <![endif]-->
+        <script src="http://code.jquery.com/jquery-1.8.3.min.js"></script>
+    </head>
+
+    <body>
+
+        <div class="reveal">
+
+            <!-- Any section element inside of this container is displayed as a slide -->
+            <div class="slides">
+
+                <section id="cover" data-background="demo/selection-du-weekend-56-4.jpg" data-background-size="110%">
+                    <h2>Digitale Selbstverteidigung</h2>
+                    <h3>Mehr Sicherheit auf der eigenen Website</h3>
+                    <aside class="notes">
+                        <p>Image source: http://mystartrekscrapbook.blogspot.de/2009/05/click-on-images-to-view-shatner-ego.html</p>
+                    </aside>
+                </section>
+
+                <section>
+                    <h2>Warum sollten wir uns überhaupt mit Sicherheit beschäftigen?</h2>
+                </section>
+
+                <section>
+                    <h2>Datenverluste/Hacks der letzten Monate</h2>
+                    <p><small>(Quelle: <a href="http://www.privacyrights.org/data-breach/">Privacy Rights Clearinghouse</a>)</small></p>
+                </section>
+
+                <section>
+                    <h3>1. Januar</h3>
+                    <p>Snapchat: <mark>4,6 Millionen Telefonnummern und Passwörter</mark> veröffentlicht.<br>
+                    Die Schwachstelle war etwa ein halbes Jahr bekannt.</p>
+                </section>
+
+                <section>
+                    <h3>Dezember</h3>
+                    <p>Target Corp.: Zugriff auf <mark>40 Millionen Kreditkartendaten</mark>.</p>
+                    <p><small>Update Januar: Auch 70 Millionen Postadressen, Telefonnummern und E-Mail-Adressen entwendet</small></p>
+                </section>
+
+                <section>
+                    <h3>Oktober</h3>
+                    <ul>
+                        <li>Adobe: <mark>3 Millionen Accounts</mark> gehackt: Name, Kundennummer, verschlüsselte Passwörter/Kreditkarteninformationen</li>
+                        <li class="fragment">Zusätzlich <mark>38 Millionen</mark> E-Mailadressen und verschlüsselte Passwörter entwendet</li>
+                        <li class="fragment">OkCupid: <mark>42 Millionen Passwörter</mark> der Dating-Website wurden auf einem Server neben den Adobe-Daten gefunden.</li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h2>An Daten hängen ganze (digitale) Existenzen</h2>
+                    <ul>
+                        <li>Das selbe Passwort wird oft für verschiedene Dienste verwendet</li>
+                        <li class="fragment">
+                            Viele Leute führen und teilen ihr Leben mittlerweile online:
+                            <span class="fragment">persönliche Informationen,</span>
+                            <span class="fragment">Online-Profile,</span>
+                            <span class="fragment">Adressen,</span>
+                            <span class="fragment">Kontakte und Freunde,</span>
+                            <span class="fragment">Kreditkarten/Bankdaten,</span>
+                            <span class="fragment">persönliche Fotos,</span>
+                            <span class="fragment">Texte,</span>
+                            <span class="fragment">Gefühle.</span>
+                        </li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h2>Doch der wichtigste Grund ist:</h2>
+                    <ul>
+                        <li><strong>Ihr</strong> fragt eure Nutzer nach all diesen Daten …</li>
+                        <li class="fragment">… um Dienstleistungen anzubieten, für Marketing-Zwecke, etc.</li>
+                        <li class="fragment">Eure Nutzer <strong>vertrauen</strong> euch.</li>
+                        <li class="fragment">Deshalb ist es <strong>eure Pflicht</strong>, sorgsam damit umzugehen.</li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h2>Beispiele für Sicherheitsprobleme</h2>
+                </section>
+
+                <section>
+                    <h2>Clickjacking</h2>
+                    <p>„Entführen“ von Mausklicks auf eine andere Seite</p>
+                </section>
+
+                <section>
+                    <h3>Angriffsziel</h3>
+                    <iframe src="demo/original-website.html" height="380" width="620"></iframe>
+                </section>
+
+                <section>
+                    <h3>Angreifende Website</h3>
+                    <iframe src="demo/malicious-website1.html" height="380" width="620"></iframe>
+                </section>
+
+                <section>
+                    <h3>Was passiert hier?</h3>
+                    <p>Der Angreifer bindet die Seite in ein absolut positioniertes Iframe ein:</p>
+                    <pre><code data-trim>
+iframe {
+    width: 850px;
+    height: 370px;
+    position: absolute;
+    top: -198px;
+    left: -424px;
+
+    /* Nur zur Demonstration auf 50% gesetzt. */
+    filter: alpha(opacity=50);
+    opacity: 0.5;
+}
+                    </code></pre>
+                </section>
+
+                <section>
+                    <p>Die selbe Seite. Transparenz des Iframes auf 0 gesetzt.</p>
+                    <iframe src="demo/malicious-website2.html" height="380" width="620"></iframe>
+                </section>
+
+                <section>
+                    <h3>Mögliche Angriffszenarien</h3>
+                    <ul>
+                        <li>Ändern von Privatsphäre-Einstellungen</li>
+                        <li class="fragment">Löschen von Accounts oder Daten</li>
+                        <li class="fragment">Auslösen von 1-Klick-Bestellungen, o.ä.</li>
+                    </ul>
+
+                    <p class="fragment">&nbsp;<br>Auch mehrstufige Prozesse (z.B. Bestätigunsdialoge)<br> können so abgefangen werden.</p>
+
+                    <aside class="notes">
+                        <p>In der Vergangenheit gab es auf diese Weise sogar Attacken auf die Einstellungsseite des Flash-Plugins im Browser, um dort unbemerkt die Sicherheitseinstellungen zu ändern.</p>
+                    </aside>
+                </section>
+
+                <section>
+                    <h3>Abhilfe: X-Frame-Options (HTTP-Header)</h3>
+                    <ul>
+                        <li class="fragment">
+                            X-Frame-Options: <strong>SAMEORIGIN</strong><br />
+                            Same-Origin-Policy: Protokoll (z.B. http://) und (Sub)Domain muss identisch sein
+                        </li>
+                        <li class="fragment">
+                            X-Frame-Options: <strong>DENY</strong><br />
+                            Unterbindet das Einbetten der Seite vollständig
+                        </li>
+                        <li class="fragment" style="color:#7c7c7c">
+                            X-Frame-Options: <strong style="color:#7c7c7c">ALLOW-FROM <em>origin</em></strong><br />
+                            Einbetten ausschließlich von einem bestimmten Ziel aus (z.B. http://www.example.com)
+                        </li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h3>
+                        Nicht empfohlen:<br>
+                        X-Frame-Options: ALLOW-FROM
+                    </h3>
+                    <ul>
+                        <li>Browser-Support: Bisher nur im Firefox 18+ und IE9+</li>
+                        <li class="fragment">Kein Browser-Support = Kein Clickjacking-Schutz vorhanden!</li>
+                        <li class="fragment">'ALLOW-FROM' unterstützt nur eine einzelnen Domain, keine Liste</li>
+                        <li class="fragment"><a href="https://bugs.webkit.org/show_bug.cgi?id=94836#c11">Diskussion</a>, ob die Umsetzung künftig nicht anders funktionieren soll.</li>
+                </section>
+
+                <section>
+                    <h3>Browser-Support X-Frame-Options (DENY/SAMEORIGIN)</h3>
+                    <ul>
+                        <li>Chrome 4.1+</li>
+                        <li>Firefox 3.6.9</li>
+                        <li>Safari 4+</li>
+                        <li>Internet Explorer 8+</li>
+                        <li>Opera 10.50+</li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h3>HTTP-Header in Apache setzen</h3>
+                    <p><code>.htaccess</code> oder Server-Konfiguration</p>
+                    <pre>
+                        <code data-trim>
+&lt;IfModule mod_headers.c&gt;
+    Header always set X-Frame-Options "SAMEORIGIN"
+&lt;/IfModule&gt;
+                        </code>
+                    </pre>
+                </section>
+
+                <section>
+                    <h3>HTTP-Header im IIS setzen</h3>
+                    <p><code>web.config</code></p>
+                    <pre>
+                        <code data-trim>
+&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;configuration&gt;
+    &lt;system.webServer&gt;
+        &lt;httpProtocol&gt;
+            &lt;customHeaders&gt;
+                &lt;add name="X-Frame-Options" value="SAMEORIGIN"/&gt;
+            &lt;/customHeaders&gt;
+        &lt;/httpProtocol&gt;
+    &lt;/system.webServer&gt;
+&lt;/configuration&gt;
+                        </code>
+                    </pre>
+                </section>
+
+                <section>
+                    <h2>Cross Site Scripting (XSS)</h2>
+                    <p>Ungewolltes Ausführen von fremden JavaScript-Code</p>
+                </section>
+
+                <section>
+                    <pre style="text-align:center">&lt;script&gt;alert(1)&lt;/script&gt;</pre>
+                    <p class="fragment">
+                        Wenn es gelingt, diesen Beispielcode auszuführen, kann<br>
+                        <strong>jeder beliebige</strong> JavaScript-Code ausgeführt werden
+                    </p>
+
+                    <aside class="notes">
+                        … etwa Diebstahl von Session-Informationen/CSRF-Tokens oder sonstige Manipulation der Seite
+                    </aside>
+                </section>
+
+                <section>
+                    <p><strong>Reflected XSS</strong>-Attacken kommen meist von anderen Seiten:</p>
+                    <pre style="text-align:center">http://hello.com/search.php?q=%3Cscript%3Ealert(1)%3C/script%3E</pre>
+                </section>
+
+                <section>
+                    <p><strong>Stored XSS</strong>-Attacken werden auf dem Server gespeichert<br> und an jeden Besucher ausgeliefert.</p>
+                    <aside class="notes">z.B. Datenbank, Forenbeitrag, Kommentarfeld</aside>
+                </section>
+
+                <section>
+                    <h3>Wie sehen XSS-Angriffsvektoren aus?</h3>
+                    <p><small>(Quelle: <a href="http://html5sec.org/">HTML5 Security Cheatsheet</a>)</small></p>
+
+                    <pre class="fragment">&lt;frameset onload=alert(1)&gt;</pre>
+                    <pre class="fragment">&lt;body oninput=alert(1)&gt;&lt;input autofocus&gt;</pre>
+                    <pre class="fragment">&lt;video poster=javascript:alert(1)//&gt;&lt;/video&gt;</pre>
+                    <pre class="fragment">&lt;!--&lt;img src="--&gt;&lt;img src=x onerror=alert(1)//"&gt;</pre>
+                    <pre class="fragment">&lt;img[a][b]src=x[d]onerror[c]=[e]"alert(1)"&gt;</pre>
+                </section>
+
+                <section>
+                    <h3>»Ok, dann filtere ich …</h3>
+                    <h4>… nach &lt;script &gt;, onload, onerror, etc.«</h4>
+
+                    <div class="fragment">
+                        <p>Keine gute Idee:</p>
+                        <pre style="text-align:center">
+                            <code class="none" data-trim>
+&lt;s&lt;script&gt;c&lt;script&gt;r&lt;script&gt;i&lt;script&gt;p&lt;script&gt;t&gt;alert(1)
+&lt;/s&lt;script&gt;c&lt;script&gt;r&lt;script&gt;i&lt;script&gt;p&lt;script&gt;t&gt;
+                            </code>
+                        </pre>
+                    </div>
+                </section>
+
+                <section>
+                    <h3><code>/Everybody stand back/</code></h3>
+                    <h4><a href="http://xkcd.com/208/">I know Regular Expressions!</a></h4>
+
+                    <p class="fragment"><code>/&lt;[^&gt;]*&gt;?/g</code> filtert alle HTML-Tags aus.</p>
+                    <br>
+                    <ul>
+                        <li class="fragment">… aber leider auch <code>a &lt; b</code></li>
+                        <li class="fragment">Man verändert also eventuell in Einzelfällen den Inhalt</li>
+                        <li class="fragment">Andere Repräsentationen bleiben erhalten, z.B.:<br>
+                            &amp;lt; &ampgt; %3C %3E</li>
+                    </ul>
+                    <p class="fragment">Schon <strong>sehr viel besser</strong> für die meisten Fälle, aber nicht perfekt.</p>
+                </section>
+
+                <section>
+                    <h3>Filtern von HTML in JavaScript</h3>
+                    <p><em>As seen many times on StackOverflow™</em> &ndash; mit XSS inklusive:</p>
+                    <pre>
+                        <code class="javascript" data-trim>
+// never, never, NEVER use this!
+function stripHtmlWithXss(html) {
+  var tmp = document.createElement("DIV");
+  tmp.innerHTML = html;
+  return tmp.textContent || tmp.innerText;
+}
+                        </code>
+                    </pre>
+                    <p><button id="strip-example1a">&lt;script&gt;alert('is this run?')&lt;/script&gt;</button></p>
+                    <script>
+                        function stripHtmlWithXss(html) {
+                            var tmp = document.createElement("DIV");
+                            tmp.innerHTML = html;
+                            return tmp.textContent || tmp.innerText;
+                        }
+
+                        $('#strip-example1a').click(function() {
+                            var result = stripHtmlWithXss("<script>alert('is this run?')<\/script>");
+                            alert('Result: ' + result);
+                        });
+                    </script>
+
+                    <p><button id="strip-example1b">&lt;img onerror='alert("could run arbitrary JS here")' src=bogus&gt;</button></p>
+                    <script>
+                        $('#strip-example1b').click(function() {
+                            var result = stripHtmlWithXss("<img onerror='alert(\"could run arbitrary JS here\")' src=bogus />");
+                            alert('Result: ' + result);
+                        });
+                    </script>
+                </section>
+
+                <section>
+                    <pre>
+                        <code class="javascript" data-trim>
+// never, never, NEVER use this! (part 2)
+function jQueryStripHtmlWithXss(html) {
+  return $('&lt;div/&gt;').html(html).text();
+}
+                        </code>
+                    </pre>
+                    <p><button id="strip-example2a">&lt;script&gt;alert('is this run?')&lt;/script&gt; (jQuery 1.8.3)</button></p>
+                    <script>
+                        function jQueryStripHtmlWithXss(html) {
+                            return $('<div/>').html(html).text();
+                        }
+
+                        $('#strip-example2a').click(function() {
+                            var result = jQueryStripHtmlWithXss("<script>alert('is this run?')<\/script>");
+                            alert('Result: ' + result);
+                        });
+                    </script>
+
+                    <p><button id="strip-example2b">&lt;img onerror='alert("could run arbitrary JS here")' src=bogus&gt;</button></p>
+                    <script>
+                        $('#strip-example2b').click(function() {
+                            var result = jQueryStripHtmlWithXss("<img onerror='alert(\"could run arbitrary JS here\")' src=bogus />");
+                            alert('Result: ' + result);
+                        });
+                    </script>
+                    <aside class="notes">jQuery 1.8.3 ist grade etwas mehr als ein Jahr alt (Nov 2012). Gibt noch genug Seiten mit dieser Version</aside>
+                </section>
+
+                <section>
+                    <pre>
+                        <code class="javascript" data-trim>
+// always use `document.implementation.createHTMLDocument`
+function stripHtmlSafe(html) {
+  var tmp = document.implementation.createHTMLDocument();
+  tmp.body.innerHTML = html;
+  return tmp.body.textContent || tmp.body.innerText;
+}
+                        </code>
+                    </pre>
+                    <p><button id="strip-example3a">&lt;script&gt;alert('is this run?')&lt;/script&gt;</button></p>
+                    <script>
+                        function stripHtmlSafe(html) {
+                            var tmp = document.implementation.createHTMLDocument();
+                            tmp.body.innerHTML = html;
+                            return tmp.body.textContent || tmp.body.innerText;
+                        }
+
+                        $('#strip-example3a').click(function() {
+                            var result = stripHtmlSafe("<script>alert('is this run?')<\/script>");
+                            alert('Result: ' + result);
+                        });
+                    </script>
+
+                    <p><button id="strip-example3b">&lt;img onerror='alert("could run arbitrary JS here")' src=bogus&gt;</button></p>
+                    <script>
+                        $('#strip-example3b').click(function() {
+                            var result = stripHtmlSafe("<img onerror='alert(\"could run arbitrary JS here\")' src=bogus />");
+                            alert('Result: ' + result);
+                        });
+                    </script>
+                </section>
+
+                <section>
+                    <h3>Richtiges Filtern ist schwierig</h3>
+                    <p><a href="http://xssed.org/pagerank">XSSed - Top sites by pagerank</a></p>
+                    <br>
+                    <ul>
+                        <li>ASCII-Steuerzeichen</li>
+                        <li>unerlaubte Unicode-Symbole</li>
+                        <li>escapete Sequenzen, etc.</li>
+                    </ul>
+                    <br><br>
+                    <p>Frameworks wie <em>HTML Purifier</em> (PHP) oder <em>AntiSamy</em> (Java, .NET) helfen.</p>
+                </section>
+
+                <section>
+                    <h3>Zusammenfassung: XSS</h3>
+                    <ul>
+                        <li>allen (<strong>allen</strong>, also wirklich <strong>ALLEN</strong>) Eingaben grundsätzlich misstrauen</li>
+                        <li class="fragment"><strong>Alle Eingaben</strong> sorgfältig validieren</li>
+                        <li class="fragment">Besondere Vorsicht bei HTML (z.B. Kommentare, WYSIWYG-Editor)</li>
+                        <li class="fragment">ggf. einzelne ausgesuchte Tags <strong>explizit erlauben</strong> (Whitelisting)</li>
+                        <li class="fragment">Markdown ist eine gute Alternative, auch für Kunden</li>
+                        <li class="fragment">Ebenfalls Zeichen- und Zeichenkodierung prüfen:<br>(encodierte/escapete) Steuerzeichen, Unicode, etc.</li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h2>(Un)geladene Gäste</h2>
+                    <p>Ausführen von ungewünschten Scripten verhindern</p>
+                </section>
+
+                <section>
+                    <ul>
+                        <li>Filtern ist schwierig, es könnte uns etwas entgangen sein</li>
+                        <li class="fragment">Das Problem muss nicht auf unserem Server selbst auftreten</li>
+                        <li class="fragment">
+                            Die meisten Websites laden viele externe Ressourcen:<br>
+                            Webfonts, Scripte von CDN-Servern, Werbung, Analytics-Zählpixel, etc.
+                        </li>
+                        <li class="fragment">All diese Quellen bergen auch ein potentielles Risiko</li>
+                    </ul>
+                    <a class="fragment" href="http://www.heise.de/newsticker/meldung/Yahoo-als-Virenschleuder-Yahoo-com-griff-europaeische-Besucher-an-2075646.html">
+                        heise.de (6.01.2014): Yahoo.com griff europäische Besucher an
+                    </a>
+                </section>
+
+                <section>
+                    <h3>Abhilfe: Content-Security-Policy<br>(HTTP-Header)</h3>
+                    <p>Einschränkung der zu ladenden Ressourcen</p>
+                </section>
+
+                <section>
+                    <h3>Beispiel für CSP</h3>
+                    <p><code>index.html</code></p>
+                    <pre><code>
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;script src="http://code.jquery.com/jquery.js"&gt;&lt;/script&gt;
+    &lt;script src="http://evil.com/evil.js"&gt;&lt;/script&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    …
+&lt;/body&gt;
+&lt;/html&gt;
+                    </code></pre>
+                </section>
+
+                <section>
+                    <h3>Beispiel für CSP</h3>
+                    <p><code>.htaccess</code></p>
+                    <pre>
+                        <code data-trim>
+&lt;IfModule mod_headers.c&gt;
+    Header always set Content-Security-Policy: ↩
+      "script-src 'self' http://code.jquery.com"
+&lt;/IfModule&gt;
+                        </code>
+                    </pre>
+                </section>
+
+                <section>
+                    <h3>Beispiel für CSP</h3>
+                    <p>Laden des Codes von <em>evil.com</em> wird unterbunden:</p>
+                    <img src="demo/chrome-devtools-csp.png" alt="CSP-Meldung in den Chrome Developer Tools" style="width:100%">
+                </section>
+
+                <section>
+                    <h3>CSP-Medientypen</h3>
+                    <ul>
+                        <li><strong>script-src</strong>: Laden von JavaScript</li>
+                        <li class="fragment"><strong>connect-src</strong>: Limitiert Verbindungen via Ajax, WebSockets, etc.</li>
+                        <li class="fragment"><strong>font-src</strong>: Web-Fonts (etwa TypeKit, Google Webfonts)</li>
+                        <li class="fragment"><strong>frame-src</strong>: Quellen, die per (i)frame in der Seite eingebettet werden dürfen (z.B. YouTube, Vimeo)</li>
+                        <li class="fragment"><strong>img-src</strong>: externe Quellen für Bilder …</li>
+                        <li class="fragment"><strong>media-src</strong>: … Audio/Video …</li>
+                        <li class="fragment"><strong>object-src</strong>: … sowie Flash und andere Plug-Ins.</li>
+                        <li class="fragment"><strong>style-src</strong>: Gegenstück zu <em>script-src</em> für Stylesheets.</li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h3>Regeln</h3>
+                    <ul>
+                        <li><strong>'none'</strong>: Einbindung verbieten</li>
+                        <li class="fragment"><strong>'self'</strong>: Aktueller Ursprung der Seite (ohne Subdomains)</li>
+                        <li class="fragment"><strong>'unsafe-inline'</strong>: Inline JavaScript und CSS</li>
+                        <li class="fragment"><strong>'unsafe-eval'</strong>: JavaScript-Parsing mit eval(), etc.</li>
+                    </ul>
+                    <p class="fragment">
+                        Oder Angaben nach Schema (<em>data:, https:</em>), Hostname (<em>example.com</em>),<br>
+                        URI (<em>https://example.com:443</em>) oder Wildcard (<em>*://*.example.com:*</em>)
+                    </p>
+                    <br>
+                    <p class="fragment">
+                        <strong>Vorsicht:</strong> <em>'unsafe-inline'</em> / <em>'unsafe-eval'</em>
+                        führen <strong>alle</strong><br> Inline-Scripte aus, auch mögliche XSS-Vektoren.
+                    </p>
+                </section>
+
+                <section>
+                    <h3>Beispiel für CSP</h3>
+                    <p>Das volle Programm: jQuery-CDN, Google Webfonts, Tumblr-Bilder, Youtube-Videos</p>
+                    <pre><code>
+&lt;IfModule mod_headers.c&gt;
+    Header always set Content-Security-Policy: ↩
+      "script-src 'self' code.jquery.com; ↩
+      style-src 'self' http://fonts.googleapis.com; ↩
+      font-src http://themes.googleusercontent.com; ↩
+      img-src 'self' data: https://*.media.tumblr.com; ↩
+      frame-src www.youtube.com; ↩
+      object-src 'none'"
+&lt;/IfModule&gt;
+                    </code></pre>
+                </section>
+
+                <section>
+                    <h3>Browser-Support Content-Security-Policy</h3>
+                    <ul>
+                        <li>Chrome 25</li>
+                        <li>Firefox 4+ (Versionen kleiner 23 als »X-Content-Security-Policy«)</li>
+                        <li>Safari 6.1+</li>
+                        <li>Internet Explorer 10 (eingeschränkt)</li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h2>Fazit</h2>
+                    <ul>
+                        <li>„Security by Default“: Schon beim Entwickeln daran denken</li>
+                        <li class="fragment">Clickjacking: Schutz aktivieren</li>
+                        <li class="fragment">XSS: <strong>allen</strong> Eingaben immer misstrauen: Sorgfältig validieren und filtern</li>
+                        <li class="fragment">CSP: Ungewollte Script-Ausführung verhindern</li>
+                        <li class="fragment">Vorsicht bei Proxies, die HTTP-Header ändern/löschen</li>
+                        <li class="fragment">Bei sensiblen Daten (z.B. Bankdaten/Kreditkarten),<br>regelmäßig Security-Audit durchführen</li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h3>… und zu guter Letzt</h3>
+                    <p>Es gibt keine 100%ige Sicherheit. Bleibt auf der Hut!</p>
+                </section>
+
+                <section>
+                    <h2>That's all folks!</h2>
+                    <h3>Fragen?</h3>
+
+                    <p>Frederic Hemberger (<a href="https://twitter.com/fhemberger">@fhemberger</a>)</p>
+
+                    <p>&nbsp;<br><small><a href="#/45">Links und weitere Ressourcen</a></small></p>
+                </section>
+
+                <section>
+                    <h3>CSRF</h3>
+                    <ul><li><a href="https://www.owasp.org/index.php/Cross-Site_Request_Forgery_(CSRF)_Prevention_Cheat_Sheet">Cross-Site Request Forgery (CSRF) Prevention Cheat Sheet</a></li></ul>
+
+                    <br><br>
+
+                    <h3>X-Frame-Options</h3>
+                    <ul>
+                        <li><a href="https://tools.ietf.org/html/rfc7034">RFC7034: HTTP Header Field X-Frame-Options</a></li>
+                        <li><a href="https://docs.google.com/document/d/11bo7UiW5hYuBO5j54Mcr6mzBfM6UD6ergZU5mV-2WlU/">X-Frame-Options: All about Clickjacking?</a></li>
+                        <li>
+                            <a href="http://erlend.oftedal.no/blog/tools/xframeoptions/">X-Frame-Options Compatibility Test</a>;
+                            <a href="https://code.google.com/p/chromium/issues/detail?id=129139">Chrome Issue 129139</a>
+                        </li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h3>Cross-Site-Scripting (XSS)</h3>
+                    <ul>
+                        <li><a href="https://www.owasp.org/index.php/XSS_Prevention_Cheat_Sheet">OWASP: XSS Prevention Cheat Sheet</a></li>
+                        <li><a href="http://phpids.org/">PHP Intrusion Detection System</a>; <a href="https://github.com/PHPIDS/PHPIDS">GitHub</a></li>
+                        <li><a href="https://www.owasp.org/index.php/AntiSamy">OWASP AntiSamy</a></li>
+                        <li><a href="http://htmlpurifier.org/">HTML Purifier</a></li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h3>Content Security Policy (CSP)</h3>
+                    <ul>
+                        <li><a href="http://www.w3.org/TR/CSP/">W3C Specification 1.0</a> (aktueller <a href="https://github.com/mikewest/content-security-policy">Draft für CSP 1.1)</a></li>
+                        <li><a href="http://www.html5rocks.com/en/tutorials/security/content-security-policy/">HTML5 Rocks: An Introduction to Content Security Policy</a></li>
+                        <li><a href="https://blog.twitter.com/2013/csp-rescue-leveraging-browser-security">Twitter Blog: CSP to the Rescue: Leveraging the Browser for Security</a></li>
+                        <li><a href="http://mathiasbynens.be/notes/csp-reports">Mathias Bynens: Processing Content Security Policy violation reports</a></li>
+                        <li><a href="http://cspisawesome.com/">CSP Is Awesome: Generate a Content-Security-Policy header</a></li>
+                        <li><a href="https://www.oxdef.info/posts/2013/07/15/csp-tester/">CSP Tester (Chrome Extension)</a></li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h3>Sicherheit im Allgemeinen</h3>
+                    <ul>
+                        <li><a href="https://www.owasp.org/">Open Web Application Security Project (OWASP)</a></li>
+                        <li><a href="https://www.owasp.org/index.php/Top_10_2013-Top_10">OWASP: Top Ten Critical Security Risks 2013</a></li>
+                        <li><a href="http://www.youtube.com/watch?v=22Ujc7hTcD0">Mario Heiderich: Wie Angreifer ganz ohne JavaScript<br> an Deine wertvollen Daten kommen</a></li>
+                    </ul>
+                </section>
+
+            </div>
+
+        </div>
+
+        <script src="../reveal.js/lib/js/head.min.js"></script>
+        <script src="../reveal.js/js/reveal.min.js"></script>
+
+        <script>
+
+            // Full list of configuration options available here:
+            // https://github.com/hakimel/reveal.js#configuration
+            Reveal.initialize({
+                controls: false,
+                progress: true,
+                history: true,
+                center: true,
+
+                width: 1000,
+
+                theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
+                transition: Reveal.getQueryHash().transition || 'linear', // default/cube/page/concave/zoom/linear/fade/none
+
+                // Optional libraries used to extend on reveal.js
+                dependencies: [
+                    { src: '../reveal.js/lib/js/classList.js', condition: function() { return !document.body.classList; } },
+                    { src: '../reveal.js/plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+                    { src: '../reveal.js/plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
+                    { src: '../reveal.js/plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }
+                ]
+            });
+
+        </script>
+
+    </body>
+</html>

