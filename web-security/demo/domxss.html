@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>DOM XSS Demo</title>
+	<style>
+		body {font-family:Arial,sans-serif;font-size:20px;line-height: 1.5;color:#333333;background-color:#ffffff;}
+		input {font-size:20px;height:24px;min-width:350px;vertical-align:middle;}
+		button {color:#ffffff;background-color:#3276b1;padding:5px 8px;font-size:16px;line-height:1.33;border:0 none;border-radius:6px;text-align:center;vertical-align:middle;cursor:pointer;}
+		#result {display:none;}
+	</style>
+</head>
+<body>
+	<h1>Search</h1>
+	<input type="text" id="query">
+	<button id="submit">Submit</button>
+	<div id="result">
+		<hr>
+		<p>Ihre Suche nach <strong id="search-term"></strong> ergab 0 Treffer.</p>
+	</div>
+	<script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
+	<script>
+		$('#submit').click(function() {
+			$('#result').show();
+			$('#search-term').html( $('#query').val() );
+		});
+	</script>
+</body>
+</html>

@@ -25,6 +25,7 @@
             .reveal h1, .reveal h2, .reveal h3, .reveal h4, .reveal h5, .reveal h6 { line-height: 1.2em !important; }
             .reveal strong,
             .reveal b { color: #e7ad52; }
+            .reveal iframe { margin: 1.5em auto; }
 
             #cover * {
                 text-shadow: 0px 0px 5px #000
@@ -124,7 +125,7 @@
                 </section>
 
                 <section>
-                    <h2>Beispiele für Sicherheitsprobleme</h2>
+                    <h2>Beispiele für Sicherheitsprobleme auf Websites</h2>
                 </section>
 
                 <section>
@@ -271,7 +272,14 @@ iframe {
 
                 <section>
                     <p><strong>Reflected XSS</strong>-Attacken kommen meist von anderen Seiten:</p>
-                    <pre style="text-align:center">http://hello.com/search.php?q=%3Cscript%3Ealert(1)%3C/script%3E</pre>
+                    <pre style="text-align:center">http://example.com/search.php?q=&lt;script&gt;alert(1)&lt;/script&gt;</pre>
+                </section>
+
+                <section>
+                    <p>Beispiel für eine <strong>DOM XSS</strong>-Attacke</p>
+                    <iframe src="demo/domxss.html" height="380" width="620"></iframe>
+                    <br>
+                    <p><small>Der Text des Suchfelds wird in der Seite ausgegeben. Auch <code>&lt;script&gt;alert(1)&lt;/script&gt;</code></small></p>
                 </section>
 
                 <section>
@@ -281,6 +289,7 @@ iframe {
 
                 <section>
                     <h3>Wie sehen XSS-Angriffsvektoren aus?</h3>
+                    <h5>(Lediglich ein sehr kleiner Auszug)</h5>
                     <p><small>(Quelle: <a href="http://html5sec.org/">HTML5 Security Cheatsheet</a>)</small></p>
 
                     <pre class="fragment">&lt;frameset onload=alert(1)&gt;</pre>
@@ -293,31 +302,33 @@ iframe {
                 <section>
                     <h3>»Ok, dann filtere ich …</h3>
                     <h4>… nach &lt;script &gt;, onload, onerror, etc.«</h4>
+                </section>
 
-                    <div class="fragment">
-                        <p>Keine gute Idee:</p>
-                        <pre style="text-align:center">
-                            <code class="none" data-trim>
-&lt;s&lt;script&gt;c&lt;script&gt;r&lt;script&gt;i&lt;script&gt;p&lt;script&gt;t&gt;alert(1)
-&lt;/s&lt;script&gt;c&lt;script&gt;r&lt;script&gt;i&lt;script&gt;p&lt;script&gt;t&gt;
-                            </code>
-                        </pre>
-                    </div>
+                <section>
+                    <p>Keine gute Idee:</p>
+                    <pre style="text-align:center">
+&lt;scr&lt;script&gt;ipt&gt;alert(1)
+&lt;/sc&lt;script&gt;ri&lt;script&gt;pt&gt;
+                    </pre>
                 </section>
 
                 <section>
                     <h3><code>/Everybody stand back/</code></h3>
-                    <h4><a href="http://xkcd.com/208/">I know Regular Expressions!</a></h4>
+                    <h4>I know Regular Expressions!</h4>
+                    <p><small><a href="http://xkcd.com/208/">XKCD #208</a></small></p>
+                </section>
 
-                    <p class="fragment"><code>/&lt;[^&gt;]*&gt;?/g</code> filtert alle HTML-Tags aus.</p>
+                <section>
+                    <p><code>/&lt;[^&gt;]*&gt;?/g</code> filtert alle HTML-Tags aus.</p>
                     <br>
                     <ul>
                         <li class="fragment">… aber leider auch <code>a &lt; b</code></li>
-                        <li class="fragment">Man verändert also eventuell in Einzelfällen den Inhalt</li>
-                        <li class="fragment">Andere Repräsentationen bleiben erhalten, z.B.:<br>
-                            &amp;lt; &ampgt; %3C %3E</li>
+                        <li class="fragment">Man verändert also eventuell den Inhalt</li>
+                        <li class="fragment">Andere Repräsentationen von &lt; und &gt; bleiben erhalten, z.B.:<br>
+                            &amp;lt; &amp;gt; %3C %3E</li>
                     </ul>
-                    <p class="fragment">Schon <strong>sehr viel besser</strong> für die meisten Fälle, aber nicht perfekt.</p>
+
+                    <p class="fragment"><br>Diese Lösung ist schon deutlich besser, aber nicht perfekt.</p>
                 </section>
 
                 <section>
@@ -390,7 +401,7 @@ function jQueryStripHtmlWithXss(html) {
                 <section>
                     <pre>
                         <code class="javascript" data-trim>
-// always use `document.implementation.createHTMLDocument`
+// Small change, but a safer solution
 function stripHtmlSafe(html) {
   var tmp = document.implementation.createHTMLDocument();
   tmp.body.innerHTML = html;
@@ -438,11 +449,12 @@ function stripHtmlSafe(html) {
                     <h3>Zusammenfassung: XSS</h3>
                     <ul>
                         <li>allen (<strong>allen</strong>, also wirklich <strong>ALLEN</strong>) Eingaben grundsätzlich misstrauen</li>
-                        <li class="fragment"><strong>Alle Eingaben</strong> sorgfältig validieren</li>
+                        <li class="fragment"><strong>Alle Eingaben</strong> sorgfältig validieren (Länge, Typ, Format)</li>
                         <li class="fragment">Besondere Vorsicht bei HTML (z.B. Kommentare, WYSIWYG-Editor)</li>
                         <li class="fragment">ggf. einzelne ausgesuchte Tags <strong>explizit erlauben</strong> (Whitelisting)</li>
                         <li class="fragment">Markdown ist eine gute Alternative, auch für Kunden</li>
                         <li class="fragment">Ebenfalls Zeichen- und Zeichenkodierung prüfen:<br>(encodierte/escapete) Steuerzeichen, Unicode, etc.</li>
+                        <li class="fragment">»Escape your input, encode your output.«</li>
                     </ul>
                 </section>
 
@@ -511,13 +523,13 @@ function stripHtmlSafe(html) {
                     <h3>CSP-Medientypen</h3>
                     <ul>
                         <li><strong>script-src</strong>: Laden von JavaScript</li>
+                        <li class="fragment"><strong>style-src</strong>: Gegenstück zu <em>script-src</em> für Stylesheets.</li>
                         <li class="fragment"><strong>connect-src</strong>: Limitiert Verbindungen via Ajax, WebSockets, etc.</li>
                         <li class="fragment"><strong>font-src</strong>: Web-Fonts (etwa TypeKit, Google Webfonts)</li>
                         <li class="fragment"><strong>frame-src</strong>: Quellen, die per (i)frame in der Seite eingebettet werden dürfen (z.B. YouTube, Vimeo)</li>
                         <li class="fragment"><strong>img-src</strong>: externe Quellen für Bilder …</li>
                         <li class="fragment"><strong>media-src</strong>: … Audio/Video …</li>
                         <li class="fragment"><strong>object-src</strong>: … sowie Flash und andere Plug-Ins.</li>
-                        <li class="fragment"><strong>style-src</strong>: Gegenstück zu <em>script-src</em> für Stylesheets.</li>
                     </ul>
                 </section>
 
@@ -589,7 +601,7 @@ function stripHtmlSafe(html) {
 
                     <p>Frederic Hemberger (<a href="https://twitter.com/fhemberger">@fhemberger</a>)</p>
 
-                    <p>&nbsp;<br><small><a href="#/45">Links und weitere Ressourcen</a></small></p>
+                    <p>&nbsp;<br><small><a href="#/48">Links und weitere Ressourcen</a></small></p>
                 </section>
 
                 <section>
@@ -613,9 +625,8 @@ function stripHtmlSafe(html) {
                     <h3>Cross-Site-Scripting (XSS)</h3>
                     <ul>
                         <li><a href="https://www.owasp.org/index.php/XSS_Prevention_Cheat_Sheet">OWASP: XSS Prevention Cheat Sheet</a></li>
-                        <li><a href="http://phpids.org/">PHP Intrusion Detection System</a>; <a href="https://github.com/PHPIDS/PHPIDS">GitHub</a></li>
-                        <li><a href="https://www.owasp.org/index.php/AntiSamy">OWASP AntiSamy</a></li>
                         <li><a href="http://htmlpurifier.org/">HTML Purifier</a></li>
+                        <li><a href="https://www.owasp.org/index.php/AntiSamy">OWASP AntiSamy</a></li>
                     </ul>
                 </section>
 
