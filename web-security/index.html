@@ -195,20 +195,10 @@ iframe {
                         <li class="fragment" style="color:#7c7c7c">
                             X-Frame-Options: <strong style="color:#7c7c7c">ALLOW-FROM <em>origin</em></strong><br />
                             Einbetten ausschließlich von einem bestimmten Ziel aus (z.B. http://www.example.com)
+                            <p>Nur in Firefox 18+/IE9+, wird künftig <a href="#/36">anders gelöst</a></p>
                         </li>
                     </ul>
-                </section>
 
-                <section>
-                    <h3>
-                        Nicht empfohlen:<br>
-                        X-Frame-Options: ALLOW-FROM
-                    </h3>
-                    <ul>
-                        <li>Browser-Support: Bisher nur im Firefox 18+ und IE9+</li>
-                        <li class="fragment">Kein Browser-Support = Kein Clickjacking-Schutz vorhanden!</li>
-                        <li class="fragment">'ALLOW-FROM' unterstützt nur eine einzelnen Domain, keine Liste</li>
-                        <li class="fragment"><a href="https://bugs.webkit.org/show_bug.cgi?id=94836#c11">Diskussion</a>, ob die Umsetzung künftig nicht anders funktionieren soll.</li>
                 </section>
 
                 <section>
@@ -531,6 +521,10 @@ function stripHtmlSafe(html) {
                         <li class="fragment"><strong>media-src</strong>: … Audio/Video …</li>
                         <li class="fragment"><strong>object-src</strong>: … sowie Flash und andere Plug-Ins.</li>
                     </ul>
+                    <p class="fragment">
+                        Ab <a href="http://w3c.github.io/webappsec/specs/content-security-policy/csp-specification.dev.html#frame-ancestors">CSP Version 1.1</a>: <br>
+                        <strong>frame-ancestors</strong>: Welche Domains dürfen die Seite per iframe einbetten?
+                    </p>
                 </section>
 
                 <section>
@@ -601,7 +595,7 @@ function stripHtmlSafe(html) {
 
                     <p>Frederic Hemberger (<a href="https://twitter.com/fhemberger">@fhemberger</a>)</p>
 
-                    <p>&nbsp;<br><small><a href="#/48">Links und weitere Ressourcen</a></small></p>
+                    <p>&nbsp;<br><small><a href="#/47">Links und weitere Ressourcen</a></small></p>
                 </section>
 
                 <section>
