@@ -348,10 +348,10 @@ function stripHtmlWithXss(html) {
                         });
                     </script>
 
-                    <p><button id="strip-example1b">&lt;img onerror='alert("could run arbitrary JS here")' src=bogus&gt;</button></p>
+                    <p><button id="strip-example1b">&lt;img onerror='alert("onerror handler")' src=bogus&gt;</button></p>
                     <script>
                         $('#strip-example1b').click(function() {
-                            var result = stripHtmlWithXss("<img onerror='alert(\"could run arbitrary JS here\")' src=bogus />");
+                            var result = stripHtmlWithXss("<img onerror='alert(\"onerror handler\")' src=bogus />");
                             alert('Result: ' + result);
                         });
                     </script>
@@ -364,6 +364,9 @@ function stripHtmlWithXss(html) {
 function jQueryStripHtmlWithXss(html) {
   return $('&lt;div/&gt;').html(html).text();
 }
+
+// … or jQuery's own parsing function
+$.parseHTML();
                         </code>
                     </pre>
                     <p><button id="strip-example2a">&lt;script&gt;alert('is this run?')&lt;/script&gt; (jQuery 1.8.3)</button></p>
@@ -378,10 +381,18 @@ function jQueryStripHtmlWithXss(html) {
                         });
                     </script>
 
-                    <p><button id="strip-example2b">&lt;img onerror='alert("could run arbitrary JS here")' src=bogus&gt;</button></p>
+                    <p><button id="strip-example2b">&lt;img onerror='alert("onerror handler")' src=bogus&gt;</button></p>
                     <script>
                         $('#strip-example2b').click(function() {
-                            var result = jQueryStripHtmlWithXss("<img onerror='alert(\"could run arbitrary JS here\")' src=bogus />");
+                            var result = jQueryStripHtmlWithXss("<img onerror='alert(\"onerror handler\")' src=bogus />");
+                            alert('Result: ' + result);
+                        });
+                    </script>
+
+                    <p><button id="strip-example2c">&lt;img onerror='alert("onerror handler (jQuery)")' src=bogus&gt;</button></p>
+                    <script>
+                        $('#strip-example2c').click(function() {
+                            var result = $.parseHTML("<img onerror='alert(\"onerror handler (jQuery)\")' src=bogus />");
                             alert('Result: ' + result);
                         });
                     </script>
@@ -413,10 +424,10 @@ function stripHtmlSafe(html) {
                         });
                     </script>
 
-                    <p><button id="strip-example3b">&lt;img onerror='alert("could run arbitrary JS here")' src=bogus&gt;</button></p>
+                    <p><button id="strip-example3b">&lt;img onerror='alert("onerror handler")' src=bogus&gt;</button></p>
                     <script>
                         $('#strip-example3b').click(function() {
-                            var result = stripHtmlSafe("<img onerror='alert(\"could run arbitrary JS here\")' src=bogus />");
+                            var result = stripHtmlSafe("<img onerror='alert(\"onerror handler\")' src=bogus />");
                             alert('Result: ' + result);
                         });
                     </script>
