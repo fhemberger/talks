@@ -76,19 +76,19 @@
                 </section>
 
                 <section>
-                    <h3>1. Januar</h3>
+                    <h3>Januar 2014</h3>
                     <p>Snapchat: <mark>4,6 Millionen Telefonnummern und Passwörter</mark> veröffentlicht.<br>
                     Die Schwachstelle war etwa ein halbes Jahr bekannt.</p>
                 </section>
 
                 <section>
-                    <h3>Dezember</h3>
+                    <h3>Dezember 2013</h3>
                     <p>Target Corp.: Zugriff auf <mark>40 Millionen Kreditkartendaten</mark>.</p>
                     <p><small>Update Januar: Auch 70 Millionen Postadressen, Telefonnummern und E-Mail-Adressen entwendet</small></p>
                 </section>
 
                 <section>
-                    <h3>Oktober</h3>
+                    <h3>Oktober 2013</h3>
                     <ul>
                         <li>Adobe: <mark>3 Millionen Accounts</mark> gehackt: Name, Kundennummer, verschlüsselte Passwörter/Kreditkarteninformationen</li>
                         <li class="fragment">Zusätzlich <mark>38 Millionen</mark> E-Mailadressen und verschlüsselte Passwörter entwendet</li>
@@ -290,16 +290,13 @@ iframe {
                 </section>
 
                 <section>
-                    <h3>»Ok, dann filtere ich …</h3>
-                    <h4>… nach &lt;script &gt;, onload, onerror, etc.«</h4>
-                </section>
-
-                <section>
-                    <p>Keine gute Idee:</p>
-                    <pre style="text-align:center">
-&lt;scr&lt;script&gt;ipt&gt;alert(1)
-&lt;/sc&lt;script&gt;ri&lt;script&gt;pt&gt;
-                    </pre>
+                    <h3>Wie lassen sich XSS-Angriffe minimieren?</h3>
+                    <ul>
+                        <li class="fragment"><strong>Alle</strong> Eingaben des Users <strong>genau</strong> validieren</li>
+                        <li class="fragment">Nicht nur Formulare, sondern auch z.B. GET-Parameter beachten</li>
+                        <li class="fragment">XSS-Code kann auch über Seitenkanäle eingeschleust werden<br>(z.B. SQL-Injection)</li>
+                        <li class="fragment">Auf Eingabemöglichkeit von HTML am besten verzichten</li>
+                    </ul>
                 </section>
 
                 <section>
@@ -309,6 +306,7 @@ iframe {
                 </section>
 
                 <section>
+                    <h3>Filtern mit Regulären Ausdrücken</h3>
                     <p><code>/&lt;[^&gt;]*&gt;?/g</code> filtert alle HTML-Tags aus.</p>
                     <br>
                     <ul>
@@ -318,12 +316,36 @@ iframe {
                             &amp;lt; &amp;gt; %3C %3E</li>
                     </ul>
 
-                    <p class="fragment"><br>Diese Lösung ist schon deutlich besser, aber nicht perfekt.</p>
+                    <p class="fragment"><br>Diese Lösung kann sehr hilfreich sein, ist aber nicht 100%ig perfekt.</p>
                 </section>
 
                 <section>
-                    <h3>Filtern von HTML in JavaScript</h3>
-                    <p><em>As seen many times on StackOverflow™</em> &ndash; mit XSS inklusive:</p>
+                    <h3>Was ist, wenn man auf HTML-Eingabe nicht verzichten kann?</h3>
+                </section>
+
+                <section>
+                    <h3>
+                        Idee #1:<br>
+                        &lt;script &gt;, onload, onerror, etc. herausfiltern
+                    <h3>
+                </section>
+
+                <section>
+                    <p>Leider keine gute Idee:</p>
+                    <pre style="text-align:center">
+&lt;scr&lt;script&gt;ipt&gt;alert(1)
+&lt;/sc&lt;script&gt;ri&lt;script&gt;pt&gt;
+                    </pre>
+                </section>
+
+                <section>
+                    <h3>
+                        Idee #2:<br>Filtern von HTML in JavaScript
+                    </h3>
+                    <p><em>As seen <strong>many</strong> times on StackOverflow™</em></p>
+                </section>
+
+                <section>
                     <pre>
                         <code class="javascript" data-trim>
 // never, never, NEVER use this!
@@ -434,16 +456,27 @@ function stripHtmlSafe(html) {
                 </section>
 
                 <section>
+                    <ul>
+                        <li>
+                            Patch für jQuery 1.12 und 2.2: <code>$.parseHTML()</code> künftig mit <code>document.implementation.createHTMLDocument();</code>
+                            <p class="fragment"><em>Ergebnis:</em> XSS-Code wird nicht mehr direkt getriggert …</p>
+                        </li>
+                        <li class="fragment">… sondern erst beim ungefilterten Wiedereinsetzen in den DOM</li>
+                        <li class="fragment">Andere DOM-basierte Angriffe (z.B. <a href="http://robbertbroersma.nl/demo/kill-document/">DOM Clobbering</a>) sind auch weiterhin möglich</li>
+                        <li class="fragment">Aber wir können zumindest darauf reagieren: <a href="https://github.com/cure53/DOMPurify">DOM Purify</a></li>
+                    </ul>
+                </section>
+
+                <section>
                     <h3>Richtiges Filtern ist schwierig</h3>
                     <p><a href="http://xssed.org/pagerank">XSSed - Top sites by pagerank</a></p>
                     <br>
                     <ul>
-                        <li>ASCII-Steuerzeichen</li>
-                        <li>unerlaubte Unicode-Symbole</li>
-                        <li>escapete Sequenzen, etc.</li>
+                        <li>ASCII-Steuerzeichen, Unicode-Symbole, escapete Sequenzen, etc.</li>
+                        <li class="fragment">Frameworks wie <em>DOM Purify</em> (JS), <em>HTML Purifier</em> (PHP) oder<br><em>AntiSamy</em> (Java, .NET) helfen.</li>
+                        <li class="fragment">Daten nie »einfach so« wieder ausgeben, sondern immer escapen</li>
+                        <li class="fragment">Beim Escaping immer auf den Kontext achten: HTML, CSS, JSON, etc.</li>
                     </ul>
-                    <br><br>
-                    <p>Frameworks wie <em>HTML Purifier</em> (PHP) oder <em>AntiSamy</em> (Java, .NET) helfen.</p>
                 </section>
 
                 <section>
@@ -606,7 +639,7 @@ function stripHtmlSafe(html) {
 
                     <p>Frederic Hemberger (<a href="https://twitter.com/fhemberger">@fhemberger</a>)</p>
 
-                    <p>&nbsp;<br><small><a href="#/47">Links und weitere Ressourcen</a></small></p>
+                    <p>&nbsp;<br><small><a href="#/51">Links und weitere Ressourcen</a></small></p>
                 </section>
 
                 <section>
@@ -618,7 +651,7 @@ function stripHtmlSafe(html) {
                     <h3>X-Frame-Options</h3>
                     <ul>
                         <li><a href="https://tools.ietf.org/html/rfc7034">RFC7034: HTTP Header Field X-Frame-Options</a></li>
-                        <li><a href="https://docs.google.com/document/d/11bo7UiW5hYuBO5j54Mcr6mzBfM6UD6ergZU5mV-2WlU/">X-Frame-Options: All about Clickjacking?</a></li>
+                        <li><a href="https://cure53.de/xfo-clickjacking.pdf">X-Frame-Options: All about Clickjacking?</a></li>
                         <li>
                             <a href="http://erlend.oftedal.no/blog/tools/xframeoptions/">X-Frame-Options Compatibility Test</a>;
                             <a href="https://code.google.com/p/chromium/issues/detail?id=129139">Chrome Issue 129139</a>
@@ -630,6 +663,7 @@ function stripHtmlSafe(html) {
                     <h3>Cross-Site-Scripting (XSS)</h3>
                     <ul>
                         <li><a href="https://www.owasp.org/index.php/XSS_Prevention_Cheat_Sheet">OWASP: XSS Prevention Cheat Sheet</a></li>
+                        <li><a href="https://github.com/cure53/DOMPurify">DOM Purify</a></li>
                         <li><a href="http://htmlpurifier.org/">HTML Purifier</a></li>
                         <li><a href="https://www.owasp.org/index.php/AntiSamy">OWASP AntiSamy</a></li>
                     </ul>
