@@ -480,6 +480,16 @@ function stripHtmlSafe(html) {
                 </section>
 
                 <section>
+                    <h3>Manche Browser helfen bei Reflected XSS</h3>
+                    <ul>
+                        <li>Google Chrome/Webkit: XSSAuditor</li>
+                        <li>HTTP-Header für Internet Explorer 8+:<br><code>X-XSS-Protection: 1; mode=block</code></li>
+                        <li>Firefox <a href="https://wiki.mozilla.org/Security/Features/XSS_Filter">arbeitet auch daran</a> (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=528661">Ticket #528661</a>)</li>
+                    </ul>
+                    <p>Man sollte sich aber keinesfalls ausschließlich darauf verlassen</p>
+                </section>
+
+                <section>
                     <h3>Zusammenfassung: XSS</h3>
                     <ul>
                         <li>allen (<strong>allen</strong>, also wirklich <strong>ALLEN</strong>) Eingaben grundsätzlich misstrauen</li>
@@ -639,7 +649,7 @@ function stripHtmlSafe(html) {
 
                     <p>Frederic Hemberger (<a href="https://twitter.com/fhemberger">@fhemberger</a>)</p>
 
-                    <p>&nbsp;<br><small><a href="#/51">Links und weitere Ressourcen</a></small></p>
+                    <p>&nbsp;<br><small><a href="#/52">Links und weitere Ressourcen</a></small></p>
                 </section>
 
                 <section>
@@ -666,6 +676,10 @@ function stripHtmlSafe(html) {
                         <li><a href="https://github.com/cure53/DOMPurify">DOM Purify</a></li>
                         <li><a href="http://htmlpurifier.org/">HTML Purifier</a></li>
                         <li><a href="https://www.owasp.org/index.php/AntiSamy">OWASP AntiSamy</a></li>
+
+                        <li><a href="http://blogs.msdn.com/b/ie/archive/2008/07/02/ie8-security-part-iv-the-xss-filter.aspx">IE8 Security Part IV: The XSS Filter</a></li>
+                        <li><a href="http://blogs.msdn.com/b/ieinternals/archive/2011/01/31/controlling-the-internet-explorer-xss-filter-with-the-x-xss-protection-http-header.aspx">IE Internals: Controlling the XSS Filter</a></li>
+                        <li><a href="https://wiki.mozilla.org/Security/Features/XSS_Filter">Firefox XSS Filter</a> (geplant), <a href="https://bugzilla.mozilla.org/show_bug.cgi?id=528661">Ticket #528661</a></li>
                     </ul>
                 </section>
 
