@@ -1,0 +1,772 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>Running Node.js apps in production</title>
+        <meta name="author" content="Frederic Hemberger">
+
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+        <link rel="stylesheet" href="../reveal.js/css/reveal.min.css">
+        <link rel="stylesheet" href="../reveal.js/css/theme/night.css">
+
+        <!-- For syntax highlighting -->
+        <link rel="stylesheet" href="../reveal.js/lib/css/sunburst.css">
+
+        <style>
+            .reveal .slides { text-align: left; }
+            .reveal blockquote { background-color: transparent; width: auto; font-size: 150%; line-height: initial; }
+            .reveal blockquote + figcaption { text-indent: 2em; font-style: italic; }
+            .reveal blockquote + figcaption::before { content: "\2014\20"; }
+            .reveal pre code { background-color: transparent; }
+            .reveal pre { font-size: 0.85em; width: 100%; margin-bottom: 1em; }
+            .reveal p { line-height: 1.5em; margin-bottom: 1em; }
+            .reveal ul { margin-bottom: 1em; }
+            .reveal ul ul { margin-bottom: 0; }
+            .reveal ul ul:first-child { padding-top: 0.5em; }
+            .reveal li { padding-bottom: 0.5em; }
+            .reveal table th, td { padding: 0.25em 0.4em !important; }
+            .reveal h1, .reveal h2, .reveal h3, .reveal h4, .reveal h5, .reveal h6 { line-height: 1.2em !important; }
+            .reveal h5 { margin-bottom: 0.5em; color: #e7ad52; }
+            .reveal strong,
+            .reveal b { color: #e7ad52; }
+            .reveal iframe { margin: 1.5em auto; }
+
+            #thanks h6 { margin: 2.5em auto 0.25em; }
+            #thanks dt { width: 12.5%; float: left; clear: both; }
+            #thanks dd { float: left; }
+        </style>
+
+        <!-- If the query includes 'print-pdf', use the PDF print sheet -->
+        <script>
+            document.write( '<link rel="stylesheet" href="../reveal.js/css/print/' + ( window.location.search.match( /print-pdf/gi ) ? 'pdf' : 'paper' ) + '.css" type="text/css" media="print">' );
+        </script>
+
+        <!--[if lt IE 9]>
+        <script src="../reveal.js/lib/js/html5shiv.js"></script>
+        <![endif]-->
+    </head>
+
+    <body>
+
+        <div class="reveal">
+
+            <!-- Any section element inside of this container is displayed as a slide -->
+            <div class="slides">
+
+                <section id="cover" data-background="" data-background-size="">
+                    <h1>Running Node.js apps in production</h1>
+                    <p>
+                        <a href="http://frederic-hemberger.de">Frederic Hemberger</a><br>
+                        <a href="https://twitter.com/fhemberger">@fhemberger</a>
+                    </p>
+                </section>
+
+                <section>
+                    <h3>Topics I'll talk about today:</h3>
+                    <ul>
+                        <li>Deployment</li>
+                        <li>Run Node.js (and keep it running)</li>
+                        <li>Metrics</li>
+                        <li>Security</li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h2>Deployment</h2>
+                </section>
+
+                <section>
+                    <h3>Deployment</h3>
+
+                    <p>Different popular deployment techniques:</p>
+                    <ul>
+                        <li>Git Hooks</li>
+                        <li>GitHub Webhooks</li>
+                        <li>Capistrano, Fabric, deploy.sh, et. al.</li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h2>Git Hooks</h2>
+                    <p>Pushing to Git remote on your server</p>
+
+                    <pre><code class="bash" data-trim>
+# ./git/hooks/post-receive
+cd /var/www/myapp.com
+git pull
+npm install --production
+service myapp restart
+...
+                    </code></pre>
+                    <p>Done.</p>
+                </section>
+
+                <section>
+                    <h3>Git Hooks</h3>
+
+                    <h5>Pro:</h5>
+                    <ul>
+                        <li class="fragment">Easy for the developer: Just push to production (aka fire and forget)</li>
+                        <li class="fragment">Hosting-Platforms like Heroku use this method as well</li>
+                    </ul>
+
+                    <h5 class="fragment">Con:</h5>
+                    <ul>
+                        <li class="fragment">But what happens on the server?</li>
+                        <li class="fragment">Deployment knowledge is stored separately from code</li>
+                        <li class="fragment">When deploying on multiple servers, post-receive hooks must be in sync</li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h3>GitHub Webhooks</h3>
+                    <p><img src="images/github-hooks1.png" alt=""></p>
+                </section>
+
+                <section>
+                    <h3>GitHub Webhooks</h3>
+                    <p><img src="images/github-hooks2.png" alt=""></p>
+                </section>
+
+                <section>
+                    <h3>GitHub Webhooks</h3>
+                    <p><img src="images/github-hooks3.png" alt=""></p>
+                </section>
+
+                <section>
+                    <h3>GitHub Webhooks</h3>
+
+                    <h5>Pro:</h5>
+                    <ul>
+                        <li class="fragment">When the rest of your development work already resolves around GitHub, it integrates nice into the workflow</li>
+                    </ul>
+
+                    <h5 class="fragment">Con:</h5>
+                    <ul>
+                        <li class="fragment">
+                            Hooks run all independently in parallel:<br>
+                            E.g. if the CI hook fails, the webhook for deployment still gets triggered
+                        </li>
+                        <li class="fragment">
+                            Critical dependency for your deployment:<br>
+                            Remember, even GitHub is down or gets DDoS'ed from time to time
+                        </li>
+                        <li class="fragment">
+                            Requires additional server component to accept requests and process the information. Must be secured to not accept fake payload.
+                        </li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h3>Capistrano, fabric, deploy.sh, et. al.</h3>
+
+                    <ul>
+                        <li class="fragment">Remotely checks out your code from a repository</li>
+                        <li class="fragment">Directory is named after current date and/or revision</li>
+                        <li class="fragment">Creates/updates a symlink called <code>current</code> that points to the latest version.</li>
+                    </ul>
+                    <br>
+                    <pre class="fragment">
+deploy_directory
+├─┬ releases
+│ ├── 20140319001122
+│ └── ...
+├─┬ shared
+│ ├── log
+│ ├── pids
+│ └── system
+└── current ⇨ releases/20140319001122
+                    </pre>
+                </section>
+
+                <section>
+                    <h3>Capistrano, fabric, deploy.sh, et. al.</h3>
+                    <p>Additionlly triggers scripts that can:</p>
+
+                    <ul>
+                        <li>restart the web server</li>
+                        <li>create a database and it's scheme</li>
+                        <li>install/update your app's dependencies</li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h3>Capistrano, fabric, deploy.sh, et. al.</h3>
+                    <h5>Pro:</h5>
+                    <ul>
+                        <li class="fragment">Clean server side application structure (including logs, shared files, etc.)</li>
+                        <li class="fragment">Trigger arbitrary scripts before/after the deployment</li>
+                        <li class="fragment">Quickly rewind to previous deployment on error</li>
+                    </ul>
+
+                    <h5 class="fragment">Con:</h5>
+                    <ul>
+                        <li class="fragment">Introduces another language as additional dependency<br>(Capistrano: Ruby; Fabric: Python)</li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h2>Run Node.js<br>(and keep it running)</h2>
+                </section>
+
+                <section>
+                    <h3>Run Node.js (and keep it running)</h3>
+
+                    <p>Start the script as a daemon:</p>
+                    <ul>
+                        <li>Nodemon/node-forever (written in Node.js)</li>
+                        <li>supervise (UNIX daemontools)</li>
+                        <li>Upstart (Ubuntu)</li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h3>Example Upstart script</h3>
+                    <pre><code class="bash" data-trim>
+start on runlevel [2345]
+stop on runlevel [06]
+
+respawn
+respawn limit 5 60
+
+exec start-stop-daemon --start --chuid $NODE_USER \
+     --make-pidfile --pidfile $PID_FILE \
+     --exec $NODE_EXECUTABLE -- \
+     $NODE_SCRIPT &gt;&gt; $LOGFILE 2&gt;&amp;1
+                    </code></pre>
+                </section>
+
+                <section>
+                    <h3>More elaborate: PM2</h3>
+                    <p>Process manager with built-in load-balancer</p>
+
+                    <p><img src="images/pm2-list.png" alt=""></p>
+                </section>
+
+                <section>
+                    <h3>PM2</h3>
+                    <p>Monitor processes</p>
+                    <p><img src="images/pm2-monitor.png" alt=""></p>
+
+                    <aside class="notes">
+                        Question: Who should be responsible for process management (creation, restarting, monitoring, clustering)? The OS? The startup script? The application itself?
+                    </aside>
+                </section>
+
+                <section>
+                    <h3>Whatever method you use to run your applications:</h3>
+
+                    <p>Startup scripts …</p>
+                    <ul>
+                        <li class="fragment">… should be as general as possible (only paths, node binary, environment, application entry point)</li>
+                        <li class="fragment">… should not contain configuration settings for your application</li>
+                        <li class="fragment">… should be included in your deployment structure (and be symlinked to <code>/etc/init.d/</code> or <code>/etc/init</code> when necessary)</li>
+                        <li class="fragment">… should be kept under version control as well</li>
+                    </ul>
+
+                    <aside class="notes">
+                        Starting an app is like starting a car: The starter (keys, remote, button) doesn't need to know anything about the car. He only connects the wires which start the car. However the controlling hardware must know the car's systems (engine type and performance, ABS, ESP) to act accordingly (maximum speed, braking effect, handling).
+                    </aside>
+                </section>
+
+                <section>
+                    <h3>Application configuration</h3>
+                    <p>One configuration file per environment, or one default configuration with certain values being overridden depending on the environment.</p>
+                </section>
+
+                <section>
+                    <h3>Application configuration</h3>
+                    <pre><code class="javascript" data-trim>
+// config.js
+'use strict';
+
+var extend  = require('extend');
+var env     = process.env.NODE_ENV || 'development',
+    default = require('./config/default.json'),
+    config = {};
+
+try {
+  config = require('./config/' + env + '.json');
+} catch(e) {}
+
+module.exports = extend(true, { env: env }, default, config);
+                    </code></pre>
+                </section>
+
+                <section>
+                    <h3>Application configuration</h3>
+                    <p>What belongs into a config file?</p>
+                    <ul>
+                        <li class="fragment">Application port</li>
+                        <li class="fragment">Paths/settings for external components<br>(cache services, databases, API keys)</li>
+                        <li class="fragment">Switches (e.g. logging, analytics, application features)</li>
+                        <li class="fragment">Every "magic number" you find in your app:<br>Timeouts, upload file sizes</li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h4>Now we have set up our app configuration and a way to keep our process running. Looks like we're done, right?</h4>
+                </section>
+
+                <section>
+                    <h3>There are at least two occasions, where our app will not be available:</h3>
+
+                    <ul>
+                        <li class="fragment">While deploying a new version</li>
+                        <li class="fragment">On application errors/exceptions</li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h3>Deployment</h3>
+
+                    <p>Downtime during deployment should be kept to a minimum:</p>
+                    <ul>
+                        <li class="fragment">Only deploy tested code to production</li>
+                        <li class="fragment">Automate the entire deployment process</li>
+                        <li class="fragment">Use a cluster to reload workers (e.g. between requests or at the end of a user session), app must only be restarted completely if the master process changes</li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h3>recluster</h3>
+                    <p>wrapper around Node.js's own cluster module</p>
+
+                    <pre><code class="javascript" data-trim>
+// cluster.js
+var recluster = require('recluster'),
+    path      = require('path')
+    cluster   = recluster(path.join(__dirname, 'server.js'));
+
+process.on('SIGUSR2', function() {
+    console.log('Got SIGUSR2, reloading cluster ...');
+    cluster.reload();
+});
+
+cluster.run();
+                    </code></pre>
+                </section>
+
+                <section>
+                    <h3>recluster</h3>
+                    <pre><code class="javascript" data-trim>
+// server.js
+server.on('close', function() {
+    // cleanup
+});
+                    </code></pre>
+
+                    <p>Reload cluster workers: <code>kill -s SIGUSR2 &lt;cluster_pid&gt;</code></p>
+                </section>
+
+                <section>
+                    <h3>Errors/Exceptions</h3>
+
+                    <p>Different categories of errors:</p>
+                    <ul>
+                        <li class="fragment"><strong>Hardware/network errors:</strong><br>
+                        You're screwed, can't do much about it.</li>
+                        <li class="fragment"><strong>Component errors:</strong><br>
+                        Database not responding, files missing, wrong access privileges<br>
+                        Throw an exception, exit application (check your restart script!)</li>
+                        <li class="fragment"><strong>Programming errors:</strong><br>
+                        Testing your code is great, but some bugs will eventually slip through.<br>
+                        Hardly assessable level of impact, try to fail gracefully</li>
+                        <li class="fragment"><strong>Usage errors:</strong><br>
+                        Validate inputs, inform the user and offer guidance</li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h3>Errors/Exceptions</h3>
+                    <p>Ideally, a simple error (request timeout, processing invalid/missing inputs) should never bring down the entire application.</p>
+
+                    <ul>
+                        <li class="fragment">Raise an error for the particular user and terminate the request/action</li>
+                        <li class="fragment">Log the error, the conditions triggering it and a stacktrace</li>
+                        <li class="fragment">Continue serving other users</li>
+                    </ul>
+                </section>
+
+                <section>
+                <h3>Errors/Exceptions</h3>
+                    <ul>
+                        <li class="fragment">Bind error handling to individual classes of errors</li>
+                        <li class="fragment">Those classes may differ in error handling: e.g. request errors, input parsing, external APIs/services</li>
+                        <li class="fragment">Try to resolve errors with minimum impact to the overall application:
+                            <ul>
+                                <li>Unable to connect? =&gt; Notify the user, log error, try again</li>
+                                <li>Invalid input? =&gt; Notify the user, stop processing</li>
+                            </ul>
+                        </li>
+                        <li class="fragment">Try to get focused stack traces: Easier for debugging</li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h3>
+                        What happens in Vegas, stays in Vegas<br>
+                        Using Domains in Node.js
+                    </h3>
+
+                    <ul>
+                        <li><code>if (err) …</code> in each callback is quite bulky</li>
+                        <li><code>try/catch</code> also doesn't work well for asynchronous code</li>
+                        <li>Encapsulate errors in domains</li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h3>Using Domains in Node.js</h3>
+
+                    <pre><code class="javascript" data-trim>
+var d = require('domain').create();
+
+d.on('error', function(err) {
+  console.log('Uh, got this error:', err.message);
+  // Important: Clean up after you!
+  // ...
+});
+
+d.run(function() {
+  // Stuff that might brake goes here
+});
+                    </code></pre>
+
+                    <p>Status: <em>Stability: 2 - Unstable</em></p>
+                </section>
+
+                <section>
+                    <h2>Metrics</h2>
+                </section>
+
+                <section>
+                    <p><img src="images/alright-dave-lets-talk-numbers.png" alt="" style="width:125%"></p>
+                </section>
+
+                <section>
+                    <h3>Metrics</h3>
+                    <figure>
+                        <blockquote>»If it moves, track it.«</blockquote>
+                        <figcaption>Old developer proverb</figcaption>
+                    </figure>
+
+
+                    <br>
+                    <p>Gather information on three levels: <br>network, machine, and application</p>
+                </section>
+
+                <section>
+                    <h3>Metrics help you to see</h3>
+                    <ul>
+                        <li class="fragment">What are people really doing?<br>How do they use the application?</li>
+                        <li class="fragment">What errors do occur?</li>
+                        <li class="fragment">Where are bottlenecks?</li>
+                        <li class="fragment">Is someone messing with your app?</li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h3>Logging</h3>
+
+                    <ul>
+                        <li class="fragment">Keep your logs in one place, either on application level or in <code>/var/log</code>.</li>
+                        <li class="fragment">Use log levels: Separate debug information from warnings and errors</li>
+                        <li class="fragment">Use a coherent log format (timestamp, server/pid, level, message, payload)</li>
+                        <li class="fragment">Separate your access logs (e.g. in Express) from your application logs</li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h3>Logging</h3>
+                    <h4>One possible solution: Bunyan</h4>
+
+                    <ul>
+                        <li class="fragment">All logs are stored in JSON format (timestamp, app, message, payload)</li>
+                        <li class="fragment">Uses streams, offers different targets out of the box: File, rotating file, database, etc.</li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h3>Logging</h3>
+                    <p>But …</p>
+
+                    <ul>
+                        <li class="fragment">Uncaught exceptions are still logged to <code>stderr</code></li>
+                        <li class="fragment">Other components may still use <code>console.log</code> statements</li>
+                    </ul>
+
+                    <br><br>
+
+                    <p class="fragment">
+                        <code>node app.js &gt;&gt; /var/log/myapp.log 2&gt;&amp;1</code><br>
+                        Again, multiple logs in different formats.
+                    </p>
+
+                    <aside class="notes">
+                        Still haven't found a 100% satisfying solution for myself
+                    </aside>
+                </section>
+
+                <section>
+                    <h3>Client side error logging</h3>
+                    <p>
+                        You might want to track client side errors.<br>
+                        You often find issues not covered by your tests <br>
+                        (e.g. AdBlocker behavior, weird browser/toolbar combinations)
+                    </p>
+                </section>
+
+                <section>
+                    <h3>Analytics</h3>
+                    <p>Track your deployments (example for Piwik Analytics)</p>
+
+                    <pre><code class="bash" data-trim>
+curl "http://YOUR_PIWIK_DOMAIN/?module=API&amp;\
+method=Annotations.add&amp;\
+idSite=YOUR_SITE_ID&amp;\
+date=`date '+%Y-%m-%d'`&amp;\
+note=Deployment: COMMIT_ID&amp;\
+&amp;token_auth=YOUR_SECRET_API_TOKEN"
+                    </code></pre>
+
+                    <aside class="notes">
+                        <ul>
+                            <li>Not everyone combs through log files all the time to find changes</li>
+                            <li>Reveal different kind of metrics, e.g. "After our last deployment, mobile conversion rate increased by N%"</li>
+                        </ul>
+                    </aside>
+                </section>
+
+                <section>
+                    <h3>Monitoring: What is going on?</h3>
+                    <ul>
+                        <li class="fragment">CPU load, memory usage, Node.js heap size</li>
+                        <li class="fragment">HTTP requests, response times</li>
+                        <li class="fragment">Database Monitoring, CPU Profiling, Memory Profiling, Alerts</li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h3>Monitoring: look</h3>
+
+                    <h5>Pro:</h5>
+                    <ul><li class="fragment">Open Source</li></ul>
+
+                    <h5 class="fragment">Con:</h5>
+                    <ul><li class="fragment">Older fork of Nodetime (two years old)</li></ul>
+                </section>
+
+                <section>
+                    <h3>Monitoring: Nodetime, New Relic, etc.</h3>
+                    <p>(Commercial Products)</p>
+
+                    <h5>Pro:</h5>
+                    <ul>
+                        <li class="fragment">Many different metrics</li>
+                        <li class="fragment">Free tier</li>
+                    </ul>
+
+                    <h5 class="fragment">Con:</h5>
+                    <ul>
+                        <li class="fragment">
+                            Free tiers are very limited:<br>
+                            Nodetime: Only one process(!) can be analyzed<br>
+                            New Relic: Only 24h data retention
+                        </li>
+                        <li class="fragment">
+                            Can become quite expensive (smallest plans):<br>
+                            Nodetime: 99$/month, 5 processes sending data,<br>
+                            New Relic: 149$/month and host
+                        </li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h3>Analysis of gathered metrics</h3>
+                    <p>Different log formats and destinations make data analysis difficult:</p>
+
+                    <pre>
+# Apache access log
+10.0.1.22 - - [15/Oct/2010:11:46:46 -0700] "GET /favicon.ico HTTP/1.1" 404 209
+fe80::6233:4bff:fe29:3173 - - [15/Oct/2010:11:46:58 -0700] "GET / HTTP/1.1" 200 44
+
+# Apache error log
+[Fri Oct 15 11:46:46 2010] [error] [client 10.0.1.22] File does not exist: /Library/WebServer/Documents/favicon.ico
+[Fri Oct 15 11:46:58 2010] [error] [client fe80::6233:4bff:fe29:3173] File does not exist: /Library/WebServer/Documents/favicon.ico
+
+# typical Express.js log output
+[Mon, 21 Nov 2011 20:52:11 GMT] 200 GET /foo (1ms)
+Blah, some other unstructured output to from a console.log call.
+                    </pre>
+                </section>
+
+                <section>
+                    <h3>»ELK« stack</h3>
+                    <ul>
+                        <li><strong>E</strong>lasticsearch (Storage/Search)</li>
+                        <li><strong>L</strong>ogstash (Logfile processor)</li>
+                        <li><strong>K</strong>ibana (Logfile viewer)</li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h3>Logstash</h3>
+                    <pre>
+{
+    "message" =&gt; "127.0.0.1 - - [11/Dec/2013:00:01:45 -0800…
+ "@timestamp" =&gt; "2013-12-11T08:01:45.000Z",
+   "@version" =&gt; "1",
+       "host" =&gt; "cadenza",
+   "clientip" =&gt; "127.0.0.1",
+  "timestamp" =&gt; "11/Dec/2013:00:01:45 -0800",
+       "verb" =&gt; "GET",
+    "request" =&gt; "/xampp/status.php",
+"httpversion" =&gt; "1.1",
+   "response" =&gt; "200",
+      "bytes" =&gt; "3891",
+   "referrer" =&gt; "\"http://cadenza/xampp/navi.php\"",
+      "agent" =&gt; "\"Mozilla/5.0 (Macintosh; Intel Mac OS X…
+}
+                    </pre>
+
+                    <p>Lots of output possibilities: Email, File, Ganglia, Graphite, Irc, Loggly, MongoDB, Nagios, RabbitMQ, Redis, Riak, S3, Statsd, Syslog, TCP, UDP, Websocket, XMPP, ZeroMQ, …</p>
+                </section>
+
+                <section>
+                    <h3>Kibana</h3>
+                    <p>Easy querying and visualization of logs</p>
+
+                    <p><img src="images/kibana-dashboard1.png" alt=""></p>
+                </section>
+
+                <section>
+                    <h3>Kibana</h3>
+
+                    <p><img src="images/kibana-dashboard2.png" alt=""></p>
+                </section>
+
+                <section>
+                    <h2>Security</h2>
+                </section>
+
+                <section>
+                    <h3>Check your dependencies</h3>
+
+                    <ul>
+                        <li>Are they all really needed?</li>
+                        <li>Do you use the most recent version?</li>
+                        <li>Is the package still maintained?</li>
+                        <li>Check regularily for <a href="https://nodesecurity.io/advisories">Security Advisories</a></li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h3>If you require the user to log in or to provide personal/sensitive data, use SSL for your service. Period.</h3>
+                    <p>There is absolutely no excuse. Certificates start at 30$/year.</p>
+                </section>
+
+                <section>
+                    <h3>Set a strong, random session secret</h3>
+
+                    <pre><code class="javascript" data-trim>
+app.use(express.session({
+    secret: "mySecret", // ☚ This won't do!
+    key: "sessionId"
+}));
+                    </code></pre>
+                </section>
+
+                <section>
+                    <h3>Use CSRF tokens for all your forms</h3>
+
+                    <pre><code class="javascript" data-trim>
+app.use(express.csrf());
+app.use(function(req, res, next) {
+    res.locals.csrftoken = req.csrfToken();
+    next();
+});
+
+// In your template:
+&lt;input type="hidden" name="_csrf" value="{{csrftoken}}"&gt;
+                    </code></pre>
+                </section>
+
+                <section>
+                    <h3>Wear a »<a href="https://github.com/evilpacket/helmet">helmet</a>«</h3>
+                    <p>Middlewares for Express/Connect or Restify apps that implement various security headers to make your app more secure.</p>
+                </section>
+
+                <section>
+                    <h3>Settings provided by helmet:</h3>
+
+                    <ul>
+                        <li class="fragment">HTTP Strict Transport Security</li>
+                        <li class="fragment">Content Security Policy</li>
+                        <li class="fragment">X-Frame-Options</li>
+                        <li class="fragment">X-XSS-Protection for IE8+</li>
+                        <li class="fragment">X-Download-Options for IE8+</li>
+                        <li class="fragment">X-Content-Type-Options</li>
+                        <li class="fragment">and more</li>
+                    </ul>
+                    <aside class="notes">
+                        If your application framework doesn't support Express style middleware, configure those HTTP headers yourself.
+                    </aside>
+                </section>
+
+                <section id="thanks">
+                    <h2>That's all folks!</h2>
+                    <p><a href="https://github.com/fhemberger/talks/blob/master/nodejs-in-production/README.md">Links und weitere Ressourcen</a></p>
+
+                    <h6>Frederic Hemberger</h6>
+                    <dl>
+                        <dt>Twitter</dt>
+                        <dd><a href="https://twitter.com/fhemberger">@fhemberger</a></dd>
+                        <dt>GitHub</dt>
+                        <dd><a href="https://github.com/fhemberger">fhemberger</a></dd>
+                        <dt>Web</dt>
+                        <dd><a href="http://frederic-hemberger.de">frederic-hemberger.de</a></dd>
+                    </dl>
+
+
+                </section>
+
+            </div>
+
+        </div>
+
+        <script src="../reveal.js/lib/js/head.min.js"></script>
+        <script src="../reveal.js/js/reveal.min.js"></script>
+
+        <script>
+
+            // Full list of configuration options available here:
+            // https://github.com/hakimel/reveal.js#configuration
+            Reveal.initialize({
+                controls: false,
+                progress: true,
+                history: true,
+                center: true,
+
+                width: 1000,
+
+                theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
+                transition: Reveal.getQueryHash().transition || 'linear', // default/cube/page/concave/zoom/linear/fade/none
+
+                // Optional libraries used to extend on reveal.js
+                dependencies: [
+                    { src: '../reveal.js/lib/js/classList.js', condition: function() { return !document.body.classList; } },
+                    { src: '../reveal.js/plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+                    { src: '../reveal.js/plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
+                    { src: '../reveal.js/plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }
+                ]
+            });
+
+        </script>
+
+    </body>
+</html>
