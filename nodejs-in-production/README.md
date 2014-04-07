@@ -45,6 +45,7 @@ This is a list of resources for my talk [»Running Node.js apps in production«]
 - [forever](https://github.com/nodejitsu/forever)
 - [nodemon](http://nodemon.io/)
 - [pm2](https://github.com/Unitech/pm2) (Process manager with builtin load-balancer, [blogpost](http://devo.ps/blog/2013/06/26/goodbye-node-forever-hello-pm2.html))
+- [Running node.js Apps with Upstart](https://github.com/cvee/node-upstart)
 
 
 ### Uptime
