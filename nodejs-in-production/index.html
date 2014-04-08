@@ -29,10 +29,12 @@
             .reveal ul ul:first-child { padding-top: 0.5em; }
             .reveal li { padding-bottom: 0.5em; }
             .reveal table th, td { padding: 0.25em 0.4em !important; }
-            .reveal h1, .reveal h2, .reveal h3, .reveal h4, .reveal h5, .reveal h6 { line-height: 1.2em !important; }
+            .reveal h1, .reveal h2, .reveal h3, .reveal h4, .reveal h5, .reveal h6 { font-family: "Montserrat", "Open Sans", sans-serif; line-height: 1.2em !important; }
+            .reveal h1 { font-size: 2.77em; }
             .reveal h5 { margin-bottom: 0.5em; color: #e7ad52; }
             .reveal strong,
             .reveal b { color: #e7ad52; }
+            .reveal small { font-size: 0.75em; line-height: 1.5em; }
             .reveal iframe { margin: 1.5em auto; }
 
             #thanks h6 { margin: 2.5em auto 0.25em; }
@@ -71,7 +73,6 @@
                         <li>Deployment</li>
                         <li>Run Node.js (and keep it running)</li>
                         <li>Metrics</li>
-                        <li>Security</li>
                     </ul>
                 </section>
 
@@ -149,14 +150,15 @@ service myapp restart
                     <ul>
                         <li class="fragment">
                             Hooks run all independently in parallel:<br>
-                            E.g. if the CI hook fails, the webhook for deployment still gets triggered
+                            <small>E.g. if the CI hook fails, the webhook for deployment still gets triggered</small>
                         </li>
                         <li class="fragment">
                             Critical dependency for your deployment:<br>
-                            Remember, even GitHub is down or gets DDoS'ed from time to time
+                            <small>Remember, even GitHub is down or gets DDoS'ed from time to time</small>
                         </li>
                         <li class="fragment">
-                            Requires additional server component to accept requests and process the information. Must be secured to not accept fake payload.
+                            Requires server component running update script.<br>
+                            <small>Must be secured to not accept fake payload or mess up deployment.</small>
                         </li>
                     </ul>
                 </section>
@@ -167,7 +169,7 @@ service myapp restart
                     <ul>
                         <li class="fragment">Remotely checks out your code from a repository</li>
                         <li class="fragment">Directory is named after current date and/or revision</li>
-                        <li class="fragment">Creates/updates a symlink called <code>current</code> that points to the latest version.</li>
+                        <li class="fragment">Symlinks it to <code>current</code></li>
                     </ul>
                     <br>
                     <pre class="fragment">
@@ -233,9 +235,11 @@ stop on runlevel [06]
 respawn
 respawn limit 5 60
 
-exec start-stop-daemon --start --chuid $NODE_USER \
-     --make-pidfile --pidfile $PID_FILE \
-     --exec $NODE_EXECUTABLE -- \
+NODE_SCRIPT = /var/www/myapp/server.js
+LOGFILE = /var/log/myapp.log
+
+exec start-stop-daemon --start --chuid node \
+     --exec /usr/local/bin/node -- \
      $NODE_SCRIPT &gt;&gt; $LOGFILE 2&gt;&amp;1
                     </code></pre>
                 </section>
@@ -260,12 +264,12 @@ exec start-stop-daemon --start --chuid $NODE_USER \
                 <section>
                     <h3>Whatever method you use to run your applications:</h3>
 
-                    <p>Startup scripts …</p>
+                    <p>Startup scripts should …</p>
                     <ul>
-                        <li class="fragment">… should be as general as possible (only paths, node binary, environment, application entry point)</li>
-                        <li class="fragment">… should not contain configuration settings for your application</li>
-                        <li class="fragment">… should be included in your deployment structure (and be symlinked to <code>/etc/init.d/</code> or <code>/etc/init</code> when necessary)</li>
-                        <li class="fragment">… should be kept under version control as well</li>
+                        <li class="fragment">… be as general as possible (only path, environment, main JS file)</li>
+                        <li class="fragment">… <strong>not</strong> contain configuration settings for your application</li>
+                        <li class="fragment">… be included alongside your deployment (symlink if necessary)</li>
+                        <li class="fragment">… be kept under version control as well</li>
                     </ul>
 
                     <aside class="notes">
@@ -274,46 +278,7 @@ exec start-stop-daemon --start --chuid $NODE_USER \
                 </section>
 
                 <section>
-                    <h3>Application configuration</h3>
-                    <p>One configuration file per environment, or one default configuration with certain values being overridden depending on the environment.</p>
-                </section>
-
-                <section>
-                    <h3>Application configuration</h3>
-                    <pre><code class="javascript" data-trim>
-// config.js
-'use strict';
-
-var extend  = require('extend');
-var env     = process.env.NODE_ENV || 'development',
-    default = require('./config/default.json'),
-    config = {};
-
-try {
-  config = require('./config/' + env + '.json');
-} catch(e) {}
-
-module.exports = extend(true, { env: env }, default, config);
-                    </code></pre>
-                </section>
-
-                <section>
-                    <h3>Application configuration</h3>
-                    <p>What belongs into a config file?</p>
-                    <ul>
-                        <li class="fragment">Application port</li>
-                        <li class="fragment">Paths/settings for external components<br>(cache services, databases, API keys)</li>
-                        <li class="fragment">Switches (e.g. logging, analytics, application features)</li>
-                        <li class="fragment">Every "magic number" you find in your app:<br>Timeouts, upload file sizes</li>
-                    </ul>
-                </section>
-
-                <section>
-                    <h4>Now we have set up our app configuration and a way to keep our process running. Looks like we're done, right?</h4>
-                </section>
-
-                <section>
-                    <h3>There are at least two occasions, where our app will not be available:</h3>
+                    <h3>There are at least two occasions,<br>where your app will not be available:</h3>
 
                     <ul>
                         <li class="fragment">While deploying a new version</li>
@@ -328,8 +293,11 @@ module.exports = extend(true, { env: env }, default, config);
                     <ul>
                         <li class="fragment">Only deploy tested code to production</li>
                         <li class="fragment">Automate the entire deployment process</li>
-                        <li class="fragment">Use a cluster to reload workers (e.g. between requests or at the end of a user session), app must only be restarted completely if the master process changes</li>
+                        <li class="fragment">Use a cluster to reload workers, restart only if the master changes</li>
                     </ul>
+                    <aside class="notes">
+                        e.g. between requests or at the end of a user session
+                    </aside>
                 </section>
 
                 <section>
@@ -349,6 +317,7 @@ process.on('SIGUSR2', function() {
 
 cluster.run();
                     </code></pre>
+                    <p>Reload cluster workers: <code>kill -s SIGUSR2 &lt;cluster_pid&gt;</code></p>
                 </section>
 
                 <section>
@@ -359,8 +328,6 @@ server.on('close', function() {
     // cleanup
 });
                     </code></pre>
-
-                    <p>Reload cluster workers: <code>kill -s SIGUSR2 &lt;cluster_pid&gt;</code></p>
                 </section>
 
                 <section>
@@ -379,24 +346,16 @@ server.on('close', function() {
                         <li class="fragment"><strong>Usage errors:</strong><br>
                         Validate inputs, inform the user and offer guidance</li>
                     </ul>
-                </section>
-
-                <section>
-                    <h3>Errors/Exceptions</h3>
-                    <p>Ideally, a simple error (request timeout, processing invalid/missing inputs) should never bring down the entire application.</p>
-
-                    <ul>
-                        <li class="fragment">Raise an error for the particular user and terminate the request/action</li>
-                        <li class="fragment">Log the error, the conditions triggering it and a stacktrace</li>
-                        <li class="fragment">Continue serving other users</li>
-                    </ul>
+                    <aside class="notes">
+                        Ideally, a simple error (request timeout, processing invalid/missing inputs) should never bring down the entire application.
+                    </aside>
                 </section>
 
                 <section>
                 <h3>Errors/Exceptions</h3>
                     <ul>
-                        <li class="fragment">Bind error handling to individual classes of errors</li>
-                        <li class="fragment">Those classes may differ in error handling: e.g. request errors, input parsing, external APIs/services</li>
+                        <li class="fragment">Bind error handling to individual parts of your application</li>
+                        <li class="fragment">Those parts may differ in error handling: e.g. request errors, input parsing, external APIs/services</li>
                         <li class="fragment">Try to resolve errors with minimum impact to the overall application:
                             <ul>
                                 <li>Unable to connect? =&gt; Notify the user, log error, try again</li>
@@ -449,18 +408,6 @@ d.run(function() {
                 </section>
 
                 <section>
-                    <h3>Metrics</h3>
-                    <figure>
-                        <blockquote>»If it moves, track it.«</blockquote>
-                        <figcaption>Old developer proverb</figcaption>
-                    </figure>
-
-
-                    <br>
-                    <p>Gather information on three levels: <br>network, machine, and application</p>
-                </section>
-
-                <section>
                     <h3>Metrics help you to see</h3>
                     <ul>
                         <li class="fragment">What are people really doing?<br>How do they use the application?</li>
@@ -471,83 +418,12 @@ d.run(function() {
                 </section>
 
                 <section>
-                    <h3>Logging</h3>
-
-                    <ul>
-                        <li class="fragment">Keep your logs in one place, either on application level or in <code>/var/log</code>.</li>
-                        <li class="fragment">Use log levels: Separate debug information from warnings and errors</li>
-                        <li class="fragment">Use a coherent log format (timestamp, server/pid, level, message, payload)</li>
-                        <li class="fragment">Separate your access logs (e.g. in Express) from your application logs</li>
-                    </ul>
-                </section>
-
-                <section>
-                    <h3>Logging</h3>
-                    <h4>One possible solution: Bunyan</h4>
-
-                    <ul>
-                        <li class="fragment">All logs are stored in JSON format (timestamp, app, message, payload)</li>
-                        <li class="fragment">Uses streams, offers different targets out of the box: File, rotating file, database, etc.</li>
-                    </ul>
-                </section>
-
-                <section>
-                    <h3>Logging</h3>
-                    <p>But …</p>
-
-                    <ul>
-                        <li class="fragment">Uncaught exceptions are still logged to <code>stderr</code></li>
-                        <li class="fragment">Other components may still use <code>console.log</code> statements</li>
-                    </ul>
-
-                    <br><br>
-
-                    <p class="fragment">
-                        <code>node app.js &gt;&gt; /var/log/myapp.log 2&gt;&amp;1</code><br>
-                        Again, multiple logs in different formats.
-                    </p>
-
-                    <aside class="notes">
-                        Still haven't found a 100% satisfying solution for myself
-                    </aside>
-                </section>
-
-                <section>
-                    <h3>Client side error logging</h3>
-                    <p>
-                        You might want to track client side errors.<br>
-                        You often find issues not covered by your tests <br>
-                        (e.g. AdBlocker behavior, weird browser/toolbar combinations)
-                    </p>
-                </section>
-
-                <section>
-                    <h3>Analytics</h3>
-                    <p>Track your deployments (example for Piwik Analytics)</p>
-
-                    <pre><code class="bash" data-trim>
-curl "http://YOUR_PIWIK_DOMAIN/?module=API&amp;\
-method=Annotations.add&amp;\
-idSite=YOUR_SITE_ID&amp;\
-date=`date '+%Y-%m-%d'`&amp;\
-note=Deployment: COMMIT_ID&amp;\
-&amp;token_auth=YOUR_SECRET_API_TOKEN"
-                    </code></pre>
-
-                    <aside class="notes">
-                        <ul>
-                            <li>Not everyone combs through log files all the time to find changes</li>
-                            <li>Reveal different kind of metrics, e.g. "After our last deployment, mobile conversion rate increased by N%"</li>
-                        </ul>
-                    </aside>
-                </section>
-
-                <section>
-                    <h3>Monitoring: What is going on?</h3>
+                    <h3>Metrics: Monitoring</h3>
+                    <p>What is going on?</p>
                     <ul>
                         <li class="fragment">CPU load, memory usage, Node.js heap size</li>
                         <li class="fragment">HTTP requests, response times</li>
-                        <li class="fragment">Database Monitoring, CPU Profiling, Memory Profiling, Alerts</li>
+                        <li class="fragment">Database monitoring, CPU/memory profiling, alerts</li>
                     </ul>
                 </section>
 
@@ -584,6 +460,55 @@ note=Deployment: COMMIT_ID&amp;\
                             New Relic: 149$/month and host
                         </li>
                     </ul>
+                </section>
+
+                <section>
+                    <h3>Metrics: Logging</h3>
+
+                    <ul>
+                        <li class="fragment">Keep your logs in one place, either on application level or in <code>/var/log</code>.</li>
+                        <li class="fragment">Use log levels: Separate debug information from warnings and errors</li>
+                        <li class="fragment">Use a coherent log format (timestamp, level, message, payload)</li>
+                        <li class="fragment">Separate your access logs (e.g. in Express) from your application logs</li>
+                        <li class="fragment">Track your deployments with your analytics tools</li>
+                    </ul>
+                    <aside class="notes">
+                        <ul>
+                            <li>Not everyone combs through log files all the time to find changes</li>
+                            <li>Reveal different kind of metrics, e.g. "After our last deployment, mobile conversion rate increased by N%"</li>
+                        </ul>
+                    </aside>
+                </section>
+
+                <section>
+                    <h3>Metrics: Logging</h3>
+                    <h4>One possible solution: Bunyan</h4>
+
+                    <ul>
+                        <li class="fragment">All logs are stored in JSON format (timestamp, app, message, payload)</li>
+                        <li class="fragment">Uses streams, offers different targets out of the box: File, rotating file, database, etc.</li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h3>Metrics: Logging</h3>
+                    <p>But …</p>
+
+                    <ul>
+                        <li class="fragment">Uncaught exceptions are still logged to <code>stderr</code></li>
+                        <li class="fragment">Other components may still use <code>console.log</code> statements</li>
+                    </ul>
+
+                    <br><br>
+
+                    <p class="fragment">
+                        <code>node app.js &gt;&gt; /var/log/myapp.log 2&gt;&amp;1</code><br>
+                        Again, multiple logs in different formats.
+                    </p>
+
+                    <aside class="notes">
+                        Still haven't found a 100% satisfying solution for myself
+                    </aside>
                 </section>
 
                 <section>
@@ -634,7 +559,7 @@ Blah, some other unstructured output to from a console.log call.
 }
                     </pre>
 
-                    <p>Lots of output possibilities: Email, File, Ganglia, Graphite, Irc, Loggly, MongoDB, Nagios, RabbitMQ, Redis, Riak, S3, Statsd, Syslog, TCP, UDP, Websocket, XMPP, ZeroMQ, …</p>
+                    <p><small>Lots of output possibilities: Email, File, Ganglia, Graphite, Irc, Loggly, MongoDB, Nagios, RabbitMQ, Redis, Riak, S3, Statsd, Syslog, TCP, UDP, Websocket, XMPP, ZeroMQ, …</small></p>
                 </section>
 
                 <section>
@@ -648,74 +573,6 @@ Blah, some other unstructured output to from a console.log call.
                     <h3>Kibana</h3>
 
                     <p><img src="images/kibana-dashboard2.png" alt=""></p>
-                </section>
-
-                <section>
-                    <h2>Security</h2>
-                </section>
-
-                <section>
-                    <h3>Check your dependencies</h3>
-
-                    <ul>
-                        <li>Are they all really needed?</li>
-                        <li>Do you use the most recent version?</li>
-                        <li>Is the package still maintained?</li>
-                        <li>Check regularily for <a href="https://nodesecurity.io/advisories">Security Advisories</a></li>
-                    </ul>
-                </section>
-
-                <section>
-                    <h3>If you require the user to log in or to provide personal/sensitive data, use SSL for your service. Period.</h3>
-                    <p>There is absolutely no excuse. Certificates start at 30$/year.</p>
-                </section>
-
-                <section>
-                    <h3>Set a strong, random session secret</h3>
-
-                    <pre><code class="javascript" data-trim>
-app.use(express.session({
-    secret: "mySecret", // ☚ This won't do!
-    key: "sessionId"
-}));
-                    </code></pre>
-                </section>
-
-                <section>
-                    <h3>Use CSRF tokens for all your forms</h3>
-
-                    <pre><code class="javascript" data-trim>
-app.use(express.csrf());
-app.use(function(req, res, next) {
-    res.locals.csrftoken = req.csrfToken();
-    next();
-});
-
-// In your template:
-&lt;input type="hidden" name="_csrf" value="{{csrftoken}}"&gt;
-                    </code></pre>
-                </section>
-
-                <section>
-                    <h3>Wear a »<a href="https://github.com/evilpacket/helmet">helmet</a>«</h3>
-                    <p>Middlewares for Express/Connect or Restify apps that implement various security headers to make your app more secure.</p>
-                </section>
-
-                <section>
-                    <h3>Settings provided by helmet:</h3>
-
-                    <ul>
-                        <li class="fragment">HTTP Strict Transport Security</li>
-                        <li class="fragment">Content Security Policy</li>
-                        <li class="fragment">X-Frame-Options</li>
-                        <li class="fragment">X-XSS-Protection for IE8+</li>
-                        <li class="fragment">X-Download-Options for IE8+</li>
-                        <li class="fragment">X-Content-Type-Options</li>
-                        <li class="fragment">and more</li>
-                    </ul>
-                    <aside class="notes">
-                        If your application framework doesn't support Express style middleware, configure those HTTP headers yourself.
-                    </aside>
                 </section>
 
                 <section id="thanks">
