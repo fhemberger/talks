@@ -143,7 +143,7 @@ service myapp restart
 
                     <h5>Pro:</h5>
                     <ul>
-                        <li class="fragment">When the rest of your development work already resolves around GitHub, it integrates nice into the workflow</li>
+                        <li class="fragment">When the rest of your development work already resolves around GitHub, it integrates nicely into the workflow</li>
                     </ul>
 
                     <h5 class="fragment">Con:</h5>
@@ -273,7 +273,8 @@ exec start-stop-daemon --start --chuid node \
                     </ul>
 
                     <aside class="notes">
-                        Starting an app is like starting a car: The starter (keys, remote, button) doesn't need to know anything about the car. He only connects the wires which start the car. However the controlling hardware must know the car's systems (engine type and performance, ABS, ESP) to act accordingly (maximum speed, braking effect, handling).
+                        Starting an app is like starting a car: The starter (keys, remote, button) doesn't need to know anything about the car. It only connects the wires which start the car.<br>
+                        However the controlling hardware must know the car's systems (engine type and performance, ABS, ESP) to act accordingly (maximum speed, braking effect, handling).
                     </aside>
                 </section>
 
@@ -293,7 +294,7 @@ exec start-stop-daemon --start --chuid node \
                     <ul>
                         <li class="fragment">Only deploy tested code to production</li>
                         <li class="fragment">Automate the entire deployment process</li>
-                        <li class="fragment">Use a cluster to reload workers, restart only if the master changes</li>
+                        <li class="fragment">Use a cluster to reload workers<br>(complete app restart is only needed if the master changes)</li>
                     </ul>
                     <aside class="notes">
                         e.g. between requests or at the end of a user session
@@ -392,11 +393,11 @@ d.on('error', function(err) {
 });
 
 d.run(function() {
-  // Stuff that might brake goes here
+  // Stuff that might break goes here
 });
                     </code></pre>
 
-                    <p>Status: <em>Stability: 2 - Unstable</em></p>
+                    <p>Node.js API stability: <em>2 - Unstable</em></p>
                 </section>
 
                 <section>
@@ -540,7 +541,45 @@ Blah, some other unstructured output to from a console.log call.
                 </section>
 
                 <section>
+                    <h3>»ELK« stack</h3>
+
+                    <h5>Pro:</h5>
+                    <ul>
+                        <li class="fragment">Very powerful and extendable log analysis</li>
+                        <li class="fragment">Easy querying and visualization</li>
+                        <li class="fragment">Realtime search</li>
+                        <li class="fragment">Open Source</li>
+                    </ul>
+
+                    <h5 class="fragment">Con:</h5>
+                    <ul>
+                        <li class="fragment">Slightly more complex setup (Java, JRuby, etc.)</li>
+                        <li class="fragment">Thus might not fit for smaller projects/hosting solutions</li>
+                    </ul>
+                </section>
+
+                <section>
                     <h3>Logstash</h3>
+
+                    <p>Turns messy data in different log formats …</p>
+                    <pre>
+# Apache access log
+10.0.1.22 - - [15/Oct/2010:11:46:46 -0700] "GET /favicon.ico HTTP/1.1" 404 209
+fe80::6233:4bff:fe29:3173 - - [15/Oct/2010:11:46:58 -0700] "GET / HTTP/1.1" 200 44
+
+# Apache error log
+[Fri Oct 15 11:46:46 2010] [error] [client 10.0.1.22] File does not exist: /Library/WebServer/Documents/favicon.ico
+[Fri Oct 15 11:46:58 2010] [error] [client fe80::6233:4bff:fe29:3173] File does not exist: /Library/WebServer/Documents/favicon.ico
+
+# typical Express.js log output
+[Mon, 21 Nov 2011 20:52:11 GMT] 200 GET /foo (1ms)
+Blah, some other unstructured output to from a console.log call.
+                    </pre>
+                </section>
+
+                <section>
+                    <h3>Logstash</h3>
+                    <p>… into structured output</p>
                     <pre>
 {
     "message" =&gt; "127.0.0.1 - - [11/Dec/2013:00:01:45 -0800…
@@ -558,13 +597,20 @@ Blah, some other unstructured output to from a console.log call.
       "agent" =&gt; "\"Mozilla/5.0 (Macintosh; Intel Mac OS X…
 }
                     </pre>
+                </section>
 
-                    <p><small>Lots of output possibilities: Email, File, Ganglia, Graphite, Irc, Loggly, MongoDB, Nagios, RabbitMQ, Redis, Riak, S3, Statsd, Syslog, TCP, UDP, Websocket, XMPP, ZeroMQ, …</small></p>
+                <section>
+                    <h3>Logstash</h3>
+
+                    <ul>
+                        <li class="fragment">Easily extendable to custom log formats</li>
+                        <li class="fragment">Read log information from file, Heroku, Redis, RabbitMQ, stdin, syslog, TCP, UDP, XMPP, ZeroMQ, …</li>
+                        <li class="fragment">Output to file, Ganglia, Graphite, Irc, Loggly, MongoDB, Nagios, RabbitMQ, Redis, Riak, S3, Statsd, Syslog, TCP, UDP, Websocket, XMPP, ZeroMQ, …</li>
+                    </ul>
                 </section>
 
                 <section>
                     <h3>Kibana</h3>
-                    <p>Easy querying and visualization of logs</p>
 
                     <p><img src="images/kibana-dashboard1.png" alt=""></p>
                 </section>
@@ -577,7 +623,7 @@ Blah, some other unstructured output to from a console.log call.
 
                 <section id="thanks">
                     <h2>That's all folks!</h2>
-                    <p><a href="https://github.com/fhemberger/talks/blob/master/nodejs-in-production/README.md">Links und weitere Ressourcen</a></p>
+                    <p><a href="https://github.com/fhemberger/talks/blob/master/nodejs-in-production/README.md">Links and further resources</a></p>
 
                     <h6>Frederic Hemberger</h6>
                     <dl>
