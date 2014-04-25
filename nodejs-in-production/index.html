@@ -59,12 +59,18 @@
             <!-- Any section element inside of this container is displayed as a slide -->
             <div class="slides">
 
-                <section id="cover" data-background="" data-background-size="">
+                <section id="cover">
                     <h1>Running Node.js apps in production</h1>
                     <p>
                         <a href="http://frederic-hemberger.de">Frederic Hemberger</a><br>
                         <a href="https://twitter.com/fhemberger">@fhemberger</a>
                     </p>
+                    <aside class="notes">
+                        <ul>
+                            <li>Who wrote a Node.js app so far? (Webapp, API, etc.)</li>
+                            <li>Who runs this app in production?</li>
+                        </ul>
+                    </aside>
                 </section>
 
                 <section>
@@ -74,6 +80,12 @@
                         <li>Run Node.js (and keep it running)</li>
                         <li>Metrics</li>
                     </ul>
+                    <aside class="notes">
+                        <ul>
+                            <li>This talk is just supposed to give a brief overview</li>
+                            <li>All tools and ressources mentioned are linked at the end of the presentation.</li>
+                        </ul>
+                    </aside>
                 </section>
 
                 <section>
@@ -121,6 +133,9 @@ service myapp restart
                         <li class="fragment">Deployment knowledge is stored separately from code</li>
                         <li class="fragment">When deploying on multiple servers, post-receive hooks must be in sync</li>
                     </ul>
+                    <aside class="notes">
+                        Possible solution: Put the update script inside your repository and symlink it to the post-receive-hook.
+                    </aside>
                 </section>
 
                 <section>
@@ -452,13 +467,13 @@ d.run(function() {
                     <ul>
                         <li class="fragment">
                             Free tiers are very limited:<br>
-                            Nodetime: Only one process(!) can be analyzed<br>
+                            Nodetime: Only one process(!),
                             New Relic: Only 24h data retention
                         </li>
+                        <li class="fragment">May not be suitable for smaller or low-traffic projects</li>
                         <li class="fragment">
-                            Can become quite expensive (smallest plans):<br>
-                            Nodetime: 99$/month, 5 processes sending data,<br>
-                            New Relic: 149$/month and host
+                            Smallest plans:<br>
+                            Nodetime: 99$/month, New Relic: 149$/month and host
                         </li>
                     </ul>
                 </section>
@@ -546,6 +561,8 @@ Blah, some other unstructured output to from a console.log call.
                     <h5>Pro:</h5>
                     <ul>
                         <li class="fragment">Very powerful and extendable log analysis</li>
+                        <li class="fragment">Parse logs for Squid, Apache, Nginx, Syslog, MySQL, …</li>
+                        <li class="fragment">Feed logs directly to statsd/Graphite</li>
                         <li class="fragment">Easy querying and visualization</li>
                         <li class="fragment">Realtime search</li>
                         <li class="fragment">Open Source</li>
