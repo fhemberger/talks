@@ -29,7 +29,7 @@
             .reveal ul ul:first-child { padding-top: 0.5em; }
             .reveal li { padding-bottom: 0.5em; }
             .reveal table th, td { padding: 0.25em 0.4em !important; }
-            .reveal h1, .reveal h2, .reveal h3, .reveal h4, .reveal h5, .reveal h6 { font-family: "Montserrat", "Open Sans", sans-serif; line-height: 1.2em !important; }
+            .reveal h1, .reveal h2, .reveal h3, .reveal h4, .reveal h5, .reveal h6 { font-family: "Montserrat", "Open Sans", sans-serif; line-height: 1.2em !important; -moz-hyphens: none; hyphens: none; }
             .reveal h1 { font-size: 2.77em; }
             .reveal h5 { margin-bottom: 0.5em; color: #e7ad52; }
             .reveal strong,
@@ -451,7 +451,7 @@ function stripHtmlSafe(html) {
                             <p class="fragment"><em>Result:</em> XSS code won't be triggered immediately any more …</p>
                         </li>
                         <li class="fragment">… but only if you insert those DOM nodes again without filtering.</li>
-                        <li class="fragment">Other DOM-based attacks (z.B. <a href="http://robbertbroersma.nl/demo/kill-document/">DOM Clobbering</a>) are still possible</li>
+                        <li class="fragment">Other DOM-based attacks (e.g. <a href="http://robbertbroersma.nl/demo/kill-document/">DOM Clobbering</a>) are still possible</li>
                         <li class="fragment">But we have now time to react: <a href="https://github.com/cure53/DOMPurify">DOM Purify</a></li>
                     </ul>
                 </section>
@@ -685,7 +685,7 @@ function stripHtmlSafe(html) {
                 </section>
 
                 <section>
-                    <h3>Sicherheit im Allgemeinen</h3>
+                    <h3>Security in general</h3>
                     <ul>
                         <li><a href="https://www.owasp.org/">Open Web Application Security Project (OWASP)</a></li>
                         <li><a href="https://www.owasp.org/index.php/Top_10_2013-Top_10">OWASP: Top Ten Critical Security Risks 2013</a></li>
