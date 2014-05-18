@@ -1,0 +1,526 @@
+<!--
+Google IO 2012 HTML5 Slide Template
+
+Authors: Eric Bidelman <ebidel@gmail.com>
+         Luke Mahe <lukem@google.com>
+
+URL: https://code.google.com/p/io-2012-slides
+-->
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Frederic Hemberger</title>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <link rel="stylesheet" media="all" href="theme/css/default.css">
+  <link rel="stylesheet" media="only screen and (max-device-width: 480px)" href="theme/css/phone.css">
+  <base target="_blank"> <!-- This amazingness opens all links in a new tab. -->
+  <script data-main="js/slides" src="js/require-1.0.8.min.js"></script>
+</head>
+<body style="opacity: 0">
+
+<slides class="layout-widescreen">
+
+<slide class="title-slide segue nobackground">
+  <!-- The content of this hgroup is replaced programmatically through the slide_config.json. -->
+  <hgroup class="">
+    <h1 data-config-title><!-- populated from slide_config.json --></h1>
+    <h2 data-config-subtitle><!-- populated from slide_config.json --></h2>
+    <p data-config-presenter><!-- populated from slide_config.json --></p>
+  </hgroup>
+</slide>
+
+
+<slide  >
+
+    <hgroup>
+      <h2>Warum Code organisieren?</h2>
+      <h3></h3>
+    </hgroup>
+    <article ><p>Wir haben immer mehr Scripte auf unseren Webseiten:</p>
+<ul class="build">
+<li>JavaScript-Frameworks</li>
+<li>Plug-ins</li>
+<li>Banner, Adwords, Affiliate-Scripts</li>
+<li>Social Media Plug-ins</li>
+<li>Webtracking</li>
+</ul></article>
+
+</slide>
+
+<slide  >
+
+    <hgroup>
+      <h2>Warum Code organisieren?</h2>
+      <h3>„Lass nicht überall dein Zeug rumliegen!“ – „Jaaa, Mama.“</h3>
+    </hgroup>
+    <article ><pre class="prettyprint" data-lang="javascript">
+    // script1.js
+    function doStuff() { console.log("I do stuff"); }
+</pre>
+
+<p><br></p>
+<pre class="prettyprint" data-lang="javascript">
+    // script2.js
+    function doStuff() { console.log("Ha, I don't!"); }
+    doStuff();
+</pre></article>
+
+</slide>
+
+<slide class="segue dark nobackground" >
+    <hgroup class="">
+      <h2>Codekapselung</h2>
+      <h3>What happens in Vegas, stays in Vegas.</h3>
+    </hgroup>
+
+</slide>
+
+<slide  >
+
+    <hgroup>
+      <h2>Codekapselung</h2>
+      <h3>Immediately Invoked Function Expression (IIFE)</h3>
+    </hgroup>
+    <article ><pre class="prettyprint" data-lang="javascript" style="margin-left: 1.5em;width: 103%;">
+  // IIFE
+  (function() {
+    // Mein Code …
+  })();
+</pre>
+
+<aside class="note">
+  IIFE = Unmittelbar ausgeführert Funktionsausdruck
+</aside></article>
+
+</slide>
+
+<slide  >
+
+    <hgroup>
+      <h2>Codekapselung</h2>
+      <h3>Immediately Invoked Function Expression (IIFE)</h3>
+    </hgroup>
+    <article ><pre class="prettyprint highlight" data-lang="javascript" style="margin-left: 1.5em;width: 103%;">
+  <b>// Function</b>
+  (<b>function() { </b>
+    // Mein Code …
+  <b>}</b>)();
+</pre>
+
+<ul class="build">
+<li>
+<p><pre class="prettyprint highlight" data-lang="javascript">
+  <b>// Expression</b>
+  <b>(</b>function() {
+    // Mein Code …
+  }<b>)</b>();
+</pre></p>
+</li>
+<li>
+<p><pre class="prettyprint highlight" data-lang="javascript">
+  <b>// Unmittelbare Ausführung</b>
+  (function() {
+    // Mein Code …
+  })<b>()</b>;
+</pre></p>
+</li>
+</ul></article>
+
+</slide>
+
+<slide class="segue dark nobackground" >
+    <hgroup class="">
+      <h2>Modularisierung</h2>
+      <h3></h3>
+    </hgroup>
+
+</slide>
+
+<slide  >
+
+    <hgroup>
+      <h2>Objekt-Literale</h2>
+      <h3>Die einfachste Modulform in Javascript</h3>
+    </hgroup>
+    <article ><pre class="prettyprint" data-lang="javascript">
+    var myModule = {
+      myVar       : "Hello!",
+      _privateVar : "Ohai!",
+
+      doStuff     : function() {
+        console.log( myModule.myVar + " I do stuff");
+      }
+    };
+
+    myModule.doStuff();
+    // => "I do stuff"
+
+    console.log(myModule._privateVar);
+    // => "Ohai!"
+    // Wait, what?!
+</pre></article>
+
+</slide>
+
+<slide  >
+
+    <hgroup>
+      <h2>Codekapselung und Sichtbarkeit</h2>
+      <h3></h3>
+    </hgroup>
+    <article class="smaller"><p><b>Definierte</b> Variablen und Methoden nach außen sichtbar machen:</p>
+<pre class="prettyprint" data-lang="javascript">
+  (function(<b>export</b>) {
+    var privateVar        = "foo";
+    var <b>export</b>.publicVar = "bar";
+
+    <b>export</b>.myFunction = function() {
+      console.log("Hello global namespace!");
+    }
+  })(<b>window</b>);
+</pre>
+
+<ul class="build">
+<li>
+<p><pre class="prettyprint">
+  console.log(privateVar);
+  // =&gt; ReferenceError: privateVar is not defined
+</pre></p>
+</li>
+<li>
+<p><pre class="prettyprint">
+  console.log(publicVar);
+  // =&gt; "bar"
+</pre></p>
+</li>
+<li>
+<p><pre class="prettyprint"h>
+  myFunction();
+  // =&gt; "Hello global namespace!"
+</pre></p>
+</li>
+</ul></article>
+
+</slide>
+
+<slide  >
+
+    <hgroup>
+      <h2>Codekapselung und Sichtbarkeit</h2>
+      <h3></h3>
+    </hgroup>
+    <article ><p>Warum „<b>export</b>“?</p>
+<pre class="prettyprint" data-lang="javascript">
+  (function(<b>export</b>) {
+    <b>export</b>.myFunction = function() {
+      console.log("Hello global namespace!");
+    }
+  })(<b>…</b>);
+</pre>
+
+<p>Der globale Namespace kann sich beliebig händern:</p>
+<ul>
+<li>Browser: <code>window</code></li>
+<li>Node.js: <code>module.exports</code></li>
+<li>Applikation: z.B. <code>myApp</code></li>
+</ul>
+<p>Der gekapselte Code selbst muss nicht mehr angepasst werden.</p></article>
+
+</slide>
+
+<slide  >
+
+    <hgroup>
+      <h2>Module Pattern</h2>
+      <h3></h3>
+    </hgroup>
+    <article ><pre class="prettyprint" data-lang="javascript">
+  <b>var myApp =</b> (function(export) {
+    export.myFunction = function() {
+      console.log("Hello global namespace!");
+    }
+
+    <b>return export;</b>
+  })(<b>myApp || {}</b>);
+</pre>
+
+<p>Vorteile:</p>
+<ul class="build">
+<li>Globaler Namespace nach außen (wie beim Objekt-Literal)</li>
+<li>Codekapselung und Sichtbarkeit (wie bei der IIFE)</li>
+<li>Code kann so über mehrere Dateien verteilt werden</li>
+</ul>
+<footer class="source">
+  Addy Osmani: <a href="http://addyosmani.com/resources/essentialjsdesignpatterns/book/#modulepatternjavascript">Learning JavaScript Design Patterns</a>
+</footer>
+
+<aside class="note">
+  Unterschied zur IIFE: Hier wird ein Objekt statt einer Funktion zurückgegeben.
+</aside></article>
+
+</slide>
+
+<slide class="segue dark nobackground" >
+    <hgroup class="">
+      <h2>Enge und lose Kopplung</h2>
+      <h3>Wer bin ich, und wenn ja, wie viele?</h3>
+    </hgroup>
+
+</slide>
+
+<slide  >
+
+    <hgroup>
+      <h2>Enge Kopplung</h2>
+      <h3></h3>
+    </hgroup>
+    <article ><p><code>modul2.js</code> kann Methoden aus <code>modul1.js</code> aufrufen:</p>
+<ul class="build">
+<li>
+<p>solange <code>modul2.js</code> von der Existenz von <code>modul1.js</code> weiß …<br />
+  <pre class="prettyprint" data-lang="javascript">
+  // modul2.js
+  myApp.funcFromModule1();
+</pre></p>
+</li>
+<li>
+<p>… und beide in der richtigen Reihenfolge eingebunden sind.<br />
+  <pre class="prettyprint" data-lang="html">
+  &lt;!-- index.html --&gt;
+  &lt;script src="modul1.js"&gt;&lt;/script&gt;
+  &lt;script src="modul2.js"&gt;&lt;/script&gt;
+</pre></p>
+</li>
+</ul></article>
+
+</slide>
+
+<slide  >
+
+    <hgroup>
+      <h2>Enge Kopplung</h2>
+      <h3></h3>
+    </hgroup>
+    <article ><p>Was bei enger Kopplung beachtet werden muss:</p>
+<ul class="build">
+<li>Welches Modul verwendet welche anderen Module?</li>
+<li>In welcher Reihenfolge müssen die Module geladen werden?</li>
+<li>Was ist, wenn ich weitere Module hinzufügen möchte …</li>
+<li>… oder andere weglassen/austauschen?</li>
+<li>Was ist, wenn Modul 1 von Modul 2 abhängt, <b>und umgekehrt</b>?</li>
+</ul></article>
+
+</slide>
+
+<slide class="segue dark nobackground" >
+    <hgroup class="">
+      <h2>Kommunikation über Events</h2>
+      <h3>Publish-Subscribe-Prinzip (PubSub)</h3>
+    </hgroup>
+
+</slide>
+
+<slide  >
+
+    <hgroup>
+      <h2>Kommunikation über Events</h2>
+      <h3>Publish-Subscribe-Prinzip (PubSub)</h3>
+    </hgroup>
+    <article ><ul class="build">
+<li>Kommunikation erfolgt asynchron über Events</li>
+<li>Funktioniert analog zu Events im DOM (z.B. <code>onclick</code>)</li>
+<li>Module müssen nicht voneinander wissen</li>
+<li>Module interagieren nicht direkt miteinander</li>
+<li>Einfach erweiterbar </li>
+</ul></article>
+
+</slide>
+
+<slide  >
+
+    <hgroup>
+      <h2>Kommunikation über Events</h2>
+      <h3>Publish-Subscribe-Prinzip (PubSub)</h3>
+    </hgroup>
+    <article ><pre class="prettyprint" data-lang="javascript">
+  $.subscribe('myevent', function(event, param1, param2) {
+    console.log('Mein Event wurde ausgelöst:', param1, param2);
+  });
+  // Entspricht $(document).on(…)
+</pre>
+
+<pre class="prettyprint" data-lang="javascript">
+  $.publish('myevent', ['Erster Wert', 'Zweiter Wert']);
+  // Entspricht $(document).trigger(…)
+</pre>
+
+<footer class="source">
+  Beispiel mit „jQuery Tiny Pub/Sub“: <a href="https://gist.github.com/661855">https://gist.github.com/661855</a>
+</footer>
+
+<aside class="note">
+  Unterschiedliche Implementierungen, z.B. was passiert mit Events die gefeuert wurden, <b>bevor</b> ich mich darauf subscribe.
+</aside></article>
+
+</slide>
+
+<slide  >
+
+    <hgroup>
+      <h2>Beispiel</h2>
+      <h3>Darstellung auf einer Shop-Seite</h3>
+    </hgroup>
+    <article ><pre class="prettyprint" data-lang="javascript">
+  // shoppingcart.js
+  $.subscribe('quantity:change', function(event, article, quantity) {
+    redrawShoppingCart(article, quantity);
+  });
+
+  // article-overview.js
+  $.subscribe('quantity:change', function(event, article, quantity) {
+    checkForDiscount(article, quantity);
+  });
+
+  // order-familypack.js
+  $.publish('quantity:change', ['Product 1', 5]);
+</pre>
+
+<aside class="note">
+  Änderung an einer Bestellmenge löst optische Änderungen an mehreren Stellen der Seite aus (Warenkorb, Preisanzeige auf der Seite).
+</aside></article>
+
+</slide>
+
+<slide class="segue dark nobackground" >
+    <hgroup class="">
+      <h2>Modul-Standards in JavaScript</h2>
+      <h3>Module mit Abhänigkeiten definieren</h3>
+    </hgroup>
+
+</slide>
+
+<slide  >
+
+    <hgroup>
+      <h2>Modul-Standards in JavaScript</h2>
+      <h3>Module mit Abhänigkeiten definieren</h3>
+    </hgroup>
+    <article ><ul class="build">
+<li>
+<p><b>CommonJS</b><br />
+  wird u.a. in Node.js verwendet:<br />
+<code>module = require('modulename');</code>  </p>
+</li>
+<li>
+<p><b>Asyncronous Module Definition (AMD)</b><br />
+  für browserbasiertes JavaScript<br />
+  bekannteste Implementierung: Require.js (<a href="http://requirejs.org/">requirejs.org</a>) </p>
+</li>
+<li>
+<p>künftig: native Unterstützung (ECMAScript 6)</p>
+</li>
+</ul></article>
+
+</slide>
+
+<slide  >
+
+    <hgroup>
+      <h2>AMD-Module mit Require.js</h2>
+      <h3></h3>
+    </hgroup>
+    <article ><ul class="build">
+<li>Lädt Module per Ajax (<b>Asyncronous</b> Module Definition)</li>
+<li>Verwaltet die Abhängigkeiten untereinander</li>
+<li>Kann auch Modul-Assets laden (z.B. Templates, CSS)</li>
+<li>Kann Module für Produktivbetrieb kompilieren<br />
+  (Auflösung von Abhängigkeiten, Zusammenfassen &amp; Minifizieren)</li>
+</ul></article>
+
+</slide>
+
+<slide  >
+
+    <hgroup>
+      <h2>AMD-Module mit Require.js</h2>
+      <h3></h3>
+    </hgroup>
+    <article ><ul class="build">
+<li>
+<p><pre class="prettyprint" data-lang="html">
+  &lt;!-- index.html --&gt;
+  &lt;script src="require.js" data-main="app.js"&gt;&lt;/script&gt;
+</pre></p>
+</li>
+<li>
+<p><pre class="prettyprint" data-lang="javascript">
+  // app.js
+  require(['lib/jquery', 'modul1'], function($, modul1) {
+    $(function() {
+      modul1.myFunction();
+    }
+  });
+</pre></p>
+</li>
+</ul></article>
+
+</slide>
+
+<slide  >
+
+    <hgroup>
+      <h2>AMD-Module mit Require.js</h2>
+      <h3>Abhängigkeiten innerhalb von Modulen</h3>
+    </hgroup>
+    <article ><ul class="build">
+<li>
+<p><pre class="prettyprint" data-lang="javascript">
+  // modul1.js
+  define(function() {
+    return {
+      myFunction: function() {
+        console.log('Hello Require.js!');
+      }
+    }
+  });
+</pre></p>
+</li>
+<li>
+<p><pre class="prettyprint" data-lang="javascript">
+  define(['modul2', 'include/modul3'], function(module2, module3) {
+    // …
+  });
+</pre></p>
+</li>
+</ul></article>
+
+</slide>
+
+<slide class="segue dark nobackground" >
+    <hgroup class="">
+      <h2>Deployment?</h2>
+      <h3>Grunt. ;-)</h3>
+    </hgroup>
+
+</slide>
+
+
+<slide class="thank-you-slide segue nobackground">
+  <article class="flexbox vleft">
+    <h2>&lt;Thank You!&gt;</h2>
+    <!-- <p>Important contact information goes here.</p> -->
+  </article>
+  <p class="" data-config-contact>
+    <!-- populated from slide_config.json -->
+  </p>
+</slide>
+
+<slide class="backdrop"></slide>
+
+</slides>
+
+</body>
+</html>
