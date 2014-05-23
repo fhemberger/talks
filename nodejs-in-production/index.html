@@ -133,9 +133,9 @@ service myapp restart
                         <li class="fragment">Deployment knowledge is stored separately from code</li>
                         <li class="fragment">When deploying on multiple servers, post-receive hooks must be in sync</li>
                     </ul>
-                    <aside class="notes">
-                        Possible solution: Put the update script inside your repository and symlink it to the post-receive-hook.
-                    </aside>
+
+                    <h5 class="fragment">Solution:</h5>
+                    <p class="fragment">Add the deploy script to your repository and symlink to post-receive-hook.</p>
                 </section>
 
                 <section>
@@ -165,7 +165,10 @@ service myapp restart
                     <ul>
                         <li class="fragment">
                             Hooks run all independently in parallel:<br>
-                            <small>E.g. if the CI hook fails, the webhook for deployment still gets triggered</small>
+                            <small>
+                                E.g. if the CI hook fails, the webhook for deployment still gets triggered.<br>
+                                Some CI services like Travis CI offer their own hooks to trigger a deployment afterwards.
+                            </small>
                         </li>
                         <li class="fragment">
                             Critical dependency for your deployment:<br>
