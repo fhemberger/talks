@@ -1,0 +1,459 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>Login failed. Retry? – Website authentication methods and UX</title>
+        <meta name="author" content="Frederic Hemberger">
+
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+        <link rel="stylesheet" href="../reveal.js/css/reveal.min.css">
+        <link rel="stylesheet" href="../reveal.js/css/theme/night.css">
+
+        <!-- For syntax highlighting -->
+        <link rel="stylesheet" href="../reveal.js/lib/css/sunburst.css">
+        <link href='http://fonts.googleapis.com/css?family=Source+Code+Pro:400,700' rel='stylesheet' type='text/css'>
+
+        <style>
+            .receiver .reveal .slides section .fragment { opacity: 1; color: #ff0000; }
+            .receiver .reveal .slides section .fragment.visible { color: #fff; }
+
+            .reveal .slides { text-align: left; font-family: Menlo, "Source Code Pro", monospace; }
+            .reveal blockquote { background-color: transparent; width: auto; font-size: 130%; line-height: initial; }
+            .reveal blockquote + figcaption { text-indent: 2em; font-style: italic; }
+            .reveal blockquote + figcaption::before { content: "\2014\20"; }
+            .reveal blockquote.mark::before {
+                content: '\201C';
+                font-size: 450%;
+                position: absolute;
+                left: -0.7em;
+                top: -0.25em;
+                color: #FFCC00;
+            }
+            .reveal pre code { background-color: transparent; }
+            .reveal pre { font-size: 1em; width: 100%; margin-bottom: 1em; }
+            .reveal p { line-height: 1.5em; margin-bottom: 1em; }
+            .reveal ul { margin-bottom: 1em; }
+            .reveal ul ul { margin-bottom: 0; }
+            .reveal ul ul:first-child { padding-top: 0.5em; }
+            .reveal li { padding-bottom: 0.5em; }
+            .reveal table th, td { padding: 0.25em 0.4em !important; }
+            .reveal h1, .reveal h2, .reveal h3, .reveal h4, .reveal h5, .reveal h6 {
+                font-family: Menlo, "Source Code Pro", monospace;
+                font-weight: bold;
+                line-height: 1.2em !important;
+                text-transform: uppercase;
+                color: #FFCC00;
+            }
+            .reveal h1 { font-size: 2.77em; }
+            .reveal h5 { margin-bottom: 0.5em; color: #FFCC00; }
+            .reveal a:not(.image) { color: #FFCC00; }
+            .reveal strong,
+            .reveal b,
+            .reveal h6 { color: #fff; }
+            .reveal small { font-size: 0.75em; line-height: 1.5em; }
+            .reveal iframe { margin: 1.5em auto; }
+
+            @keyframes blink {
+                0% { opacity: 1.0; }
+                50% { opacity: 0.0; }
+                100% { opacity: 1.0; }
+            }
+            @-webkit-keyframes blink {
+                0% { opacity: 1.0; }
+                50% { opacity: 0.0; }
+                100% { opacity: 1.0; }
+            }
+
+            .cursor:after {
+                content: '\2589';
+                margin-left: 0.1em;
+                animation: blink 1s step-start 0s infinite;
+                -webkit-animation: blink 1s step-start 0s infinite;
+            }
+
+            #thanks h6 { margin: 2.5em auto 0.25em; }
+            #thanks dt { width: 15.5%; float: left; clear: both; }
+            #thanks dd { float: left; }
+        </style>
+
+        <!-- If the query includes 'print-pdf', use the PDF print sheet -->
+        <script>
+            document.write( '<link rel="stylesheet" href="../reveal.js/css/print/' + ( window.location.search.match( /print-pdf/gi ) ? 'pdf' : 'paper' ) + '.css" type="text/css" media="print">' );
+        </script>
+
+        <!--[if lt IE 9]>
+        <script src="../reveal.js/lib/js/html5shiv.js"></script>
+        <![endif]-->
+    </head>
+
+    <body>
+
+        <div class="reveal">
+
+            <!-- Any section element inside of this container is displayed as a slide -->
+            <div class="slides">
+
+                <section id="cover">
+                    <h2 class="cursor">Login failed. Retry? (Y/N)</h2>
+                    <h3>Website authentication methods and UX</h3>
+                </section>
+
+                <section>
+                    <h2 class="cursor">Part 1<br>Login:</h2>
+                </section>
+
+                <section>
+                    <h3>Login</h3>
+                    <ul>
+                        <li>Use email addresses instead of usernames for login.<br>Most users only have one.</li>
+                        <li class="fragment">If your site offers user profiles, let them choose<br>(and change) their visible name freely.</li>
+                        <li class="fragment">Allow both for login, reduces login errors</li>
+                        <li class="fragment">Also allow the user to change their email address<br>(no one is on <em>aol.com</em> any more)</li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h2 class="cursor">Part 2<br>Enter your email address:</h2>
+                </section>
+
+                <section>
+                    <p>This should be easy, right?</p>
+                </section>
+
+                <section>
+                    <h3 class="cursor">Confirm your email address:</h3>
+                    <ul>
+                        <li>Why? The user did just enter it the second before.</li>
+                        <li class="fragment">What do many people do? <span class="fragment">Copy &amp; paste.</span></li>
+                    </ul>
+                    <p class="fragment">This doesn’t help at all to check the validity of the entered address.</p>
+                </section>
+
+                <section>
+                    <h2>Bonus part</h2>
+                </section>
+
+                <section>
+                    <h3>Usability special-specialist at work</h3>
+                    <p>Right-click/copy &amp; paste blocker in JavaScript.</p>
+
+                    <blockquote class="fragment">
+                        <p>Never, not under any circumstances, disable or overwrite functions of the user’s computer or make them behave any differently.</p>
+                    </blockquote>
+                </section>
+
+                <section>
+                    <h2>Part 3<br>Email address validation</h2>
+                </section>
+
+                <section>
+                    <h3>Email address validation</h3>
+                    <p>Email address validation is only of limited use.</p>
+                    <p class="fragment"><em>foo@bar.baz</em> is still considered valid in most cases.</p>
+                    <aside class="notes">
+                        <p>It only gives feedback about the general structure of the input (e.g. contains “@”), but doesn’t tell anything about the existence of a mail address.</p>
+                    </aside>
+                </section>
+
+                <section>
+                    <h3>Checking the DNS record for a domain</h3>
+                    <ul>
+                        <li>Only tells you if mail server exists for this domain.</li>
+                        <li class="fragment">It's a bit more "expensive" (requires external request)</li>
+                    </ul>
+                    <p class="fragment"><em>google.com</em> has an MX record, yet most likely you rather mean <em>gmail.com</em></p>
+                </section>
+
+                <section>
+                    <p>All of this is too much work, and we’re still not sure, if the email address exist.</p>
+                </section>
+
+                <section>
+                    <h3>Assisting the user</h3>
+                    <p>Tools like <a href="https://github.com/mailcheck/mailcheck/">mailcheck</a> make suggestions for possible spelling mistakes:</p>
+                    <pre>
+user@hotnail.con  =>  user@hotmail.com
+user@tonline.de   =>  user@t-online.de
+user@gxm.de       =>  user@gmx.de
+                    </pre>
+                    <aside class="notes">
+                        <p>Important: Always make <strong>suggestions</strong> maybe the address really exists and is no spelling mistake</p>
+                    </aside>
+                </section>
+
+                <section>
+                    <h3>The only reliable way to check an<br>email address is sending a mail.</h3>
+                </section>
+
+                <section>
+                    <h2 class="cursor">Part 4<br>Enter your password:</h2>
+                </section>
+
+                <section>
+                    <h2>Passwords suck.</h2>
+                </section>
+
+                <section>
+                    <h3>Passwords suck.</h3>
+                    <p>We’ve now been preacing for <em>decades</em> to use safe passwords, still the most common passwords are:</p>
+                    <pre>
+123456          password          qwerty
+abc123          111111            iloveyou
+123123          admin             letmein
+monkey          password1
+                    </pre>
+                </section>
+
+                <section>
+                    <p>So we spoon-feed our users to use safer passwords:</p>
+
+                    <blockquote class="mark">
+                        <p>Your password must be between 8 and 14 characters long and contain at least one uppercase and lowercase character, one number, one special character (§$%&amp;/_-) but not (@# or +), an emoji, your zodiac sign and blood type …</p>
+                    </blockquote>
+                </section>
+
+                <section>
+                    <p>This is <em>incredibly</em> frustrating for users,<br>as they “just” want to use your service. </p>
+                </section>
+
+                <section>
+                    <h3 class="cursor">Confirm your password:</h3>
+                    <ul>
+                        <li>The password entered before is not shown<br>(for good reasons)</li>
+                        <li class="fragment">High potential for typos/entering the password differently</li>
+                    </ul>
+                    <p class="fragment"><em>= Frustration ⨉ 2</em></p>
+                </section>
+
+                <section>
+                    <p>Some people <em>will</em> decide to leave your site at this point.</p>
+                </section>
+
+                <section>
+                    <h3>Improving the password situation</h3>
+                    <ul>
+                        <li>Offer a <a href="https://en.wikipedia.org/wiki/Password_strength">password strength</a> indicator</li>
+                        <li class="fragment">Offer guidance to create strong memorable passwords (e.g. FAQ)</li>
+                        <li class="fragment">
+                            <p>Secure passwords don't have to be cryptic and hard to remember (<a href="https://xkcd.com/936/">XKCD #936</a>):</p>
+                            "<em>folly wood bruise cabin mad magpie</em>" is more secure than "<em>8%9B>a3yeHj#;1q</em>" (77bit vs. 75bit entropy)
+                        </li>
+                    </ul>
+                    <small class="fragment">
+                        Sources:
+                        <a href="https://entima.net/diceware/">Diceware Passphrase Generator</a> •
+                        <a href="http://rumkin.com/tools/password/passchk.php">Strength Test</a> •
+                        <a href="http://www.passwordmeter.com/">The Password Meter</a>
+                    </small>
+                </section>
+
+                <section>
+                    <h2>Part 5<br>"Securitry" questions</h2>
+                </section>
+
+                <section>
+                    <h3>"Securitry" questions</h3>
+                    <p>Some questions are not unambiguous and can unintentionally lead to wrong answers:</p>
+                    <p class="fragment">
+                        Q: “What was your first car?”<br>
+                        A: Volkswagen? VW? Golf?
+                    </p>
+                </section>
+
+                <section>
+                    <h3>"Securitry" questions</h3>
+                    <p>With the ubiquity of social media profiles and Google, most of them should be easy to find out:<p>
+                    <ul>
+                        <li class="fragment">“Where did you go to school?”</li>
+                        <li class="fragment">“What’s your pet’s name?”</li>
+                        <li class="fragment">“What’s your mother’s maiden name?”</li>
+                    </ul>
+                    <p class="fragment">Those questions don’t increase security at all, their use is highly questionable.</p>
+                </section>
+
+                <section>
+                    <h2>Part 6<br>Ideas for authentication</h2>
+                </section>
+
+                <section>
+                    <h3>One Time Passwords (OTP)</h3>
+                    <ul>
+                        <li>Generate a secure authentication token and mail it to the user.</li>
+                        <li class="fragment">User clicks link in email, token keeps him signed in with the website.</li>
+                        <li class="fragment">If you allow the user to sign in with multiple devices, show a list of registered devices and allow deactivation (see Dropbox for example).</li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h3>One Time Passwords (OTP)</h3>
+
+                    <h4>Pro:</h4>
+                    <ul>
+                        <li>Verified email address for a user</li>
+                        <li class="fragment">No password to remember</li>
+                        <li class="fragment">Works great for mobile devices</li>
+                    </ul>
+
+                    <h4 class="fragment">Contra:</h4>
+                    <ul>
+                        <li class="fragment">Leads the user away from the website at first (may impact conversion rate)<br>
+                        <li class="fragment">Security issue on shared devices or public spaces (Internet café)</li>
+                    </ul>
+                    <aside class="notes">
+                        Allow the user a wide range of freedom on your site using anonymous sessions (e.g. to put items in cart), creates incentive to log in later</li>
+                    </aside>
+                </section>
+
+                <section>
+                    <h3>OAuth aka. "social login"</h3>
+
+                    <h4>Pro:</h4>
+                    <ul>
+                        <li>Delegation of login and authentication mechanisms</li>
+                        <li class="fragment">Wide range of services exist (Twitter, Facebook, GitHub, Google, Yahoo!, etc.)</li>
+                    </ul>
+
+                    <h4 class="fragment">Contra:</h4>
+                    <ul>
+                        <li class="fragment">Delegate login and authentication mechanisms (dependency on third party service, may collect data about your users)</li>
+                        <li class="fragment">Multiple services may confuse the user:<br>»Which service did I use to sign in?«</li>
+                        <li class="fragment">What happens if a user switches the OAuth provider?</li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h3>Mozilla Persona</h3>
+                    <p>»<a href="https://www.persona.org/">Mozilla Persona</a> lets you sign in to websites with any email address in as few as two clicks, without the need to create a new password.«</p>
+                </section>
+
+                <section>
+                    <h3>Mozilla Persona</h3>
+
+                    <h4>Pro:</h4>
+                    <ul>
+                        <li>Better privacy: Only the verified email address and a token is sent to the website</li>
+                        <li class="fragment">User only needs the password for their email account </li>
+                        <li class="fragment">Any service can become an identity provider (main providers: Mozilla, Yahoo!, Google)</li>
+                        <li class="fragment">Based on open web technologies</li>
+                    </ul>
+
+                    <h4 class="fragment">Contra:</h4>
+                    <ul>
+                        <li class="fragment">No widespread use yet</li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h3>Two factor authentication</h3>
+                    <p>Using SMS or key generator app</p>
+                </section>
+
+                <section>
+                    <h3>Two factor authentication</h3>
+
+                    <h4>Pro:</h4>
+                    <ul>
+                        <li>Highly increased security</li>
+                        <li class="fragment">Great for services requiring sensitive user information (bank account, credit cards)</li>
+                    </ul>
+
+                    <h4 class="fragment">Contra:</h4>
+                    <ul>
+                        <li class="fragment">Additional step, sign-in takes longer</li>
+                        <li class="fragment">Requires a second device (e.g. mobile phone, tablet)</li>
+                        <li class="fragment">Requires mobile/Internet connection</li>
+                        <li class="fragment">Very unhandy using the same mobile device to log in<br>
+                          (Copy/pasting security code from SMS app, etc.)</li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h2>Gather metrics</h2>
+                </section>
+
+                <section>
+                    <h3>Gather metrics</h3>
+                    <p>Analyze your registration and login process:</p>
+                    <ul>
+                        <li class="fragment">
+                            How many potential users do you lose on the way during sign-up?
+                            (Especially interesting for multi-step-processes)
+                        </li>
+                        <li class="fragment">How many times is the registration page reloaded per user on sign-up?</li>
+                        <li class="fragment">How many times is the login page reloaded per user?</li>
+                        <li class="fragment">
+                            How many successful/failed logins occur?<br>
+                            (Also helpful regarding website security)
+                        </li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h2>Conclusions</h2>
+                </section>
+
+                <section>
+                    <h3>Conclusions</h3>
+                    <ul>
+                        <li>Break with bad UX habits, because “everybody does it that way”</li>
+                        <li class="fragment">Make it as easy and comfortable for a user to sign-up to your website</li>
+                        <li class="fragment">Make it as secure as possible for a user to use your website</li>
+                        <li class="fragment">Think about the best authentication methods matching your business</li>
+                    </ul>
+                </section>
+
+                <section id="thanks">
+                    <h2>That's all folks!</h2>
+
+                    <h6>Frederic Hemberger</h6>
+                    <dl>
+                        <dt>Twitter</dt>
+                        <dd><a href="https://twitter.com/fhemberger">@fhemberger</a></dd>
+                        <dt>GitHub</dt>
+                        <dd><a href="https://github.com/fhemberger">fhemberger</a></dd>
+                        <dt>Web</dt>
+                        <dd><a href="http://frederic-hemberger.de">frederic-hemberger.de</a></dd>
+                    </dl>
+                </section>
+
+            </div>
+
+        </div>
+
+        <script src="../reveal.js/lib/js/head.min.js"></script>
+        <script src="../reveal.js/js/reveal.min.js"></script>
+
+        <script>
+            // Detect presenter mode
+            if ( window.location.search.match(/receiver/) ) { document.getElementsByTagName('body')[0].className = 'receiver'; }
+
+            // Full list of configuration options available here:
+            // https://github.com/hakimel/reveal.js#configuration
+            Reveal.initialize({
+                controls: false,
+                progress: true,
+                history: true,
+                center: true,
+
+                width: 1000,
+
+                theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
+                transition: Reveal.getQueryHash().transition || 'none', // default/cube/page/concave/zoom/linear/fade/none
+
+                // Optional libraries used to extend on reveal.js
+                dependencies: [
+                    { src: '../reveal.js/lib/js/classList.js', condition: function() { return !document.body.classList; } },
+                    { src: '../reveal.js/plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+                    { src: '../reveal.js/plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
+                    { src: '../reveal.js/plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }
+                ]
+            });
+
+        </script>
+
+    </body>
+</html>
