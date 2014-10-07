@@ -2,7 +2,7 @@
 <html lang="en">
     <head>
         <meta charset="utf-8">
-        <title>Login failed. Retry? – Website authentication methods and UX</title>
+        <title>Login failed. Retry? – Website authentication and UX</title>
         <meta name="author" content="Frederic Hemberger">
 
         <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -34,7 +34,7 @@
                 color: #FFCC00;
             }
             .reveal pre code { background-color: transparent; }
-            .reveal pre { font-size: 1em; width: 100%; margin-bottom: 1em; }
+            .reveal pre { font-size: 1em; width: 100%; margin-bottom: 1em; box-shadow: none; }
             .reveal p { line-height: 1.5em; margin-bottom: 1em; }
             .reveal ul { margin-bottom: 1em; }
             .reveal ul ul { margin-bottom: 0; }
@@ -99,42 +99,31 @@
 
                 <section id="cover">
                     <h2 class="cursor">Login failed. Retry? (Y/N)</h2>
-                    <h3>Website authentication methods and UX</h3>
+                    <h3>Website authentication and UX</h3>
                 </section>
 
                 <section>
-                    <h2 class="cursor">Part 1<br>Login:</h2>
+                    <h2 class="cursor">Enter username:</h2>
                 </section>
 
                 <section>
-                    <h3>Login</h3>
+                    <h3 class="cursor">Enter username:</h3>
+                    <p>Prefer email addresses over of usernames for sign-up.</p>
                     <ul>
-                        <li>Use email addresses instead of usernames for login.<br>Most users only have one.</li>
-                        <li class="fragment">If your site offers user profiles, let them choose<br>(and change) their visible name freely.</li>
-                        <li class="fragment">Allow both for login, reduces login errors</li>
-                        <li class="fragment">Also allow the user to change their email address<br>(no one is on <em>aol.com</em> any more)</li>
+                        <li class="fragment">Easier to remember: Most users only have one</li>
+                        <li class="fragment">If your site offers user names as well, allow both for login</li>
+                        <li class="fragment">Allow the user to change both their username/email address</li>
                     </ul>
                 </section>
 
                 <section>
-                    <h2 class="cursor">Part 2<br>Enter your email address:</h2>
+                    <h2 class="cursor">Enter email:</h2>
                 </section>
 
                 <section>
-                    <p>This should be easy, right?</p>
-                </section>
-
-                <section>
-                    <h3 class="cursor">Confirm your email address:</h3>
-                    <ul>
-                        <li>Why? The user did just enter it the second before.</li>
-                        <li class="fragment">What do many people do? <span class="fragment">Copy &amp; paste.</span></li>
-                    </ul>
+                    <h2 class="cursor">Confirm email:</h2>
+                    <p class="fragment">What do many people do? <span class="fragment">Copy &amp; paste.</span></p>
                     <p class="fragment">This doesn’t help at all to check the validity of the entered address.</p>
-                </section>
-
-                <section>
-                    <h2>Bonus part</h2>
                 </section>
 
                 <section>
@@ -147,34 +136,29 @@
                 </section>
 
                 <section>
-                    <h2>Part 3<br>Email address validation</h2>
+                    <h3>Email address validation is<br>only of limited use.</h3>
                 </section>
 
                 <section>
-                    <h3>Email address validation</h3>
-                    <p>Email address validation is only of limited use.</p>
-                    <p class="fragment"><em>foo@bar.baz</em> is still considered valid in most cases.</p>
+                    <h3>Validation with Regular Expression</h3>
+                    <p class="fragment"><em>foo@bar.baz</em> is still considered valid</p>
+
                     <aside class="notes">
                         <p>It only gives feedback about the general structure of the input (e.g. contains “@”), but doesn’t tell anything about the existence of a mail address.</p>
                     </aside>
                 </section>
 
                 <section>
-                    <h3>Checking the DNS record for a domain</h3>
+                    <h3>Checking DNS record for a domain</h3>
                     <ul>
-                        <li>Only tells you if mail server exists for this domain.</li>
-                        <li class="fragment">It's a bit more "expensive" (requires external request)</li>
+                        <li class="fragment">Only tells you if the domain has a mail server.</li>
+                        <li class="fragment">Did you really mean <em>user@google.com</em> or <em>user@gmail.com</em>?</li>
                     </ul>
-                    <p class="fragment"><em>google.com</em> has an MX record, yet most likely you rather mean <em>gmail.com</em></p>
-                </section>
-
-                <section>
-                    <p>All of this is too much work, and we’re still not sure, if the email address exist.</p>
                 </section>
 
                 <section>
                     <h3>Assisting the user</h3>
-                    <p>Tools like <a href="https://github.com/mailcheck/mailcheck/">mailcheck</a> make suggestions for possible spelling mistakes:</p>
+                    <p><a href="https://github.com/mailcheck/mailcheck/">mailcheck</a> makes suggestions for possible mistakes:</p>
                     <pre>
 user@hotnail.con  =>  user@hotmail.com
 user@tonline.de   =>  user@t-online.de
@@ -186,11 +170,15 @@ user@gxm.de       =>  user@gmx.de
                 </section>
 
                 <section>
+                    <p>At this point we’re still not sure,<br>if the email address exist.</p>
+                </section>
+
+                <section>
                     <h3>The only reliable way to check an<br>email address is sending a mail.</h3>
                 </section>
 
                 <section>
-                    <h2 class="cursor">Part 4<br>Enter your password:</h2>
+                    <h2 class="cursor">Enter password:</h2>
                 </section>
 
                 <section>
@@ -199,60 +187,64 @@ user@gxm.de       =>  user@gmx.de
 
                 <section>
                     <h3>Passwords suck.</h3>
-                    <p>We’ve now been preacing for <em>decades</em> to use safe passwords, still the most common passwords are:</p>
+                    <p>Most common passwords (2014):</p>
                     <pre>
 123456          password          qwerty
 abc123          111111            iloveyou
 123123          admin             letmein
 monkey          password1
                     </pre>
+
+                    <aside class="notes">
+                        <ul>
+                            <li>We’ve now been preaching for <em>decades</em> to use safe passwords.</li>
+                            <li>So we spoon-feed our users to use safer passwords</li>
+                        </ul>
+                    </aside>
                 </section>
 
                 <section>
-                    <p>So we spoon-feed our users to use safer passwords:</p>
-
                     <blockquote class="mark">
-                        <p>Your password must be between 8 and 14 characters long and contain at least one uppercase and lowercase character, one number, one special character (§$%&amp;/_-) but not (@# or +), an emoji, your zodiac sign and blood type …</p>
+                        <p>Your password must be between 8 and 14 characters. It should contain one uppercase and lowercase letter, one number, one special character (§$%&amp;/_-) except (@#+), …</p>
                     </blockquote>
                 </section>
 
                 <section>
-                    <p>This is <em>incredibly</em> frustrating for users,<br>as they “just” want to use your service. </p>
-                </section>
-
-                <section>
-                    <h3 class="cursor">Confirm your password:</h3>
+                    <h3 class="cursor">Confirm password:</h3>
                     <ul>
                         <li>The password entered before is not shown<br>(for good reasons)</li>
-                        <li class="fragment">High potential for typos/entering the password differently</li>
+                        <li class="fragment">High potential for typos/spelling mistakes</li>
                     </ul>
-                    <p class="fragment"><em>= Frustration ⨉ 2</em></p>
                 </section>
 
                 <section>
-                    <p>Some people <em>will</em> decide to leave your site at this point.</p>
+                    <p>If your password rules are too complicated, some people <em>will</em> decide to go somewhere else at this point.</p>
                 </section>
 
                 <section>
                     <h3>Improving the password situation</h3>
                     <ul>
                         <li>Offer a <a href="https://en.wikipedia.org/wiki/Password_strength">password strength</a> indicator</li>
-                        <li class="fragment">Offer guidance to create strong memorable passwords (e.g. FAQ)</li>
-                        <li class="fragment">
-                            <p>Secure passwords don't have to be cryptic and hard to remember (<a href="https://xkcd.com/936/">XKCD #936</a>):</p>
-                            "<em>folly wood bruise cabin mad magpie</em>" is more secure than "<em>8%9B>a3yeHj#;1q</em>" (77bit vs. 75bit entropy)
-                        </li>
+                        <li class="fragment">Offer guidance to create strong, memorable passwords</li>
                     </ul>
-                    <small class="fragment">
-                        Sources:
-                        <a href="https://entima.net/diceware/">Diceware Passphrase Generator</a> •
-                        <a href="http://rumkin.com/tools/password/passchk.php">Strength Test</a> •
-                        <a href="http://www.passwordmeter.com/">The Password Meter</a>
-                    </small>
+                </section>
+                <section>
+                    <h3>Secure passwords don't<br>have to be cryptic</h3>
+                    <p class="fragment">"<em>wood cabin magpie folly</em>" (88 bit entropy)</p>
+                    <p class="fragment">"<em>8%9B>a3y</em>" (36 bit entropy)</p>
+                    <p><br></p>
+                    <p class="fragment">
+                        <small>
+                            Sources:
+                            <a href="https://xkcd.com/936/">XKCD #936</a> •
+                            <a href="https://entima.net/diceware/">Diceware Passphrase Generator</a> •
+                            <a href="http://rumkin.com/tools/password/passchk.php">Strength Test</a>
+                        </small>
+                    </p>
                 </section>
 
                 <section>
-                    <h2>Part 5<br>"Securitry" questions</h2>
+                    <h2>"Securitry" questions</h2>
                 </section>
 
                 <section>
@@ -260,7 +252,7 @@ monkey          password1
                     <p>Some questions are not unambiguous and can unintentionally lead to wrong answers:</p>
                     <p class="fragment">
                         Q: “What was your first car?”<br>
-                        A: Volkswagen? VW? Golf?
+                        A: Volkswagon? VW? Golf?
                     </p>
                 </section>
 
@@ -276,7 +268,7 @@ monkey          password1
                 </section>
 
                 <section>
-                    <h2>Part 6<br>Ideas for authentication</h2>
+                    <h2>Further ideas for authentication</h2>
                 </section>
 
                 <section>
@@ -355,18 +347,15 @@ monkey          password1
 
                 <section>
                     <h3>Gather metrics</h3>
-                    <p>Analyze your registration and login process:</p>
                     <ul>
                         <li class="fragment">
-                            How many potential users do you lose on the way during sign-up?
-                            (Especially interesting for multi-step-processes)
+                            How many user start/complete your sign-up process?
+                            (Especially on multi-step processes)
                         </li>
-                        <li class="fragment">How many times is the registration page reloaded per user on sign-up?</li>
-                        <li class="fragment">How many times is the login page reloaded per user?</li>
-                        <li class="fragment">
-                            How many successful/failed logins occur?<br>
-                            (Also helpful regarding website security)
-                        </li>
+                        <li class="fragment">Page reloads during sign-up step</li>
+
+                        <li class="fragment">Successful logins</li>
+                        <li class="fragment">Page reloads on login page (= failed logins)</li>
                     </ul>
                 </section>
 
@@ -377,10 +366,10 @@ monkey          password1
                 <section>
                     <h3>Conclusions</h3>
                     <ul>
-                        <li>Break with bad UX habits, because “everybody does it that way”</li>
-                        <li class="fragment">Make it as easy and comfortable for a user to sign-up to your website</li>
-                        <li class="fragment">Make it as secure as possible for a user to use your website</li>
-                        <li class="fragment">Think about the best authentication methods matching your business</li>
+                        <li>Break with bad UX habits</li>
+                        <li class="fragment">Make sign-up as easy and comfortable as possible</li>
+                        <li class="fragment">Make using your website as secure as possible</li>
+                        <li class="fragment">Authentication methods should match your business</li>
                     </ul>
                 </section>
 
@@ -430,7 +419,6 @@ monkey          password1
                     { src: '../reveal.js/plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }
                 ]
             });
-
         </script>
 
     </body>
