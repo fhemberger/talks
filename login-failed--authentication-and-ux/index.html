@@ -100,6 +100,15 @@
                 <section id="cover">
                     <h2 class="cursor">Login failed. Retry? (Y/N)</h2>
                     <h3>Website authentication and UX</h3>
+
+                    <aside class="notes">
+                        <p>
+                            Signing up to a website can be an adventure on it's own.<br>
+                            So tonight, I want you to join me on that trip.<br>
+                            Because many websites still make it too complicated.<br>
+                            So I hope I can give you some ideas.
+                        </p>
+                    </aside>
                 </section>
 
                 <section>
@@ -111,28 +120,46 @@
                     <p>Prefer email addresses over of usernames for sign-up.</p>
                     <ul>
                         <li class="fragment">Easier to remember: Most users only have one</li>
-                        <li class="fragment">If your site offers user names as well, allow both for login</li>
-                        <li class="fragment">Allow the user to change both their username/email address</li>
+                        <li class="fragment">If your site offers user names as well,<br> allow both for login</li>
+                        <li class="fragment">Allow users to change both, username and email</li>
                     </ul>
                 </section>
 
                 <section>
                     <h2 class="cursor">Enter email:</h2>
+
+                    <aside class="notes">
+                        <p>
+                            … first annoyance follows on the next step.
+                        </p>
+                    </aside>
                 </section>
 
                 <section>
                     <h2 class="cursor">Confirm email:</h2>
                     <p class="fragment">What do many people do? <span class="fragment">Copy &amp; paste.</span></p>
-                    <p class="fragment">This doesn’t help at all to check the validity of the entered address.</p>
+
+                    <aside class="notes">
+                        <p><strong class="highlight">~~~PAUSE~~~</strong></p>
+                        <p>People don't understand why they have to enter it twice.</p>
+                        <p><strong>This doesn’t help at all to see if the address is valid.</strong></p>
+                    </aside>
                 </section>
 
                 <section>
                     <h3>Usability special-specialist at work</h3>
                     <p>Right-click/copy &amp; paste blocker in JavaScript.</p>
+                    <p class="fragment">Seriously?</p>
+                </section>
 
-                    <blockquote class="fragment">
+                <section>
+                    <blockquote>
                         <p>Never, not under any circumstances, disable or overwrite functions of the user’s computer or make them behave any differently.</p>
                     </blockquote>
+
+                    <aside class="notes">
+                        <strong class="highlight">~~~PAUSE~~~</strong>
+                    </aside>
                 </section>
 
                 <section>
@@ -149,11 +176,15 @@
                 </section>
 
                 <section>
-                    <h3>Checking DNS record for a domain</h3>
+                    <h3>Ask Domain Name Server (DNS)</h3>
                     <ul>
                         <li class="fragment">Only tells you if the domain has a mail server.</li>
-                        <li class="fragment">Did you really mean <em>user@google.com</em> or <em>user@gmail.com</em>?</li>
+                        <li class="fragment">Did you really mean <em>username@google.com</em> or <em>username@gmail.com</em>?</li>
                     </ul>
+
+                    <aside class="notes">
+                        Domain Name Server (DNS) = Maps your domain name to to the actual servers
+                    </aside>
                 </section>
 
                 <section>
@@ -207,6 +238,13 @@ monkey          password1
                     <blockquote class="mark">
                         <p>Your password must be between 8 and 14 characters. It should contain one uppercase and lowercase letter, one number, one special character (§$%&amp;/_-) except (@#+), …</p>
                     </blockquote>
+
+                    <aside class="notes">
+                        <ul>
+                            <li>This is <em>incredibly</em> frustrating for users.</li>
+                            <li>Hint: Maximum length might be a good indicator that passwords are stored in plain text</li>
+                        </ul>
+                    </aside>
                 </section>
 
                 <section>
@@ -249,24 +287,21 @@ monkey          password1
 
                 <section>
                     <h3>"Security" questions</h3>
-                    <p>Some questions are not unambiguous and can unintentionally lead to wrong answers:</p>
-                    <p class="fragment">
-                        Q: “What was your first car?”<br>
-                        A: Volkswagon? VW? Golf?
-                    </p>
+                    <ul>
+                        <li class="fragment">“What was your first car?”</li>
+                        <li class="fragment">“Where did you go to school?”</li>
+                        <li class="fragment">“What’s your pet’s name?”</li>
+                    </ul>
+
+                    <aside class="notes">
+                        <p>Some questions are ambiguous: Manufacturer? Model?</p>
+                        <p>Others can be solved easily with a few minutes of googeling or using your social media profile</p>
+                    </aside>
                 </section>
 
                 <section>
-                    <h3>"Security" questions</h3>
-                    <p>With the ubiquity of social media profiles and Google, most of them should be easy to find out:<p>
-                    <ul>
-                        <li class="fragment">“Where did you go to school?”</li>
-                        <li class="fragment">“What’s your pet’s name?”</li>
-                        <li class="fragment">“What’s your mother’s maiden name?”</li>
-                    </ul>
-                    <p class="fragment">Those questions don’t increase security at all, their use is highly questionable.</p>
+                    <p>Those questions don’t increase security and highly questionable.</p>
                 </section>
-
                 <section>
                     <h2>Further ideas for authentication</h2>
                 </section>
@@ -342,7 +377,7 @@ monkey          password1
                 </section>
 
                 <section>
-                    <h2>Gather metrics</h2>
+                    <h2>Conclusions</h2>
                 </section>
 
                 <section>
@@ -360,11 +395,7 @@ monkey          password1
                 </section>
 
                 <section>
-                    <h2>Conclusions</h2>
-                </section>
-
-                <section>
-                    <h3>Conclusions</h3>
+                    <h3>Summing it up:</h3>
                     <ul>
                         <li>Break with bad UX habits</li>
                         <li class="fragment">Make sign-up as easy and comfortable as possible</li>
