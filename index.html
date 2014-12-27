@@ -1,93 +1,120 @@
 ---
 layout: default
+title: Talks
+description: >
+  Präsentationen zum Thema Web-Entwicklung, Security und JavaScript, die ich auf Konferenzen und Entwickler-Meetings gehalten habe.
 ---
 
-<div class="home">
+{% if site.categories.talks %}
 
-  <ul class="post-list">
-      <li>
-        <h2>Login failed. Retry? – Website authentication and UX</h2>
+  <div id="main" role="main">
+    <div class="container">
+      <h1>
+        <a href="/">Frederic Hemberger</a>
+        Talks
+      </h1>
 
-        <ul class="post-meta">
-          <li>2014-09-11: <a href="http://webworker-nrw.de">webworker nrw</a>, Düsseldorf</li>
-          <li>2014-10-08: <a href="https://fronteers.nl/congres/2014/jam-session">Fronteers 2014 Jam Session</a>, Amsterdam (shortened version)</li>
-          <li>2014-10-29: <a href="http://uxcgn.org/">#UXCGN12</a>, Köln</li>
-        </ul>
+      {% for post in site.categories.talks %}
+        {% if page.lang %}
+          {% if post.lang == page.lang %}
+            {% include talk-listing-item.html %}
+          {% endif %}
+        {% else %}
+          {% include talk-listing-item.html %}
+        {% endif %}
+      {% endfor %}
+    </div>
+  </div>
 
-        <p><a href="login-failed--authentication-and-ux/index.html">Slides</a></p>
-      </li>
+{% else %}
 
+  <div class="home">
 
-      <li>
-        <h2>Digital self-defense – Mitigate Clickjacking and XSS attacks with HTTP headers</h2>
+    <ul class="post-list">
+        <li>
+          <h2>Login failed. Retry? – Website authentication and UX</h2>
 
-        <ul class="post-meta">
-          <li>2014-04-27: <a href="http://2014.jsunconf.eu/">JS Unconf 2014</a>, Hamburg</li>
-        </ul>
+          <ul class="post-meta">
+            <li>2014-09-11: <a href="http://webworker-nrw.de">webworker nrw</a>, Düsseldorf</li>
+            <li>2014-10-08: <a href="https://fronteers.nl/congres/2014/jam-session">Fronteers 2014 Jam Session</a>, Amsterdam (shortened version)</li>
+            <li>2014-10-29: <a href="http://uxcgn.org/">#UXCGN12</a>, Köln</li>
+          </ul>
 
-        <ul>
-          <li><a href="web-security/en.html">Slides</a></li>
-          <li><a href="web-security/en.html#/48">Links/Ressourcen</a></li>
-        </ul>
-      </li>
-
-
-      <li>
-        <h2>Running Node.js apps in production</h2>
-
-        <ul class="post-meta">
-          <li>2014-04-08: <a href="http://colognejs.de">Cologne.js</a>, Köln</li>
-          <li>2014-04-26: <a href="http://2014.jsunconf.eu/">JS Unconf 2014</a>, Hamburg</li>
-        </ul>
-
-        <ul>
-          <li><a href="nodejs-in-production/">Slides</a></li>
-          <li><a href="https://github.com/fhemberger/talks/blob/master/nodejs-in-production/README.md">Links/Ressourcen</a></li>
-        </ul>
-      </li>
+          <p><a href="login-failed--authentication-and-ux/index.html">Slides</a></p>
+        </li>
 
 
-      <li>
-        <h2>Digitale Selbstverteidigung: Mehr Sicherheit auf der eigenen Website</h2>
+        <li>
+          <h2>Digital self-defense – Mitigate Clickjacking and XSS attacks with HTTP headers</h2>
 
-        <ul class="post-meta">
-          <li>2014-01-09: <a href="http://webworker-nrw.de">webworker nrw</a>, Düsseldorf</li>
-          <li>2014-02-27: <a href="https://plus.google.com/u/0/115888413548938267810/about">Webworker Treff Ruhr</a>, Essen</li>
-        </ul>
+          <ul class="post-meta">
+            <li>2014-04-27: <a href="http://2014.jsunconf.eu/">JS Unconf 2014</a>, Hamburg</li>
+          </ul>
 
-        <ul>
-          <li><a href="web-security/">Slides</a></li>
-          <li><a href="web-security/#/48">Links/Ressourcen</a></li>
-        </ul>
-      </li>
-
-
-      <li>
-        <h2>Einführung in Require.js</h2>
-
-        <ul class="post-meta">
-          <li>2013-08-08: <a href="http://webworker-nrw.de">webworker nrw</a>, Düsseldorf</li>
-        </ul>
-
-        <ul>
-          <li><a href="requirejs/">Slides</a></li>
-          <li><a href="https://github.com/fhemberger/talks/tree/master/requirejs">Demos</a></li>
-        </ul>
-      </li>
+          <ul>
+            <li><a href="web-security/en.html">Slides</a></li>
+            <li><a href="web-security/en.html#/48">Links/Ressourcen</a></li>
+          </ul>
+        </li>
 
 
-      <li>
-        <h2>Code-Organisation in JavaScript</h2>
+        <li>
+          <h2>Running Node.js apps in production</h2>
 
-        <ul class="post-meta">
-          <li>2013-01-10: <a href="http://webworker-nrw.de">webworker nrw</a>, Düsseldorf</li>
-        </ul>
+          <ul class="post-meta">
+            <li>2014-04-08: <a href="http://colognejs.de">Cologne.js</a>, Köln</li>
+            <li>2014-04-26: <a href="http://2014.jsunconf.eu/">JS Unconf 2014</a>, Hamburg</li>
+          </ul>
 
-        <ul>
-          <li><a href="js-codeorganisation/">Slides</a></li>
-          <li><a href="js-codeorganisation/Code-Organisation in JavaScript - Frederic Hemberger.pdf">Slides (PDF)</a></li>
-        </ul>
-      </li>
-  </ul>
+          <ul>
+            <li><a href="nodejs-in-production/">Slides</a></li>
+            <li><a href="https://github.com/fhemberger/talks/blob/master/nodejs-in-production/README.md">Links/Ressourcen</a></li>
+          </ul>
+        </li>
 
-</div>
+
+        <li>
+          <h2>Digitale Selbstverteidigung: Mehr Sicherheit auf der eigenen Website</h2>
+
+          <ul class="post-meta">
+            <li>2014-01-09: <a href="http://webworker-nrw.de">webworker nrw</a>, Düsseldorf</li>
+            <li>2014-02-27: <a href="https://plus.google.com/u/0/115888413548938267810/about">Webworker Treff Ruhr</a>, Essen</li>
+          </ul>
+
+          <ul>
+            <li><a href="web-security/">Slides</a></li>
+            <li><a href="web-security/#/48">Links/Ressourcen</a></li>
+          </ul>
+        </li>
+
+
+        <li>
+          <h2>Einführung in Require.js</h2>
+
+          <ul class="post-meta">
+            <li>2013-08-08: <a href="http://webworker-nrw.de">webworker nrw</a>, Düsseldorf</li>
+          </ul>
+
+          <ul>
+            <li><a href="requirejs/">Slides</a></li>
+            <li><a href="https://github.com/fhemberger/talks/tree/master/requirejs">Demos</a></li>
+          </ul>
+        </li>
+
+
+        <li>
+          <h2>Code-Organisation in JavaScript</h2>
+
+          <ul class="post-meta">
+            <li>2013-01-10: <a href="http://webworker-nrw.de">webworker nrw</a>, Düsseldorf</li>
+          </ul>
+
+          <ul>
+            <li><a href="js-codeorganisation/">Slides</a></li>
+            <li><a href="js-codeorganisation/Code-Organisation in JavaScript - Frederic Hemberger.pdf">Slides (PDF)</a></li>
+          </ul>
+        </li>
+    </ul>
+
+  </div>
+{% endif %}
