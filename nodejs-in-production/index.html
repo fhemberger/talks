@@ -387,39 +387,6 @@ server.on('close', function() {
                 </section>
 
                 <section>
-                    <h3>
-                        What happens in Vegas, stays in Vegas<br>
-                        Using Domains in Node.js
-                    </h3>
-
-                    <ul>
-                        <li><code>if (err) …</code> in each callback is quite bulky</li>
-                        <li><code>try/catch</code> also doesn't work well for asynchronous code</li>
-                        <li>Encapsulate errors in domains</li>
-                    </ul>
-                </section>
-
-                <section>
-                    <h3>Using Domains in Node.js</h3>
-
-                    <pre><code class="javascript" data-trim>
-var d = require('domain').create();
-
-d.on('error', function(err) {
-  console.log('Uh, got this error:', err.message);
-  // Important: Clean up after you!
-  // ...
-});
-
-d.run(function() {
-  // Stuff that might break goes here
-});
-                    </code></pre>
-
-                    <p>Node.js API stability: <em>2 - Unstable</em></p>
-                </section>
-
-                <section>
                     <h2>Metrics</h2>
                 </section>
 
