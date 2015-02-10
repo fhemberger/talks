@@ -173,7 +173,7 @@ var mapper = function (request, callback) {
 
 server.route({
     method: 'GET',
-    path: '/search/{name}',
+    path: '/search/{term}',
     handler: { proxy: { mapUri: mapper } }
 });
                     </code></pre>
