@@ -1,0 +1,633 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>Developing a web-security mindset – .concat() 2015 | Frederic Hemberger</title>
+        <meta name="author" content="Frederic Hemberger">
+
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+        <link rel="canonical" href="https://frederic-hemberger.de/talks/concat-websecurity/">
+
+        <link rel="stylesheet" href="../reveal.js/css/reveal.min.css">
+        <link rel="stylesheet" href="../reveal.js/css/theme/white.css">
+
+        <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,600' rel='stylesheet' type='text/css'>
+
+        <style>
+            /* Fragments in speaker notes */
+            .receiver .reveal .slides section .fragment { opacity: 1; color: #ff0000; visibility: visible; }
+            .receiver .reveal .slides section .fragment.visible { color: inherit; }
+
+
+            .reveal .slides { text-rendering: optimizeLegibility; text-align: left; font-weight: 300; }
+            .reveal .has-dark-background {
+                -webkit-font-smoothing: antialiased;
+                -moz-osx-font-smoothing: grayscale;
+            }
+
+            /* Cover slide */
+            #cover div { position: relative; bottom: -8.5em; }
+            #cover h1,
+            #cover p  { color: #001f30; line-height: 1; }
+            #cover h1 { font-size: 1.6em; font-weight: 600; }
+            #cover img { float: left; margin: 0 0.25em 0 0; }
+
+            /* Content styles */
+            .reveal h1 { font-size: 1.5em; }
+            .reveal h1, .reveal h2, .reveal h3, .reveal h4, .reveal h5, .reveal h6 {
+                font-weight: 300; text-transform: initial;
+            }
+
+            .reveal strong, .reveal b { font-weight: 600; }
+            .reveal section img { box-shadow: initial; border: initial; background-color: transparent; }
+            .reveal blockquote {
+                width: 80%;
+                margin: inherit;
+                font-size: 1.2em;
+                box-shadow: none;
+                background: transparent;
+            }
+
+            .reveal blockquote footer {
+                margin-top: 1em;
+                font-size: 0.8em;
+                box-shadow: none;
+            }
+
+            .reveal .slide-background { background-position: top center; background-size: contain; }
+
+            /* Closing slide */
+            #thanks h2,
+            #thanks p  { text-align: left; }
+            #thanks h6 { margin: 2.5em auto 0.25em; text-align: left; }
+
+            /* Source attribution at the bottom of the slide */
+            footer#source {
+                position: absolute;
+                bottom: 0;
+                left: 0;
+                font-size: 0.5em;
+                margin: 0.5em;
+                z-index: 2;
+            }
+            .source-blue { color: #007196; }
+
+            /* Dark slide background: #001f30 */
+            .highlight-red      { color: #e31445; }
+            .highlight-blue     { color: #00a3d9; }
+            .highlight-darkblue { color: #001f30; }
+
+            .reveal a { color: #00a3d9; }
+            .reveal .progress span { background: #00a3d9; }
+            .reveal .background-gray     { background-color: #c2c2c2; }
+            .reveal .background-darkblue { background-color: #001f30; }
+
+            /* Hide in actual talk, show in the slides later on */
+            /*.hide-during-talk { display: none; }*/
+            /* Hide in speaker notes when .hide-during-talk is disabled */
+            .hide-in-speakernotes { display: none; }
+        </style>
+
+        <script>
+            var _paq = _paq || [];
+            _paq.push(['trackPageView'],['enableLinkTracking'],['setTrackerUrl', '//www.frederic-hemberger.de/piwik/piwik.php'],['setSiteId', '1']);
+
+            // If the query includes 'print-pdf', use the PDF print sheet
+            document.write( '<link rel="stylesheet" href="../reveal.js/css/print/' + ( window.location.search.match( /print-pdf/gi ) ? 'pdf' : 'paper' ) + '.css" type="text/css" media="print">' );
+        </script>
+
+        <!--[if lt IE 9]>
+        <script src="../reveal.js/lib/js/html5shiv.js"></script>
+        <![endif]-->
+    </head>
+
+    <body>
+
+        <div class="reveal">
+
+            <!-- Any section element inside of this container is displayed as a slide -->
+            <div class="slides">
+
+                <section id="cover"
+                    data-background="images/prohibited-items.jpg"
+                    data-background-class="background-gray">
+
+                    <div>
+                        <h1>Developing a web-security mindset</h1>
+                        <p>
+                            <img src="images/concat-logo.svg" alt="Concat 2015" width="40">
+                            Frederic Hemberger
+                        </p>
+                    </div>
+
+                    <aside class="notes">
+                        <p>Hi, my name is Frederic Hemberger.</p>
+                        <p>I'm working as a freelance JavaScript developer in Cologne, Germany</p>
+                        <p>Today I'm giving you an introduction how to develop a mindset for web-security.</p>
+                    </aside>
+                </section>
+
+                <!-- ******************************************************* -->
+                <!-- Introduction                                            -->
+                <!-- ******************************************************* -->
+
+                <section data-background="#001f30">
+                    <blockquote class="highlight-red">
+                        »Security and lack thereof is almost always a&nbsp;design choice and a business decision.«
+                        <footer class="highlight-blue">— <cite><a href="https://twitter.com/halvarflake/status/566279321921536000">@halvarflake</a></cite></footer>
+                    </blockquote>
+
+                    <aside class="notes">
+                        Problem with security is often self-made:
+
+                        <ul>
+                            <li>fast product development cycles</li>
+                            <li>short time to market</li>
+                            <li>rapid prototyping</li>
+                        </ul>
+                        <p>
+                        <p>Result: Because of time pressure, insecure prototypes find their way into production</p>
+                        <p>"We go online now, we'll do it properly afterwards" – works well for accessibility or code documentation</p>
+                        <p>If security is not a concern at the beginning of a project, how could we expect it to be a concern later?</p>
+                     </aside>
+                </section>
+
+
+                <section>
+                    <p>
+                        Security is an ongoing process throughout your projectʼs lifetime.
+                        <span class="highlight-red">Itʼs not an item to tick off in a feature sprint.</span>
+                    </p>
+
+                    <aside class="notes">
+                        <p>Constantly re-evaluate projectʼs goals, the code and possible threats</p>
+                        <p>
+                            So how can we achieve this right from the beginning?<br>
+                            What really helps a lot approaching security concerns is a method called …
+                        </p>
+                    </aside>
+                </section>
+
+                <!-- ******************************************************* -->
+                <!-- Develop defensive programming habits                    -->
+                <!-- ******************************************************* -->
+
+                <section data-background="#001f30">
+                    <h2>Defensive programming 101</h2>
+
+                    <aside class="notes">
+                        <p>It starts with …</p>
+                    </aside>
+                </section>
+
+
+                <section data-background="#00a3d9">
+                    <h3>Secure input and output handling</h3>
+
+                    <aside class="notes">
+                        <p>Never trust user any input</p>
+                    </aside>
+                </section>
+
+
+                <section>
+                    <h3>What is user input?</h3>
+
+                    <ul>
+                        <li class="fragment">The URL (including path or query parameters)</li>
+                        <li class="fragment">HTTP method (GET, POST, PUT, DELETE, …) and headers</li>
+                        <li class="fragment">Form values, file uploads</li>
+                        <li class="fragment">Cookies, browser storage</li>
+                        <li class="fragment">Data exchanged with APIs, Flash, applets, etc.</li>
+                    </ul>
+
+                    <aside class="notes">
+                        <p>LocalStorage, SessionStorage, browser databases like IndexDB</p>
+                        <p>First step is to …</p>
+                    </aside>
+                </section>
+
+
+                <section>
+                    <h3>Validate user input</h3>
+
+                    <p class="fragment">
+                        <span class="highlight-blue">Data type validation</span><span class="hide-during-talk"><br>
+                        String, Number, Boolean, Date, undefined, …</span>
+                    </p>
+                    <p class="fragment">
+                        <span class="highlight-blue">Range and constraint validation</span><span class="hide-during-talk"><br>
+                        Negative/exponential numbers, String lengths,<br>"Your age is not 150 years", …</span>
+                    </p>
+                    <p class="fragment">
+                        <span class="highlight-blue">Business logic validation</span><span class="hide-during-talk"><br>
+                        "You must be at least 14 years old to register"</span>
+                    </p>
+
+                    <aside class="notes">
+                        <p>
+                            Code should not operate on invalid/malformed data;
+                            avoid exceptions
+                        </p>
+
+                        <span class="hide-in-speakernotes">Different types of validation:</span>
+                        <ul class="hide-in-speakernotes">
+                            <li>String, Number, Boolean, Date, undefined, …</li>
+                            <li>Negative/exponential numbers, String lengths, age != 150, …</li>
+                            <li>"You must be at least 14 years old to register"</li>
+                        </ul>
+                        <p>After that we're going to …</p>
+                    </aside>
+                </section>
+
+
+                <section>
+                    <h3>Sanitize user input</h3>
+
+                    <ul>
+                        <li class="fragment">
+                            Remove ASCII control characters, null bytes, Unicode LTR/RTL
+                            control characters, Unicode whitespace, …
+                        </li>
+                        <li class="fragment">(Usually) remove all HTML</li>
+                    </ul>
+
+                    <aside class="notes">
+                        Remove possibly malicious content from user input. Avoid code injection/execution
+
+                        <ul>
+                            <li>Unicode whitespace characters: bypass regular whitespace filtering</li>
+                            <li>HTML: scripts, iframes, XSS attacks, DOM clobbering, … (<strong>whitelist</strong>)</li>
+                            <li><strong>Never</strong> use RegExps to filter HTML: So much to consider, easy to break (e.g. attributes, escaping, browser "fixing").</li>
+                        </ul>
+                    </aside>
+                </section>
+
+
+                <section>
+                    <h3>Encode output where necessary</h3>
+                    <p>Choose the correct encoding <span class="highlight-red">depending on the context</span></p>
+
+                    <aside class="notes">
+                        <p>HTML: no escaping required, maybe checking for matching closing tags</p>
+                        <p>HTML attributes: double quote, angled brackets (&lt;, &gt;) – using HTML entities</p>
+                        <p>JSON: double quote, (back)slash, newline, … – using a backslash</p>
+                        <p><strong>Don't do this manually</strong></p>
+                        <p><strong style="color:red">~~~ PAUSE ~~~</strong><br>Another important topic are dependencies.</p>
+                    </aside>
+                </section>
+
+
+                <section data-background="#00a3d9">
+                    <h2>Dependencies</h2>
+
+                    <aside class="notes">
+                        When youʼre dealing with dependencies, you face two different problems. The first one is …
+                    </aside>
+                </section>
+
+
+                <section>
+                    <p>Donʼt assume frameworks and libraries use secure defaults.</p>
+
+                    <aside class="notes">
+                        <ul>
+                            <li>Many framework creators consider the developer who uses the framework responsible for security.</li>
+                            <li>Often enough this doesnʼt happen ("the framework should be secure by itself").</li>
+                            <li>In the end, no one feels responsible and we're unaware that it can become a problem.</li>
+                            <li>As framework author: Make sure you take at least basic security measures</li>
+                        </ul>
+                        <p>The second problem is to keep dependencies up-to-date:</p>
+                    </aside>
+                </section>
+
+
+                <section
+                    data-background="#001f30"
+                    data-source-url="http://erlend.oftedal.no/blog/?blogid=142"
+                    data-source-title="Scanning Alexa Top 100,000 for JavaScript libraries with known vulnerabilities">
+                    <p>
+                        On Alexaʼs Top 100,000 websites,<br>
+                        <span class="highlight-blue">75% use a jQuery version older than 2½ years.</span><br>
+                        <span class="fragment"><span class="highlight-red">On 35% itʼs even older than 5 years.</span></span>
+                    </p>
+
+                    <aside class="notes">
+                        <p>
+                            1.8 = 2,5 years<br>
+                            1.42 = 5 years
+                        </p>
+                        <p>There have been many security related fixes in the meantime.<p>
+                        <p>If this is a problem with jQuery already, what about other components and libraries? (copy-pasta-projects)</p>
+                        <p>What can we do about it?</p>
+                    </aside>
+                </section>
+
+                <!-- ******************************************************* -->
+                <!-- Automate repetitive tasks                               -->
+                <!-- ******************************************************* -->
+
+                <section>
+                    <h3>
+                        <span class="highlight-blue">Node Security Project</span><br>
+                        + Retire.js
+                    </h3>
+
+                    <aside class="notes">
+                        <p>Collects security advisories on npm modules, lets you scan your package.json</p>
+                        <p>Detect old/vulnerable versions of jQuery, Angular, Backbone, Ember, etc.</p>
+                        <p>Cumbersome to do these checks regularly by hand, so …</p>
+                    </aside>
+                </section>
+
+
+                <section>
+                    <h3>Make security part of your build process</h3>
+
+                    <ul>
+                        <li class="fragment">Check for outdated/vulnerable dependencies</li>
+                        <li class="fragment">Lint your code, aim for high code coverage in your unit tests</li>
+                        <li class="fragment">Check inputs (forms, APIs, etc.) during integration tests:<br>
+                        Invalid input, null bytes, Unicode characters, HTML snippets, XSS vectors, etc.</li>
+                    </ul>
+
+                    <aside class="notes">
+                        <p>Both Node Security Project and Retire.js are available as CLI tool, and grunt/gulp task</p>
+                        <p>npm outdated</p>
+                        <p><strong style="color:red">~~~ PAUSE ~~~</strong></p>
+                        <p>Another important topic is …</p>
+                    </aside>
+                </section>
+
+                <!-- ******************************************************* -->
+                <!-- "Lockdown": Use SSL, Content Security Policy            -->
+                <!-- ******************************************************* -->
+
+                <section data-background="#001f30">
+                    <h2>Secure communication</h2>
+
+                    <aside class="notes">
+                        <p>When it comes to developing applications, we often forget that the web doesnʼt look like this.</p>
+                    </aside>
+                </section>
+
+                <section
+                    data-background="images/client-server-direct.svg"
+                    data-background-class="background-darkblue"
+                    data-source-class="source-blue"
+                    data-source-title="Icons by Edward Boatman and Anna Laura Fara from the Noun Project"
+                    aria-label="Graphic showing direct connection from webserver to client, which is incorrect">
+
+                    <aside class="notes">
+                        <p>While it is more accurate to this …</p>
+                    </aside>
+                </section>
+
+
+                <section
+                    data-background="images/client-server-real.svg"
+                    data-background-class="background-darkblue"
+                    data-source-class="source-blue"
+                    data-source-title="Icons by Edward Boatman and Anna Laura Fara from the Noun Project"
+                    aria-label="Graphic showing mesh of multiple servers connecting the webserver to client"
+                    >
+
+                    <aside class="notes">
+                        <p>HTTP is a plain text protocol, and as such your content can potentially be modified during every step in between your server and the client.</p>
+                    </aside>
+                </section>
+
+
+                <section
+                    data-background="images/client-server-mitm.svg"
+                    data-background-class="background-darkblue"
+                    data-source-class="source-blue"
+                    data-source-title="Icons by Edward Boatman and Anna Laura Fara from the Noun Project"
+                    aria-label="Same szenario as before, this time one of the servers forwards different data (Man in the Middle Attack)">
+
+                    <aside class="notes">
+                        <p>There is no guarantee that a user will get the exact same information we served.</p>
+                        <p>This is called "Man in the middle attacks"</p>
+                        <p>Doesn't have to be malicious, think of: Public wifi, corporate proxies, Telcos providers, mobile carriers or country specific content filters.</p>
+                    </aside>
+                </section>
+
+
+                <section>
+                    <h3>Use HTTPS with Transport Layer Security (TLS)</h3>
+                    <p><small>The succeeding protocol to SSL</small></p>
+
+                    <ul>
+                        <li class="fragment">… for site storing user data</li>
+                        <li class="fragment">… for downloads/software updates</li>
+                        <li class="fragment">… for the Internet of Things</li>
+                    </ul>
+
+                    <aside class="notes">
+                        <ul>
+                            <li>
+                                Files can be modified to contain viruses, Trojans or other malware.<br>
+                                Integrated update mechanism for applications
+                            </li>
+                            <li>
+                                Most protocols are simple plain text, no (or very poor) security implemented
+                                <p>
+                                    BMWʼs "Connected Car" technology (open your car with your mobile):
+                                    Over 2 million vehicles affected.
+                                </p>
+                            </li>
+                            <li>This is so important, that HTTP/2 will use secure communication via TLS by default</li>
+                    </aside>
+                </section>
+
+
+                <section>
+                    <p>
+                        <strong class="highlight-red">All your siteʼs content must be served via HTTPS.</strong><br><span class="hide-during-talk">
+                        Including ads, analytics, widgets, etc.<br></span>
+                        <span class="fragment">Make it stick using the <span class="highlight-blue">HTTP Strict Transport Security</span> header.</span>
+                    </p>
+
+                    <aside class="notes">
+                        <p class="hide-in-speakernotes">No "mixed content": Including ads, analytics, widgets, etc.</p>
+                        <p>Browser: Only connect via HTTPS, don't fall back to HTTP</p>
+                    </aside>
+                </section>
+
+
+                <section>
+                    <p>
+                        Be aware of possible side channels.<br>
+                        <span class="fragment"><span class="highlight-blue">And seal them using Content Security Policy.</span></span>
+                    </p>
+                    <aside class="notes">
+                        <p>"Content Security Policy" acts as whitelist for allowed resources (like scripts, images, iframes)</p>
+                        <p>This is not an uncommon, theoretical danger (as Rebecca showed, there's no party like 3rd party scripts) …</p>
+                    </aside>
+                </section>
+
+
+                <section
+                    data-background="images/theverge-doubleclick-malware.jpg"
+                    aria-label="Screenshot of The Verge, title: 'Googleʼs Doubleclick ad servers exposed millions of computers to malware'">
+
+                    <aside class="notes">
+                        <p>… when you look at how many of them we're using on a daily basis (ads, analytics, social media sharing, discussion widgets)</p>
+                        <p><strong style="color:red">~~~ PAUSE ~~~</strong></p>
+                        <p>So we saw there are a lot of things to consider. It's hard to keep an eye on <em>all</em> them <em>all the time</em> by yourself …</p>
+                    </aside>
+                </section>
+
+                <!-- ******************************************************* -->
+                <!-- Logging and analysis                                    -->
+                <!-- ******************************************************* -->
+
+                <section data-background="#001f30">
+                    <h2>Gather metrics</h2>
+
+                    <aside class="notes">
+                        <p>Find out, what's <strong>really</strong> going on.</p>
+                        <p>The best way to do so is by using centralized logging …</p>
+                    </aside>
+                </section>
+
+                <section>
+                    <p>
+                        <span class="highlight-blue">Use centralized logging to detect unusual behavior patterns.</span>
+                        <span class="hide-during-talk"><small>Logins and password resets, file access attempts, activity from different IP ranges, …</small><br></span>
+                        Set up automated notifications and alerts.
+                    </p>
+
+                    <aside class="notes">
+                        <p class="hide-in-speakernotes">Logins and password resets, file access attempts, activity from different IP ranges, …</p>
+                        <p>Set up automated notifications and alerts matching your requirements</p>
+                    </aside>
+                </section>
+
+                <!-- ******************************************************* -->
+                <!-- Recap                                                   -->
+                <!-- ******************************************************* -->
+
+                <!--
+                <section data-background="#001f30">
+                    <h2>.wrapUp()</h2>
+                </section>
+
+                <section>
+                    <h2>Develop defensively</h2>
+
+                    <ul>
+                        <li class="fragment">Strictly validate and sanitize all incoming data</li>
+                        <li class="fragment">Choose libraries with good security defaults</li>
+                        <li class="fragment">Check for outdated/vulnerable dependencies</li>
+                        <li class="fragment">Make security part of your build process</li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h2>Develop defensively</h2>
+
+                    <ul>
+                        <li class="fragment">Deliver <span class="highlight-blue">all</span> your websiteʼs resources through HTTPS</li>
+                        <li class="fragment">Be aware of possible side channels (e.g. 3rd party scripts)</li>
+                        <li class="fragment">Make use of logging: Analyze suspicious patterns</li>
+                    </ul>
+                </section>
+                -->
+
+                <section data-background="#001f30">
+                    <p class="highlight-blue">
+                        <strong class="highlight-red">Security is always an ongoing effort.</strong><br>
+                        Revise your tools and processes when necessary.
+                    </p>
+
+                    <aside class="notes">
+                        <p>Have regular security audits</p>
+                        <p>be attentive/keep an eye on the subject</p>
+                        <p>Note: Who those of you, who want to go deeper into the topic, I have a list of resources compiled for you …</p>
+                    </aside>
+                </section>
+
+
+                <section id="thanks" data-background="#001f30">
+                    <h2>Thank you and stay safe!</h2>
+                    <p><a href="http://fhember.gr/websecurity-resources">fhember.gr/websecurity-resources</a></p>
+
+                    <h6>Frederic Hemberger</h6>
+                    <a href="https://frederic-hemberger.de">frederic-hemberger.de</a><br>
+                    <a href="https://twitter.com/fhemberger">@fhemberger</a>
+                </section>
+
+            </div>
+
+            <footer id="source" class="source-blue"></footer>
+        </div>
+
+        <script src="../reveal.js/lib/js/head.min.js"></script>
+        <script src="../reveal.js/js/reveal.min.js"></script>
+
+        <script>
+            // Detect presenter mode
+            if ( window.location.search.match(/receiver/) ) { document.getElementsByTagName('body')[0].className = 'receiver'; }
+
+            // Full list of configuration options available here:
+            // https://github.com/hakimel/reveal.js#configuration
+            Reveal.initialize({
+                controls: false,
+                progress: true,
+                history: true,
+                center: true,
+
+                // width: 1000,
+                theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
+                transition: Reveal.getQueryHash().transition || 'none', // default/cube/page/concave/zoom/linear/fade/none
+
+                // Optional libraries used to extend on reveal.js
+                dependencies: [
+                    { src: '../reveal.js/lib/js/classList.js', condition: function() { return !document.body.classList; } },
+                    { src: '../reveal.js/plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+                    { src: '../reveal.js/plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
+                    { src: '../reveal.js/plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }
+                ]
+            });
+
+            // Show source footer for the current slide
+            var sourceContainer = document.getElementById('source');
+            Reveal.addEventListener('slidechanged', function (event) {
+                if (event.previousSlide.hasAttribute('data-source-url') || event.previousSlide.hasAttribute('data-source-title')) {
+                    sourceContainer.innerHTML = '';
+                }
+
+                if (event.currentSlide.hasAttribute('data-source-url') || event.currentSlide.hasAttribute('data-source-title')) {
+                    var url       = event.currentSlide.getAttribute('data-source-url');
+                    var title     = event.currentSlide.getAttribute('data-source-title') || url;
+
+                    var className = event.currentSlide.getAttribute('data-source-class');
+                    if (className) { sourceContainer.classList.add(className); }
+
+                    if (url)   { return sourceContainer.innerHTML = 'Source: <a href="' + url + '">' + title + '</a>'; }
+                    if (title) { return sourceContainer.innerHTML = title; }
+                }
+            });
+
+            // Set classes for the background (e.g. background color for image)
+            Reveal.addEventListener('ready', function (event) {
+                var backgrounds = document.querySelectorAll('.backgrounds .slide-background');
+
+                [].forEach.call(document.querySelectorAll('.slides section'), function (slide, index) {
+
+                    if ( slide.hasAttribute('data-background-class') ) {
+                        backgrounds[index].classList.add( slide.getAttribute('data-background-class') )
+                    }
+                });
+            });
+        </script>
+
+        <script src="//www.frederic-hemberger.de/piwik/piwik.js" defer async></script>
+        <noscript><img src="//www.frederic-hemberger.de/piwik/piwik.php?idsite=1&amp;rec=1" style="border:0" alt=""></noscript>
+
+    </body>
+</html>
