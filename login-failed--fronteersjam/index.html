@@ -82,8 +82,11 @@
             #thanks dd { float: left; margin-left: 0; }
         </style>
 
-        <!-- If the query includes 'print-pdf', use the PDF print sheet -->
         <script>
+            var _paq = _paq || [];
+            _paq.push(['trackPageView'],['enableLinkTracking'],['setTrackerUrl', '//www.frederic-hemberger.de/piwik/piwik.php'],['setSiteId', '1']);
+
+            // If the query includes 'print-pdf', use the PDF print sheet
             document.write( '<link rel="stylesheet" href="../reveal.js/css/print/' + ( window.location.search.match( /print-pdf/gi ) ? 'pdf' : 'paper' ) + '.css" type="text/css" media="print">' );
         </script>
 
@@ -377,6 +380,9 @@ monkey          password1
                 ]
             });
         </script>
+
+        <script src="//www.frederic-hemberger.de/piwik/piwik.js" defer async></script>
+        <noscript><img src="//www.frederic-hemberger.de/piwik/piwik.php?idsite=1&amp;rec=1" style="border:0" alt=""></noscript>
 
     </body>
 </html>
