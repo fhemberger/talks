@@ -122,6 +122,9 @@ Cross-Site-Scripting describes an attack of executing foreign (potentially malic
 * [html5sec.org](https://html5sec.org/) ([GitHub](https://github.com/cure53/H5SC))  
 *Wide list of XSS vector examples and affected browsers. The GitHub repository contains links to further tools, file upload tests, feed reader XSS tests, etc.*
 
+[Article: Finding Zero-Day XSS Vulns via Doc Metadata](http://pen-testing.sans.org/blog/pen-testing/2014/12/04/cross-site-scripting-through-file-metedata)  
+*XSS attacks can also occur where you wouldn't expect them in the first place. For example in metadata of files uploaded to your website (e.g. EXIF data stored in photos).*
+
 * [OWASP: XSS Prevention Cheat Sheet](https://www.owasp.org/index.php/XSS_Prevention_Cheat_Sheet)
 
 * [HTML Purifier](http://htmlpurifier.org/)  
