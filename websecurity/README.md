@@ -49,7 +49,7 @@ Find known vulnerabilities in packages and frameworks.
 
 * [Security in MySQL](https://dev.mysql.com/doc/mysql-security-excerpt/5.1/en/index.html)
 * [Article: MongoDB - Security Weaknesses in a typical NoSQL database](https://www.trustwave.com/Resources/SpiderLabs-Blog/Mongodb---Security-Weaknesses-in-a-typical-NoSQL-database/)
-* [PDF: MongoDB at risk](http://cispa.saarland/wp-content/uploads/2015/02/MongoDB_documentation.pdf)
+* [PDF: MongoDB at risk](http://cispa.saarland/wp-content/uploads/2015/02/MongoDB_documentation.pdf)  
 *Students of the Center for IT-Security, Privacy and Accountability discover Several thousand MongoDBs without access control on the Internet*
 * [MongoDB Security Tutorials](http://docs.mongodb.org/manual/administration/security/)
 * [CouchDB – The Definitive Guide: Security](http://guide.couchdb.org/draft/security.html)
@@ -97,12 +97,15 @@ Assumed you have full administration rights on your server, the following links 
 * [SSL Labs](https://www.ssllabs.com/)  
 *Test your site’s certificate and configuration, your browser’s SSL implementation and learn how to deploy SSL/TLS correctly*
 
+* [Public Key Pinning](https://developer.mozilla.org/en-US/docs/Web/Security/Public_Key_Pinning)  
+*Security feature to associate your certificate's specific public key with your web server to prevent "Man In The Middle" attacks with forged certificates.*
+
 
 ## Secure applications
 
 ### Safer interaction with the browser
 
-* [OWASP: HTML5 Security Cheat Sheet](https://www.owasp.org/index.php/HTML5_Security_Cheat_Sheet)
+* [OWASP: HTML5 Security Cheat Sheet](https://www.owasp.org/index.php/HTML5_Security_Cheat_Sheet)  
 *A good overview how to handle HTML5 features like Web Sockets, Storage APIs, Web Workers, iframes safely. Also lists some useful HTTP headers to encance security.*
 
 * [Talk: In the DOM, no one will hear you scream](http://slideshare.net/x00mario/in-the-dom-no-one-will-hear-you-scream)  
@@ -126,6 +129,9 @@ Cross-Site-Scripting describes an attack of executing foreign (potentially malic
 *XSS attacks can also occur where you wouldn't expect them in the first place. For example in metadata of files uploaded to your website (e.g. EXIF data stored in photos).*
 
 * [OWASP: XSS Prevention Cheat Sheet](https://www.owasp.org/index.php/XSS_Prevention_Cheat_Sheet)
+
+* [OWASP: XSS Filter Evasion Cheat Sheet](https://www.owasp.org/index.php/XSS_Filter_Evasion_Cheat_Sheet)  
+*Test your XSS filtering with this list of different injection methods*
 
 * [HTML Purifier](http://htmlpurifier.org/)  
 *HTML filtering implementation in PHP*
@@ -153,6 +159,9 @@ The Content-Security-Policy HTTP header acts as a whitelist for different conten
 
 * [blankie](https://github.com/nlf/blankie)  
 *hapi.js: A plug-in that makes Content-Security-Policy headers easy*
+
+* [simple-csp](https://www.npmjs.com/package/simple-csp)  
+*Very simple Content Security Policy manager for Node.js*
 
 
 ### Cross-Site Request Forgery (CSRF)
