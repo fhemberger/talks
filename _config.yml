@@ -1,5 +1,5 @@
 # Site settings
-url: "http://frederic-hemberger.de" # the base hostname & protocol for your site
+url: "https://frederic-hemberger.de" # the base hostname & protocol for your site
 
 # Build settings
 markdown: kramdown
