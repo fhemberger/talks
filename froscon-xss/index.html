@@ -724,14 +724,11 @@ Header always set Content-Security-Policy: …↩
                 history: true,
                 center: true,
 
-                // width: 1000,
-                theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
-                transition: /*Reveal.getQueryHash().transition ||*/ 'none', // default/cube/page/concave/zoom/linear/fade/none
+                transition: 'none', // default/cube/page/concave/zoom/linear/fade/none
 
                 // Optional libraries used to extend on reveal.js
                 dependencies: [
                     { src: '../reveal.js/lib/js/classList.js', condition: function() { return !document.body.classList; } },
-                    // { src: '../reveal.js/plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
                     { src: '../reveal.js/plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
                     { src: '../reveal.js/plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }
                 ]
@@ -769,8 +766,8 @@ Header always set Content-Security-Policy: …↩
             });
         </script>
 
-<!--         <script src="//www.frederic-hemberger.de/piwik/piwik.js" defer async></script>
+        <script src="//www.frederic-hemberger.de/piwik/piwik.js" defer async></script>
         <noscript><img src="//www.frederic-hemberger.de/piwik/piwik.php?idsite=1&amp;rec=1" style="border:0" alt=""></noscript>
- -->
+
     </body>
 </html>
