@@ -1,0 +1,33 @@
+{
+  "name": "hapi-swagger-demo",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Hapi and Swagger, sitting in a tree …",
+  "scripts": {
+    "start": "node app/index.js"
+  },
+  "author": "Frederic Hemberger <mail@frederic-hemberger.de> (https://frederic-hemberger.de/)",
+  "dependencies": {
+    "boom": "^2.9.0",
+    "config": "^1.16.0",
+    "good": "^6.4.0",
+    "good-console": "^5.1.0",
+    "hapi": "^10.4.1",
+    "hapi-jsonapi": "fhemberger/hapi-jsonapi#757fadf0a8b0a5588e9ef72b8610295a92fc8c67",
+    "hapi-swagger": "^2.1.0",
+    "inert": "^3.1.0",
+    "joi": "^6.9.0",
+    "vision": "^3.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/fhemberger/talks/tree/master/hapi-swagger"
+  },
+  "keywords": [
+    "hapi",
+    "swagger",
+    "api",
+    "jsonapi"
+  ],
+  "license": "CC0"
+}
