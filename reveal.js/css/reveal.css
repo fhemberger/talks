@@ -1299,6 +1299,16 @@ html:-moz-full-screen-ancestor {
   font-family: Helvetica, sans-serif;
   -webkit-overflow-scrolling: touch; }
 
+/* CUSTOM: BEGIN */
+.reveal .speaker-notes  .slides section .fragment {
+  opacity: 1;
+  color: #ff0000;
+  visibility: visible; }
+
+.reveal .speaker-notes .slides section .fragment.visible {
+  color: inherit; }
+/* CUSTOM: END */
+
 .reveal .speaker-notes.visible:not(:empty) {
   display: block; }
 
