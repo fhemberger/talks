@@ -1,3 +1,3 @@
-# Talks by Frederic Hemberger
+# Resources and demos from my talks
 
-see [fhemberger.github.io/talks](http://fhemberger.github.io/talks).
+For details and slides see [frederic-hemberger.de/talks/](https://frederic-hemberger.de/talks/).
