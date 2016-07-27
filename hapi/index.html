@@ -13,6 +13,7 @@
 
         <link rel="stylesheet" href="../reveal.js/css/reveal.min.css">
         <link rel="stylesheet" href="../reveal.js/css/theme/white.css">
+        <link rel="stylesheet" href="../reveal.js/plugin/reveal-a11y/accessibility/helper.css">
         <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,600,400italic,600italic" rel="stylesheet" type="text/css">
 
         <!-- For syntax highlighting -->
@@ -363,7 +364,8 @@ exports.register.attributes = {
                     { src: '../reveal.js/lib/js/classList.js', condition: function() { return !document.body.classList; } },
                     { src: '../reveal.js/plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
                     { src: '../reveal.js/plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
-                    { src: '../reveal.js/plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }
+                    { src: '../reveal.js/plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } },
+                    { src: '../reveal.js/plugin/reveal-a11y/accessibility/helper.js', async: true, condition: function() { return !!document.body.classList; } }
                 ]
             });
         </script>

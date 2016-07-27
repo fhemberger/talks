@@ -13,6 +13,7 @@
 
         <link rel="stylesheet" href="../reveal.js/css/reveal.min.css">
         <link rel="stylesheet" href="../reveal.js/css/theme/black.css" id="theme">
+        <link rel="stylesheet" href="../reveal.js/plugin/reveal-a11y/accessibility/helper.css">
 
         <!-- For syntax highlighting -->
         <link rel="stylesheet" href="../reveal.js/lib/css/monokai.css">
@@ -344,6 +345,7 @@ require(['json!package.json'], function (package) {
                     { src: '../reveal.js/lib/js/classList.js', condition: function() { return !document.body.classList; } },
                     { src: '../reveal.js/plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
                     { src: '../reveal.js/plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
+                    { src: '../reveal.js/plugin/reveal-a11y/accessibility/helper.js', async: true, condition: function() { return !!document.body.classList; } }
                 ]
             });
         </script>
