@@ -1,0 +1,713 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>Talk: There’s no party like 3rd party! - How to handle dependencies securely | Frederic Hemberger</title>
+        <meta name="author" content="Frederic Hemberger">
+
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+        <link rel="canonical" href="https://frederic-hemberger.de/talks/third-party/">
+
+        <link rel="stylesheet" href="../reveal.js/css/reveal.min.css">
+        <link rel="stylesheet" href="../reveal.js/css/theme/white.css">
+        <link rel="stylesheet" href="../reveal.js/lib/css/github.css">
+        <link rel="stylesheet" href="../reveal.js/plugin/reveal-a11y/accessibility/helper.css">
+
+        <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,600" rel="stylesheet" type="text/css">
+
+        <style>
+            /* Fragments in speaker notes */
+            .receiver .reveal .slides section .fragment,
+            .receiver .reveal .slides section .fragment * { opacity: 1; color: #ff0000; visibility: visible; }
+            .receiver .reveal .slides section .fragment.visible,
+            .receiver .reveal .slides section .fragment.visible * { color: inherit; }
+
+
+            .reveal .slides { text-rendering: optimizeLegibility; text-align: left; font-weight: 300; }
+            .reveal .has-dark-background {
+                -webkit-font-smoothing: antialiased;
+                -moz-osx-font-smoothing: grayscale;
+            }
+
+            .centered { text-align: center; }
+
+            /* Cover slide */
+            #cover h1,
+            #cover p  { color: #001f30; line-height: 1; }
+            #cover h1 { font-size: 1.6em; font-weight: 600; }
+            #cover p  { margin-top: 5em; }
+            #cover img { height: 1em; }
+
+            /* Content styles */
+            .reveal h1 { font-size: 1.5em; }
+            .reveal h1, .reveal h2, .reveal h3, .reveal h4, .reveal h5, .reveal h6 {
+                font-weight: 300; text-transform: initial;
+            }
+
+            .reveal strong, .reveal b { font-weight: 600; }
+            .reveal s { color: #e31445; }
+            .reveal section img { box-shadow: initial; border: initial; background-color: transparent; }
+            .reveal blockquote {
+                width: 80%;
+                margin: inherit;
+                font-size: 1.2em;
+                box-shadow: none;
+                background: transparent;
+            }
+
+            .reveal blockquote footer {
+                margin-top: 1em;
+                font-size: 0.8em;
+                box-shadow: none;
+            }
+
+            .reveal pre { box-shadow: none; width: 100%; }
+            .reveal pre code { padding: inherit; background: inherit; color: inherit; }
+
+            .reveal pre.fragment { margin: 0; }
+            .reveal pre.large-code,
+            .reveal p code { font-size: 0.85em; }
+
+            .reveal .slide-background { background-position: top center; background-size: contain; -webkit-transition: none; transition: none; }
+            .reveal .progress:after { height: auto; }
+
+            /* Closing slide */
+            #thanks h2,
+            #thanks p  { text-align: left; }
+            #thanks h6 { margin: 2.5em auto 0.25em; text-align: left; }
+
+            /* Source attribution at the bottom of the slide */
+            footer#source {
+                position: absolute;
+                bottom: 0;
+                left: 0;
+                font-size: 0.5em;
+                margin: 0.5em;
+                z-index: 2;
+            }
+            .source-blue { color: #007196; }
+
+            /* Dark slide background: #001f30 */
+            .highlight-red      { color: #e31445; }
+            .highlight-blue     { color: #00a3d9; }
+            .highlight-darkblue { color: #001f30; }
+
+            .reveal a { color: #00a3d9; }
+            .reveal .progress span { background: #00a3d9; }
+            .reveal .background-black    { background-color: #000; }
+            .reveal .background-gray     { background-color: #c2c2c2; }
+            .reveal .background-darkblue     { background-color: #00a3d9; }
+            .reveal .background-blue { background-color: #001f30; }
+
+            .reveal button {
+                background-color: #c2c2c2;
+                color: #000;
+                padding: 0 12px;
+                min-width: 52px;
+                border-width: 0;
+                border-style: solid;
+                border-radius: 2px;
+                vertical-align: top;
+                text-align: center;
+                text-overflow: ellipsis;
+                font-size: 16px;
+                line-height: 42px;
+                cursor: pointer;
+            }
+
+            /* Hide in actual talk, show in the slides later on */
+            .hide-during-talk { display: none; }
+            /* Hide in speaker notes when .hide-during-talk is disabled */
+            /*.hide-in-speakernotes { display: none; }*/
+        </style>
+
+        <script>
+            var _paq = _paq || [];
+            _paq.push(['trackPageView'],['enableLinkTracking'],['setTrackerUrl', '//www.frederic-hemberger.de/piwik/piwik.php'],['setSiteId', '1']);
+
+            // If the query includes 'print-pdf', use the PDF print sheet
+            document.write( '<link rel="stylesheet" href="../reveal.js/css/print/' + ( window.location.search.match( /print-pdf/gi ) ? 'pdf' : 'paper' ) + '.css" type="text/css" media="print">' );
+        </script>
+
+        <!--[if lt IE 9]>
+        <script src="../reveal.js/lib/js/html5shiv.js"></script>
+        <![endif]-->
+    </head>
+
+    <body>
+
+        <div class="reveal">
+
+            <!-- Any section element inside of this container is displayed as a slide -->
+            <div class="slides">
+
+                <section id="cover">
+                    <div>
+                        <h1>There’s no party like 3rd party!</h1>
+                        <h4>How to handle dependencies securely</h4>
+                        <p>
+                            Frederic Hemberger<br>
+                            <img src="images/gdg-logo.svg" alt="GDG DevFest 2016">
+                        </p>
+                    </div>
+
+                    <aside class="notes">
+                        <p>Hi, my name is Frederic Hemberger.</p>
+                        <p>Iʼm working as a freelance JavaScript developer in Cologne, Germany</p>
+                    </aside>
+                </section>
+
+                <section class="background-darkblue">
+                    <h2>Third party code</h2>
+
+                    <aside class="notes">
+                        <p>
+                            3rd party? We all use frameworks, libraries and external services.<br>
+                            They are essential for our project.
+                        </p>
+                        <p>How to keep track of all the code?</p>
+                        <p>How to make sure they don’t introduce vulnerabilities?</p>
+                    </aside>
+                </section>
+
+                <section class="background-blue">
+                    <h2>
+                        Know the sources<br>
+                        Limit the sources
+                    </h2>
+
+                    <aside class="notes">
+                        Some projects still use npm, bower, GitHub, some version of jQuery copied from an old project …<br>
+                        Hard to keep track of where the code is coming from and which version is used.
+                    </aside>
+                </section>
+
+                <section class="centered">
+                    <img src="images/npm-logo.svg" alt="npm">
+
+                    <aside class="notes">
+                        <p>
+                            One package manager to get stuff from all kinds of sources: npm registry (300.000 modules), private registries, Git-Repositories, tar-Files, etc.
+                        </p>
+                        <p>Extensive tooling</p>
+                    </aside>
+                </section>
+
+                <section class="background-blue">
+                    <h2>Keep dependencies up to date</h2>
+                </section>
+
+                <section
+                    data-background="#001f30"
+                    data-source-url="http://erlend.oftedal.no/blog/?blogid=142"
+                    data-source-title="Scanning Alexa Top 100,000 for JavaScript libraries with known vulnerabilities">
+                    <p>
+                        2014: On Alexaʼs Top 100,000 websites,<br>
+                        <span class="fragment"><span class="highlight-blue">75% use a jQuery version older than 2½ years.</span></span><br>
+                        <span class="fragment"><span class="highlight-red">On 35% itʼs even older than 5 years.</span></span>
+                    </p>
+
+                    <aside class="notes">
+                        <p>Erlend Oftedal (Norway)</p>
+                        <p>
+                            1.8 = 2,5 years<br>
+                            1.42 = 5 years
+                        </p>
+                        <p>There have been many security related fixes in the meantime.<p>
+                        <p>If this is a problem with jQuery already, what about other components and libraries? (copy-pasta-projects)</p>
+                    </aside>
+                </section>
+
+                <section
+                    data-background="#001f30"
+                    data-source-url="https://twitter.com/webtonull/status/748129941229830146"
+                    data-source-title="Twitter: @webtonull (2016-06-29)">
+                    <p>
+                        2016: Scanning the domains of the Fortune 500 companies,<br>
+                        <span class="fragment"><span class="highlight-red">83% contained vulnerable libraries.</span></span>
+                    </p>
+                </section>
+
+                <section class="background-blue">
+                    <h2>What can we do about it?</h2>
+                </section>
+
+                <section
+                    data-background-class="background-black"
+                    data-background-image="images/screenshot-npm-check.png"
+                    data-source-url="https://www.npmjs.com/package/npm-check"
+                    data-source-title="npm-check"
+                >
+                    <aside class="notes">
+                        <ul>
+                            <li>In what intervals do you check for updates? (weekly, monthly, before each release)</li>
+                            <li>Who is responsible for the update in your team?</li>
+                            <li>Who ensures everything still works as expected? Especially if many dependencies change?
+                        </ul>
+                    </aside>
+                </section>
+
+                <section>
+                    <h2><a href="https://greenkeeper.io/">greenkeeper.io</a></h2>
+                </section>
+
+                <section
+                    data-background-image="images/screenshot-greenkeeper-pr.png"
+                    data-background-position="center center"
+                    data-background-size="800px auto"
+                >
+                </section>
+
+                <section class="background-blue">
+                    <h2>Discover vulnerabilities</h2>
+                </section>
+
+                <section>
+                    <h2><a href="https://snyk.io/">snyk.io</a></h2>
+
+                    <aside class="notes">
+                        Open vulnerability database for npm modules with detailed information
+                    </aside>
+                </section>
+
+                <section
+                    data-background-image="images/screenshot-snyk-alert.png"
+                    data-background-position="center center"
+                    data-background-size="800px auto"
+                >
+                    <aside class="notes">
+                        <p>Alert on vulnerable dependencies</p>
+                        <p>Also backported patches, if vulnerability was fixed in current version</p>
+                    </aside>
+                </section>
+
+                <section
+                    data-background-image="images/screenshot-snyk-prevent.png"
+                    data-background-position="center center"
+                    data-background-size="800px auto"
+                >
+                    <aside class="notes">
+                        Prevent adding of vulnerable dependencies
+                    </aside>
+                </section>
+
+                <section class="background-darkblue">
+                    <h2>Third party code in the browser</h2>
+
+                    <aside class="notes">
+                        We checked our dependencies on build, we keep them up to date …<br>
+                        But what about external services (CDNs, Analytics, Ads, etc.)<br>
+                        What could possibly go wrong?
+                    </aside>
+                </section>
+
+                <!-- ******************************************************* -->
+                <!-- What is XSS?                                            -->
+                <!-- ******************************************************* -->
+
+                <section class="background-blue">
+                    <h3>
+                        Third party code in the browser =<br>
+                        »Allowed« Cross Site Scripting (XSS)
+                    </h3>
+                </section>
+
+                <section>
+                    <pre class="large-code">&lt;script&gt;</pre>
+                    <pre class="large-code fragment">- manipulate the siteʼs appearance</pre>
+                    <pre class="large-code fragment">- manipulate cookies, localStorage, etc.</pre>
+                    <pre class="large-code fragment">- steal session credentials, tokens, etc.</pre>
+                    <pre class="large-code fragment">- load malicious code via XMLHttpRequest</pre>
+                    <pre class="large-code fragment">- do whatever the heck you want</pre>
+                    <pre class="large-code">&lt;/script&gt;</pre>
+                </section>
+
+                <section
+                    data-background-class="background-black"
+                    data-background-image="images/flickr-chrisgold-partyanimals.jpg"
+                    data-source-url="https://www.flickr.com/photos/chrisgold/9171483238/"
+                    data-source-title="flickr: Chris Goldberg (CC-BY)">
+                </section>
+
+                <section
+                    data-background="images/theverge-doubleclick-malware.jpg"
+                    aria-label="Screenshot of The Verge, title: 'Googleʼs Doubleclick ad servers exposed millions of computers to malware'">
+                </section>
+
+                <!-- ******************************************************* -->
+                <!-- CSP                                                     -->
+                <!-- ******************************************************* -->
+
+                <section class="background-blue">
+                    <h3>Limit sources for third party content</h3>
+                    <h2>Content Security Policy</h2>
+
+                    <aside class="notes">
+                        <p>"Content Security Policy" acts as <strong>whitelist</strong> for allowed resources (like scripts, images, iframes)</p>
+                    </aside>
+                </section>
+
+                <section>
+                    <h3>Content Security Policy:<br>A HTTP response header</h3>
+                    <pre>
+Cache-Control: public
+Content-Encoding: gzip
+Content-Length: 2373
+Content-Security-Policy: …
+Content-Type:text/html; charset=utf-8
+Date: Wed, 19 Oct 2016 11:22:05 GMT
+…</pre>
+                </section>
+
+                <section>
+                    <h3>Content Security Policy example</h3>
+                    <pre>
+                        <code data-trim>
+# .htaccess
+
+Header set Content-Security-Policy: ↩
+  "script-src 'self' https://code.jquery.com"
+                        </code>
+                    </pre>
+                </section>
+
+                <section>
+                    <h3>Content Security Policy example</h3>
+                    <pre><code class="html" data-trim>
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;script src="https://code.jquery.com/jquery.js"&gt;&lt;/script&gt;
+&lt;/head&gt;
+&lt;body&gt;
+</code></pre>
+<pre class="fragment"><code class="html">    &lt;!-- this got injected somehow --&gt;
+    &lt;script src="https://evil.com/evil.js"&gt;&lt;/script&gt;</code></pre>
+<pre><code data-trim>&lt;/body&gt;
+&lt;/html&gt;
+                    </code></pre>
+                </section>
+
+                <section>
+                    <h3>Content Security Policy example</h3>
+                    <p>Loading/executing the script from <em>evil.com</em> is suppressed:</p>
+                    <img src="images/screenshot-chrome-devtools-csp.png" alt="CSP warining message in Chrome Developer Tools" style="width:100%">
+                </section>
+
+                <section>
+                    <h3>CSP Directives</h3>
+
+                    <ul style="width:50%;float:left">
+                        <li>child-src</li>
+                        <li>connect-src</li>
+                        <li>default-src</li>
+                        <li>font-src</li>
+                        <li>form-action</li>
+                        <li>frame-ancestors</li>
+                        <li>img-src</li>
+                    </ul>
+                    <ul>
+                        <li>media-src</li>
+                        <li>object-src</li>
+                        <li>plugin-types</li>
+                        <li>report-uri</li>
+                        <li>sandbox</li>
+                        <li>script-src</li>
+                        <li>style-src</li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h3>A more complex example</h3>
+                    <p>jQuery CDN, Google web fonts, embedded YouTube videos</p>
+                    <pre class="fragment"><code>Header set Content-Security-Policy: " \</code></pre>
+                    <pre class="fragment"><code>  default-src 'none'; \</code></pre>
+                    <pre class="fragment"><code>  script-src 'self' https://code.jquery.com; \</code></pre>
+                    <pre class="fragment"><code>  style-src 'self' https://fonts.googleapis.com; \</code></pre>
+                    <pre class="fragment"><code>  font-src https://themes.googleusercontent.com; \</code></pre>
+                    <pre class="fragment"><code>  img-src 'self' data:; \</code></pre>
+                    <pre class="fragment"><code>  frame-src https://www.youtube.com;"</code></pre>
+                </section>
+
+                <section>
+                    <h3>CSP Sources</h3>
+                    <p class="hide-during-talk">
+                        <small>
+                            You can specify sources by scheme (<em>data:, https:</em>), hostname (<em>example.com</em>),
+                            fully qualified URI (<em>https://example.com:443</em>) or wildcard (<em>*://*.example.com:*</em>)
+                        </small>
+                    </p>
+                    <ul>
+                        <li class="fragment"><strong>'none'</strong>: Forbids a source type entirely</li>
+                        <li class="fragment"><strong>'self'</strong>: matches the current origin (but not subdomains)</li>
+                        <li class="fragment"><strong>'unsafe-inline'</strong>: allows inline JavaScript and CSS</li>
+                        <li class="fragment"><strong>'unsafe-eval'</strong>: allows JavaScript parsing with eval(), etc.</li>
+                    </ul>
+                    <p class="fragment">
+                        <strong>Warning:</strong> <em>'unsafe-inline'</em> / <em>'unsafe-eval'</em>
+                        will execute <strong>all</strong><br> inline scripts, including possible XSS vectors.
+                    </p>
+
+                    <aside class="notes">
+                        <span class="hide-in-speakernotes">
+                            You can specify sources by scheme (<em>data:, https:</em>), hostname (<em>example.com</em>),
+                            fully qualified URI (<em>https://example.com:443</em>) or wildcard (<em>*://*.example.com:*</em>)
+                        </span>
+                    </aside>
+                </section>
+
+                <section>
+                    <h3>If you can't get around inline scripts, use 'nonce'</h3>
+                    <pre><code class="html" data-trim>
+&lt;script nonce="EDNnf03nceIOfn39fn3e9h3sdfa"&gt;
+    …
+&lt;/script&gt;
+                    </code></pre>
+                    <pre><code data-trim>
+Header set Content-Security-Policy: ↩
+  "script-src 'nonce-EDNnf03nceIOfn39fn3e9h3sdfa'"
+                    </code></pre>
+                </section>
+
+                <section>
+                    <h3>Testing your CSP rules</h3>
+                    <pre><code>Content-Security-Policy-Report-Only: [policy]</code></pre>
+                    <img class="fragment" src="images/screenshot-chrome-devtools-csp.png" alt="CSP warining message in Chrome Developer Tools" style="width:100%">
+                </section>
+
+                <section>
+                    <h3>Collect reports on what gets blocked</h3>
+                    <pre><code data-trim>
+Header set Content-Security-Policy: …↩
+  report-uri /my/reporting/endpoint
+                    </code></pre>
+                    <p><small>You can also use <a href="https://report-uri.io/">report-uri.io</a> for CSP data collection</small></p>
+                </section>
+                <section>
+                    <h3>Collect reports on what gets blocked</h3>
+                    <pre><code class="javascript" data-trim>
+{
+  "csp-report": {
+    "document-uri": "http://example.com/signup.html",
+    "referrer": "",
+    "blocked-uri": "http://example.com/css/style.css",
+    "violated-directive": "style-src cdn.example.com",
+    "original-policy": "…"
+  }
+}
+                    </code></pre>
+                </section>
+
+                <section>
+                    <h3>Resources</h3>
+                    <p><a href="https://www.html5rocks.com/en/tutorials/security/content-security-policy/">HTML5 Rocks: An Introduction to Content Security Policy</a></p>
+                    <a href="https://content-security-policy.com/">content-security-policy.com</a>
+                </section>
+
+                <section class="centered">
+                    <h3>Browser support for Content Security Policy</h3>
+                    <table>
+                        <tr>
+                            <td><img src="../images/browserlogos/chrome.png" alt="Google Chrome"></td>
+                            <td><img src="../images/browserlogos/firefox.png" alt="Mozilla Firefox"></td>
+                            <td><img src="../images/browserlogos/ie.png" alt="Internet Explorer"></td>
+                            <td><img src="../images/browserlogos/opera.png" alt="Opera"></td>
+                            <td><img src="../images/browserlogos/safari.png" alt="Safari (OS X/iOS)"></td>
+                            <td><img src="../images/browserlogos/android.png" alt="Android Stock Browser"></td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:center;">25</td>
+                            <td style="text-align:center;">4</td>
+                            <td style="text-align:center;">10</td>
+                            <td style="text-align:center;">15</td>
+                            <td style="text-align:center;">6.1</td>
+                            <td style="text-align:center;">4.4</td>
+                        </tr>
+                    </table>
+
+                    <a href="http://caniuse.com/#search=csp&feature_sort=score">caniuse.com</a>
+                    <p><small>IE < Edge, some Android and/or older browsers may use<br>»X-Content-Security-Policy« or »X-Webkit-CSP«</small></p>
+                </section>
+
+                <!-- ******************************************************* -->
+                <!-- SRI                                                     -->
+                <!-- ******************************************************* -->
+
+                <section class="background-blue">
+                    <h3>Verify third party content:<h3>
+                    <h2>Subresource Integrity</h2>
+                </section>
+
+                <section>
+                    <pre><code class="html" data-trim>
+&lt;script src="https://cdn.example.com/jquery.min.js"&gt;&lt;/script&gt;
+                    </code></pre>
+
+                    <aside class="notes">
+                        Is this really the file we expect? How can we be sure it’s always the case?
+                    </aside>
+                </section>
+
+                <section>
+                    <ol>
+                        <li>Download the file from a trusted source</li>
+                        <li class="fragment">Verify its content</li>
+                        <li class="fragment">
+                            Create a hash:<br>
+                            <pre><code data-trim>$ cat jquery.min.js | openssl dgst -sha256 | openssl base64
+
+hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=</code></pre>
+                        </li>
+                        <li class="fragment">Do the same for the file from the CDN server</li>
+                        <li class="fragment">The hashes should match</li>
+                    </ol>
+                </section>
+
+                <section>
+                    <pre><code class="html" data-trim>
+&lt;script
+  src="https://cdn.example.com/jquery.min.js"
+  crossorigin="anonymous"
+  integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+&gt;&lt;/script&gt;
+                    </code></pre>
+                </section>
+
+                <section class="centered">
+                    <h3>Browser support for Subresource Integrity</h3>
+                    <table>
+                        <tr>
+                            <td><img src="../images/browserlogos/chrome.png" alt="Google Chrome"></td>
+                            <td><img src="../images/browserlogos/firefox.png" alt="Mozilla Firefox"></td>
+                            <td><img src="../images/browserlogos/ie.png" alt="Internet Explorer"></td>
+                            <td><img src="../images/browserlogos/opera.png" alt="Opera"></td>
+                            <td><img src="../images/browserlogos/safari.png" alt="Safari (OS X/iOS)"></td>
+                            <td><img src="../images/browserlogos/android.png" alt="Android Stock Browser"></td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:center;">45</td>
+                            <td style="text-align:center;">43</td>
+                            <td style="text-align:center;">–</td>
+                            <td style="text-align:center;">32</td>
+                            <td style="text-align:center;">–</td>
+                            <td style="text-align:center;">5</td>
+                        </tr>
+                    </table>
+
+                    <a href="http://caniuse.com/#search=subresource-integrity&feature_sort=score">caniuse.com</a>
+                    <p>
+                        <small>
+                            MS Edge status: <a href="http://status.modern.IE/subresourceintegrity">Under Consideration</a><br>
+                            WebKit status: <a href="http://webkit.org/status.html#feature-subresource-integrity">Under Consideration</a>
+                        </small>
+                    </p>
+                </section>
+
+                <!-- ******************************************************* -->
+                <!-- Recap                                                   -->
+                <!-- ******************************************************* -->
+
+                <section class="background-darkblue">
+                    <h2>Recap</h2>
+                </section>
+
+                <section>
+                    <h3>During development/build:</h3>
+
+                    <ul>
+                        <li class="fragment">Take a close look at third party code you plan to use</li>
+                        <li class="fragment">Use reliable sources, keep your dependencies up to date</li>
+                        <li class="fragment">Have your dependencies checked for vulnerabilities</li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h3>In the browser:</h3>
+
+                    <ul>
+                        <li class="fragment">Be aware of content injection attacks (XSS)</li>
+                        <li class="fragment">Limit third party sources with Content Security Policy</li>
+                        <li class="fragment">Verify the content of external scripts with Subresource&nbsp;Integrity</li>
+                    </ul>
+                </section>
+
+                <section id="thanks" class="background-blue">
+                    <h2>Thank you!</h2>
+
+                    <h6>Frederic Hemberger</h6>
+                    <a href="https://frederic-hemberger.de">frederic-hemberger.de</a><br>
+                    <a href="https://twitter.com/fhemberger">@fhemberger</a>
+                </section>
+
+            </div>
+
+            <footer id="source" class="source-blue"></footer>
+        </div>
+
+        <script src="../reveal.js/lib/js/head.min.js"></script>
+        <script src="../reveal.js/js/reveal.min.js"></script>
+
+        <script>
+            // Detect presenter mode
+            if ( window.location.search.match(/receiver/) ) { document.getElementsByTagName('body')[0].className = 'receiver'; }
+
+            // Full list of configuration options available here:
+            // https://github.com/hakimel/reveal.js#configuration
+            Reveal.initialize({
+                controls: false,
+                progress: true,
+                history: true,
+                center: true,
+
+                transition: 'none', // default/cube/page/concave/zoom/linear/fade/none
+
+                // Optional libraries used to extend on reveal.js
+                dependencies: [
+                    { src: '../reveal.js/lib/js/classList.js', condition: function() { return !document.body.classList; } },
+                    { src: '../reveal.js/plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+                    { src: '../reveal.js/plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
+                    { src: '../reveal.js/plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } },
+                    { src: '../reveal.js/plugin/reveal-a11y/accessibility/helper.js', async: true, condition: function() { return !!document.body.classList; } }
+                ]
+            });
+
+            // Show source footer for the current slide
+            var sourceContainer = document.getElementById('source');
+            Reveal.addEventListener('slidechanged', function (event) {
+                if (event.previousSlide.hasAttribute('data-source-url') || event.previousSlide.hasAttribute('data-source-title')) {
+                    sourceContainer.innerHTML = '';
+                }
+
+                if (event.currentSlide.hasAttribute('data-source-url') || event.currentSlide.hasAttribute('data-source-title')) {
+                    var url       = event.currentSlide.getAttribute('data-source-url');
+                    var title     = event.currentSlide.getAttribute('data-source-title') || url;
+
+                    var className = event.currentSlide.getAttribute('data-source-class');
+                    if (className) { sourceContainer.classList.add(className); }
+
+                    if (url)   { return sourceContainer.innerHTML = 'Source: <a href="' + url + '">' + title + '</a>'; }
+                    if (title) { return sourceContainer.innerHTML = title; }
+                }
+            });
+
+            // Set classes for the background (e.g. background color for image)
+            Reveal.addEventListener('ready', function (event) {
+                var backgrounds = document.querySelectorAll('.backgrounds .slide-background');
+
+                [].forEach.call(document.querySelectorAll('.slides section'), function (slide, index) {
+
+                    if ( slide.hasAttribute('data-background-class') ) {
+                        backgrounds[index].classList.add( slide.getAttribute('data-background-class') )
+                    }
+                });
+            });
+        </script>
+
+        <script src="//www.frederic-hemberger.de/piwik/piwik.js" defer async></script>
+        <noscript><img src="//www.frederic-hemberger.de/piwik/piwik.php?idsite=1&amp;rec=1" style="border:0" alt=""></noscript>
+
+    </body>
+</html>
