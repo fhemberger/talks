@@ -15,114 +15,9 @@
         <link rel="stylesheet" href="../_reveal.js/css/theme/white.css">
         <link rel="stylesheet" href="../_reveal.js/lib/css/github.css">
         <link rel="stylesheet" href="../_reveal.js/plugin/reveal-a11y/accessibility/helper.css">
+        <link rel="stylesheet" href="../_assets/threecolors.css">
 
         <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,600" rel="stylesheet" type="text/css">
-
-        <style>
-            /* Fragments in speaker notes */
-            .receiver .reveal .slides section .fragment,
-            .receiver .reveal .slides section .fragment * { opacity: 1; color: #ff0000; visibility: visible; }
-            .receiver .reveal .slides section .fragment.visible,
-            .receiver .reveal .slides section .fragment.visible * { color: inherit; }
-
-
-            .reveal .slides { text-rendering: optimizeLegibility; text-align: left; font-weight: 300; }
-            .reveal .has-dark-background {
-                -webkit-font-smoothing: antialiased;
-                -moz-osx-font-smoothing: grayscale;
-            }
-
-            .centered { text-align: center; }
-
-            /* Cover slide */
-            #cover h1,
-            #cover p  { color: #001f30; line-height: 1; }
-            #cover h1 { font-size: 1.6em; font-weight: 600; }
-            #cover p  { margin-top: 5em; }
-            #cover img { height: 1em; }
-
-            /* Content styles */
-            .reveal h1 { font-size: 1.5em; }
-            .reveal h1, .reveal h2, .reveal h3, .reveal h4, .reveal h5, .reveal h6 {
-                font-weight: 300; text-transform: initial;
-            }
-
-            .reveal strong, .reveal b { font-weight: 600; }
-            .reveal s { color: #e31445; }
-            .reveal section img { box-shadow: initial; border: initial; background-color: transparent; }
-            .reveal blockquote {
-                width: 80%;
-                margin: inherit;
-                font-size: 1.2em;
-                box-shadow: none;
-                background: transparent;
-            }
-
-            .reveal blockquote footer {
-                margin-top: 1em;
-                font-size: 0.8em;
-                box-shadow: none;
-            }
-
-            .reveal pre { box-shadow: none; width: 100%; }
-            .reveal pre code { padding: inherit; background: inherit; color: inherit; }
-
-            .reveal pre.fragment { margin: 0; }
-            .reveal pre.large-code,
-            .reveal p code { font-size: 0.85em; }
-
-            .reveal .slide-background { background-position: top center; background-size: contain; -webkit-transition: none; transition: none; }
-            .reveal .progress:after { height: auto; }
-
-            /* Closing slide */
-            #thanks h2,
-            #thanks p  { text-align: left; }
-            #thanks h6 { margin: 2.5em auto 0.25em; text-align: left; }
-
-            /* Source attribution at the bottom of the slide */
-            footer#source {
-                position: absolute;
-                bottom: 0;
-                left: 0;
-                font-size: 0.5em;
-                margin: 0.5em;
-                z-index: 2;
-            }
-            .source-blue { color: #007196; }
-
-            /* Dark slide background: #001f30 */
-            .highlight-red      { color: #e31445; }
-            .highlight-blue     { color: #00a3d9; }
-            .highlight-darkblue { color: #001f30; }
-
-            .reveal a { color: #00a3d9; }
-            .reveal .progress span { background: #00a3d9; }
-            .reveal .background-black    { background-color: #000; }
-            .reveal .background-gray     { background-color: #c2c2c2; }
-            .reveal .background-darkblue     { background-color: #00a3d9; }
-            .reveal .background-blue { background-color: #001f30; }
-
-            .reveal button {
-                background-color: #c2c2c2;
-                color: #000;
-                padding: 0 12px;
-                min-width: 52px;
-                border-width: 0;
-                border-style: solid;
-                border-radius: 2px;
-                vertical-align: top;
-                text-align: center;
-                text-overflow: ellipsis;
-                font-size: 16px;
-                line-height: 42px;
-                cursor: pointer;
-            }
-
-            /* Hide in actual talk, show in the slides later on */
-            .hide-during-talk { display: none; }
-            /* Hide in speaker notes when .hide-during-talk is disabled */
-            /*.hide-in-speakernotes { display: none; }*/
-        </style>
 
         <script>
             var _paq = _paq || [];
@@ -160,7 +55,7 @@
                     </aside>
                 </section>
 
-                <section class="background-darkblue">
+                <section class="background-blue">
                     <h2>Third party code</h2>
 
                     <aside class="notes">
@@ -173,7 +68,7 @@
                     </aside>
                 </section>
 
-                <section class="background-blue">
+                <section class="background-darkblue">
                     <h2>
                         Know the sources<br>
                         Limit the sources
@@ -196,7 +91,7 @@
                     </aside>
                 </section>
 
-                <section class="background-blue">
+                <section class="background-darkblue">
                     <h2>Keep dependencies up to date</h2>
                 </section>
 
@@ -231,7 +126,7 @@
                     </p>
                 </section>
 
-                <section class="background-blue">
+                <section class="background-darkblue">
                     <h2>What can we do about it?</h2>
                 </section>
 
@@ -261,7 +156,7 @@
                 >
                 </section>
 
-                <section class="background-blue">
+                <section class="background-darkblue">
                     <h2>Discover vulnerabilities</h2>
                 </section>
 
@@ -294,7 +189,7 @@
                     </aside>
                 </section>
 
-                <section class="background-darkblue">
+                <section class="background-blue">
                     <h2>Third party code in the browser</h2>
 
                     <aside class="notes">
@@ -308,7 +203,7 @@
                 <!-- What is XSS?                                            -->
                 <!-- ******************************************************* -->
 
-                <section class="background-blue">
+                <section class="background-darkblue">
                     <h3>
                         Third party code in the browser =<br>
                         »Allowed« Cross Site Scripting (XSS)
@@ -341,7 +236,7 @@
                 <!-- CSP                                                     -->
                 <!-- ******************************************************* -->
 
-                <section class="background-blue">
+                <section class="background-darkblue">
                     <h3>Limit sources for third party content</h3>
                     <h2>Content Security Policy</h2>
 
@@ -536,7 +431,7 @@ Header set Content-Security-Policy: …↩
                 <!-- SRI                                                     -->
                 <!-- ******************************************************* -->
 
-                <section class="background-blue">
+                <section class="background-darkblue">
                     <h3>Verify third party content:<h3>
                     <h2>Subresource Integrity</h2>
                 </section>
@@ -610,7 +505,7 @@ hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=</code></pre>
                 <!-- Recap                                                   -->
                 <!-- ******************************************************* -->
 
-                <section class="background-darkblue">
+                <section class="background-blue">
                     <h2>Recap</h2>
                 </section>
 
@@ -634,7 +529,7 @@ hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=</code></pre>
                     </ul>
                 </section>
 
-                <section id="thanks" class="background-blue">
+                <section id="thanks" class="background-darkblue">
                     <h2>Thank you!</h2>
 
                     <h6>Frederic Hemberger</h6>
