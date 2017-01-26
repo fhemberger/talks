@@ -11,9 +11,9 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
         <link rel="canonical" href="https://frederic-hemberger.de/talks/concat-websecurity/">
 
-        <link rel="stylesheet" href="../reveal.js/css/reveal.min.css">
-        <link rel="stylesheet" href="../reveal.js/css/theme/white.css">
-        <link rel="stylesheet" href="../reveal.js/plugin/reveal-a11y/accessibility/helper.css">
+        <link rel="stylesheet" href="../_reveal.js/css/reveal.min.css">
+        <link rel="stylesheet" href="../_reveal.js/css/theme/white.css">
+        <link rel="stylesheet" href="../_reveal.js/plugin/reveal-a11y/accessibility/helper.css">
 
         <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,600" rel="stylesheet" type="text/css">
 
@@ -97,11 +97,11 @@
             _paq.push(['trackPageView'],['enableLinkTracking'],['setTrackerUrl', '//www.frederic-hemberger.de/piwik/piwik.php'],['setSiteId', '1']);
 
             // If the query includes 'print-pdf', use the PDF print sheet
-            document.write( '<link rel="stylesheet" href="../reveal.js/css/print/' + ( window.location.search.match( /print-pdf/gi ) ? 'pdf' : 'paper' ) + '.css" type="text/css" media="print">' );
+            document.write( '<link rel="stylesheet" href="../_reveal.js/css/print/' + ( window.location.search.match( /print-pdf/gi ) ? 'pdf' : 'paper' ) + '.css" type="text/css" media="print">' );
         </script>
 
         <!--[if lt IE 9]>
-        <script src="../reveal.js/lib/js/html5shiv.js"></script>
+        <script src="../_reveal.js/lib/js/html5shiv.js"></script>
         <![endif]-->
     </head>
 
@@ -567,8 +567,8 @@
             <footer id="source" class="source-blue"></footer>
         </div>
 
-        <script src="../reveal.js/lib/js/head.min.js"></script>
-        <script src="../reveal.js/js/reveal.min.js"></script>
+        <script src="../_reveal.js/lib/js/head.min.js"></script>
+        <script src="../_reveal.js/js/reveal.min.js"></script>
 
         <script>
             // Detect presenter mode
@@ -588,11 +588,11 @@
 
                 // Optional libraries used to extend on reveal.js
                 dependencies: [
-                    { src: '../reveal.js/lib/js/classList.js', condition: function() { return !document.body.classList; } },
-                    { src: '../reveal.js/plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
-                    { src: '../reveal.js/plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
-                    { src: '../reveal.js/plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } },
-                    { src: '../reveal.js/plugin/reveal-a11y/accessibility/helper.js', async: true, condition: function() { return !!document.body.classList; } }
+                    { src: '../_reveal.js/lib/js/classList.js', condition: function() { return !document.body.classList; } },
+                    { src: '../_reveal.js/plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+                    { src: '../_reveal.js/plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
+                    { src: '../_reveal.js/plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } },
+                    { src: '../_reveal.js/plugin/reveal-a11y/accessibility/helper.js', async: true, condition: function() { return !!document.body.classList; } }
                 ]
             });
 

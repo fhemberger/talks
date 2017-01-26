@@ -11,9 +11,9 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
         <link rel="canonical" href="https://frederic-hemberger.de/talks/concat-websecurity/">
 
-        <link rel="stylesheet" href="../reveal.js/css/reveal.min.css">
-        <link rel="stylesheet" href="../reveal.js/css/theme/white.css">
-        <link rel="stylesheet" href="../reveal.js/plugin/reveal-a11y/accessibility/helper.css">
+        <link rel="stylesheet" href="../_reveal.js/css/reveal.min.css">
+        <link rel="stylesheet" href="../_reveal.js/css/theme/white.css">
+        <link rel="stylesheet" href="../_reveal.js/plugin/reveal-a11y/accessibility/helper.css">
 
         <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,600" rel="stylesheet" type="text/css">
 
@@ -125,11 +125,11 @@
             _paq.push(['trackPageView'],['enableLinkTracking'],['setTrackerUrl', '//www.frederic-hemberger.de/piwik/piwik.php'],['setSiteId', '1']);
 
             // If the query includes 'print-pdf', use the PDF print sheet
-            document.write( '<link rel="stylesheet" href="../reveal.js/css/print/' + ( window.location.search.match( /print-pdf/gi ) ? 'pdf' : 'paper' ) + '.css" type="text/css" media="print">' );
+            document.write( '<link rel="stylesheet" href="../_reveal.js/css/print/' + ( window.location.search.match( /print-pdf/gi ) ? 'pdf' : 'paper' ) + '.css" type="text/css" media="print">' );
         </script>
 
         <!--[if lt IE 9]>
-        <script src="../reveal.js/lib/js/html5shiv.js"></script>
+        <script src="../_reveal.js/lib/js/html5shiv.js"></script>
         <![endif]-->
         <script src="//code.jquery.com/jquery-1.8.3.min.js"></script>
     </head>
@@ -645,12 +645,12 @@ Header always set Content-Security-Policy: …↩
                     <h3>Browser support for Content Security Policy</h3>
                     <table>
                         <tr>
-                            <td><img src="../images/browserlogos/chrome.png" alt="Google Chrome"></td>
-                            <td><img src="../images/browserlogos/firefox.png" alt="Mozilla Firefox"></td>
-                            <td><img src="../images/browserlogos/ie.png" alt="Internet Explorer"></td>
-                            <td><img src="../images/browserlogos/opera.png" alt="Opera"></td>
-                            <td><img src="../images/browserlogos/safari.png" alt="Safari (OS X/iOS)"></td>
-                            <td><img src="../images/browserlogos/android.png" alt="Android Stock Browser"></td>
+                            <td><img src="../_assets/images/browserlogos/chrome.png" alt="Google Chrome"></td>
+                            <td><img src="../_assets/images/browserlogos/firefox.png" alt="Mozilla Firefox"></td>
+                            <td><img src="../_assets/images/browserlogos/ie.png" alt="Internet Explorer"></td>
+                            <td><img src="../_assets/images/browserlogos/opera.png" alt="Opera"></td>
+                            <td><img src="../_assets/images/browserlogos/safari.png" alt="Safari (OS X/iOS)"></td>
+                            <td><img src="../_assets/images/browserlogos/android.png" alt="Android Stock Browser"></td>
                         </tr>
                         <tr>
                             <td style="text-align:center;">25</td>
@@ -710,8 +710,8 @@ Header always set Content-Security-Policy: …↩
             <footer id="source" class="source-blue"></footer>
         </div>
 
-        <script src="../reveal.js/lib/js/head.min.js"></script>
-        <script src="../reveal.js/js/reveal.min.js"></script>
+        <script src="../_reveal.js/lib/js/head.min.js"></script>
+        <script src="../_reveal.js/js/reveal.min.js"></script>
 
         <script>
             // Detect presenter mode
@@ -729,10 +729,10 @@ Header always set Content-Security-Policy: …↩
 
                 // Optional libraries used to extend on reveal.js
                 dependencies: [
-                    { src: '../reveal.js/lib/js/classList.js', condition: function() { return !document.body.classList; } },
-                    { src: '../reveal.js/plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
-                    { src: '../reveal.js/plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } },
-                    { src: '../reveal.js/plugin/reveal-a11y/accessibility/helper.js', async: true, condition: function() { return !!document.body.classList; } }
+                    { src: '../_reveal.js/lib/js/classList.js', condition: function() { return !document.body.classList; } },
+                    { src: '../_reveal.js/plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
+                    { src: '../_reveal.js/plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } },
+                    { src: '../_reveal.js/plugin/reveal-a11y/accessibility/helper.js', async: true, condition: function() { return !!document.body.classList; } }
                 ]
             });
 
