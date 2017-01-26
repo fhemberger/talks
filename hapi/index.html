@@ -356,16 +356,15 @@ exports.register.attributes = {
 
                 width: 1000,
 
-                theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
-                transition: Reveal.getQueryHash().transition || 'none', // default/cube/page/concave/zoom/linear/fade/none
+                transition: 'none', // default/cube/page/concave/zoom/linear/fade/none
 
                 // Optional libraries used to extend on reveal.js
                 dependencies: [
-                    { src: '../_reveal.js/lib/js/classList.js', condition: function() { return !document.body.classList; } },
-                    { src: '../_reveal.js/plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
-                    { src: '../_reveal.js/plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
-                    { src: '../_reveal.js/plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } },
-                    { src: '../_reveal.js/plugin/reveal-a11y/accessibility/helper.js', async: true, condition: function() { return !!document.body.classList; } }
+                    { src: '../_reveal.js/lib/js/classList.js', condition: function () { return !document.body.classList; } },
+                    { src: '../_reveal.js/plugin/highlight/highlight.js', async: true, callback: function () { hljs.initHighlightingOnLoad(); } },
+                    { src: '../_reveal.js/plugin/zoom-js/zoom.js', async: true, condition: function () { return !!document.body.classList; } },
+                    { src: '../_reveal.js/plugin/notes/notes.js', async: true, condition: function () { return !!document.body.classList; } },
+                    { src: '../_reveal.js/plugin/reveal-a11y/accessibility/helper.js', async: true, condition: function () { return !!document.body.classList; } }
                 ]
             });
         </script>
