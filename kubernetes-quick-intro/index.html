@@ -89,77 +89,71 @@
                 </section>
 
                 <section>
-                    <img src="images/kubernetes_pods.svg" alt="">
-                </section>
-
-                <section>
-                    <pre>
-                        <code class="yaml" data-trim>
-apiVersion: v1
-kind: Pod
-metadata:
-  name: nginx
-spec:
-  containers:
-  - image: nginx
-    ports:
-    - containerPort: 80
-      protocol: TCP
-                        </code>
-                    </pre>
-                </section>
-
-                <section>
-                    <pre>
-                        <code class="yaml" data-trim>
-apiVersion: v1
-kind: Pod
-metadata:
-  name: nginx
-spec:
-  containers:
-  - image: nginx
-    ports:
-    - containerPort: 80
-      protocol: TCP
-  - image: mydockeraccount/wordpress
-                        </code>
-                    </pre>
-                </section>
-
-                <section>
-                    <img src="images/kubernetes_deployment.svg" alt="">
+                    <img src="images/kubernetes_pod.svg" alt="">
 
                     <aside class="notes">
-                        declared state vs. current state
+                        smallest unit in the Kubernetes world
                     </aside>
                 </section>
 
                 <section>
                     <pre>
                         <code class="yaml" data-trim>
-apiVersion: extensions/v1beta1
-kind: Deployment
+apiVersion: v1
+kind: Pod
 metadata:
-  name: nginx
+  name: frontend
 spec:
-  replicas: 2
-  template:
-    metadata:
-      labels:
-        name: nginx
-    spec:
-      containers:
-      - image: nginx
-        ports:
-        - containerPort: 80
-          protocol: TCP
+  containers:
+  - image: nginx
+    name: nginx
+    ports:
+    - containerPort: 80
+      protocol: TCP
                         </code>
                     </pre>
                 </section>
 
                 <section>
+                    <pre>
+                        <code class="yaml" data-trim>
+apiVersion: v1
+kind: Pod
+metadata:
+  name: frontend
+spec:
+  containers:
+  - image: nginx
+    name: nginx
+    ports:
+    - containerPort: 80
+      protocol: TCP
+  - image: mydockeraccount/wordpress
+    name: wordpress
+                        </code>
+                    </pre>
+                    <aside class="notes">
+                        <ul>
+                            <li>pods <strong>only</strong> contain containers with hard dependencies</li>
+                            <li>pod instances get an internal cluster IP</li>
+                        </ul>
+                    </aside>
+                </section>
+
+                <section>
+                    <img src="images/kubernetes_pod_with_labels.svg" alt="">
+                </section>
+
+                <section>
                     <img src="images/kubernetes_service.svg" alt="">
+
+                    <aside class="notes">
+                        <ul>
+                            <li>uses selectors to match pod labels</li>
+                            <li>acts as load balancer for pods (based on iptables)</li>
+                            <li>provides named endpoint for other consumers</li>
+                        </ul>
+                    </aside>
                 </section>
 
                 <section>
@@ -197,7 +191,49 @@ spec:
   externalName: external-service.prod.example.com
                         </code>
                     </pre>
+
+                    <aside class="notes">
+                        works like a CNAME DNS record
+
+                        <ul>
+                            <li>if an instance fails, pod is restarted, gets new IP</li>
+                            <li>not very handy to provide reliable services</li>
+                        </ul>
+                    </aside>
                 </section>
+
+                <section>
+                    <img src="images/kubernetes_deployment.svg" alt="">
+
+                    <aside class="notes">
+                        <ul>
+                            <li>declared state vs. current state</li>
+                            <li>pods don't need to run on one node only</li>
+                        </ul>
+                    </aside>
+                </section>
+
+                <section>
+                    <pre>
+                        <code class="yaml" data-trim>
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: nginx
+spec:
+  replicas: 3
+  template:
+    spec:
+      containers:
+      - image: nginx
+        name: nginx
+        ports:
+        - containerPort: 80
+          protocol: TCP
+                        </code>
+                    </pre>
+                </section>
+
 
                 <section>
                     <h2>And there is more …</h2>
@@ -258,18 +294,22 @@ spec:
                 </section>
 
                 <section>
-                    <h3>Resources</h3>
+                    <h3>Getting started</h3>
                     <ul>
-                        <li><a href="https://kubernetes.io">kubernetes.io</a></li>
-                        <li><a href="https://github.com/kubernetes/minikube">Minikube: Run Kubernetes locally</a></li>
-                        <li><a href="https://github.com/kubernetes/kops">Kops: Kubernetes Operations</a></li>
-                        <li><a href="https://github.com/kubernetes/heapster">Heapster: Container Cluster Monitoring</a></li>
+                        <li>
+                            Documentation: <a href="https://kubernetes.io">kubernetes.io</a><br>
+                            <small>(Site structure is sometimes not very intuitive, use the search function)</small>
+                        </li>
+                        <li>Install <a href="https://github.com/kubernetes/minikube">Minikube</a> to run Kubernetes locally</li>
+                        <li>Install <a href="https://kubernetes.io/docs/user-guide/prereqs/"><code>kubectl</code></a>, the Kubernetes CLI</li>
                     </ul>
                 </section>
 
                 <section>
-                    <h3>Other tools</h3>
+                    <h3>Other tools and resources</h3>
                     <ul>
+                        <li><a href="https://github.com/kubernetes/kops">Kops: Kubernetes Operations</a></li>
+                        <li><a href="https://github.com/kubernetes/heapster">Heapster: Container Cluster Monitoring</a></li>
                         <li><a href="https://coreos.com/blog/the-prometheus-operator.html">The Prometheus Operator: Managed setups for Kubernetes</a></li>
                         <li><a href="https://github.com/Boostport/kubernetes-vault">Kubernetes Vault Integration</a></li>
                         <li><a href="https://hub.docker.com/r/willwill/kube-slack/">Kubernetes Slack Monitoring</a></li>
