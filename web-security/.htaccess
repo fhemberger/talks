@@ -1,0 +1,3 @@
+Header unset X-Frame-Options
+Header unset X-XSS-Protection
+Header unset Content-Security-Policy
