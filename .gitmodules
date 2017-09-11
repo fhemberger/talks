@@ -1,3 +1,0 @@
-[submodule "reveal-a11y"]
-	path = _reveal.js/plugin/reveal-a11y
-	url = https://github.com/marcysutton/reveal-a11y.git
