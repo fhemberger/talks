@@ -17,6 +17,10 @@
         <link rel="stylesheet" href="../_reveal.js/plugin/reveal-a11y/accessibility/helper.css">
         <link rel="stylesheet" href="../_assets/threecolors.css">
 
+        <style>
+            .centered { text-align: center !important; }
+        </style>
+
         <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,600" rel="stylesheet" type="text/css">
 
         <script>
@@ -406,20 +410,20 @@ Header set Content-Security-Policy: …↩
                     <h3>Browser support for Content Security Policy</h3>
                     <table>
                         <tr>
-                            <td><img src="../_assets/images/browserlogos/chrome.png" alt="Google Chrome"></td>
-                            <td><img src="../_assets/images/browserlogos/firefox.png" alt="Mozilla Firefox"></td>
-                            <td><img src="../_assets/images/browserlogos/ie.png" alt="Internet Explorer"></td>
-                            <td><img src="../_assets/images/browserlogos/opera.png" alt="Opera"></td>
-                            <td><img src="../_assets/images/browserlogos/safari.png" alt="Safari (OS X/iOS)"></td>
-                            <td><img src="../_assets/images/browserlogos/android.png" alt="Android Stock Browser"></td>
+                            <td class="centered"><img src="../_assets/images/browserlogos/chrome.png" alt="Google Chrome"></td>
+                            <td class="centered"><img src="../_assets/images/browserlogos/firefox.png" alt="Mozilla Firefox"></td>
+                            <td class="centered"><img src="../_assets/images/browserlogos/ie.png" alt="Internet Explorer"></td>
+                            <td class="centered"><img src="../_assets/images/browserlogos/opera.png" alt="Opera"></td>
+                            <td class="centered"><img src="../_assets/images/browserlogos/safari.png" alt="Safari (macOS/iOS)"></td>
+                            <td class="centered"><img src="../_assets/images/browserlogos/android.png" alt="Android Stock Browser"></td>
                         </tr>
                         <tr>
-                            <td style="text-align:center;">25</td>
-                            <td style="text-align:center;">4</td>
-                            <td style="text-align:center;">10</td>
-                            <td style="text-align:center;">15</td>
-                            <td style="text-align:center;">6.1</td>
-                            <td style="text-align:center;">4.4</td>
+                            <td class="centered">25</td>
+                            <td class="centered">4</td>
+                            <td class="centered">10</td>
+                            <td class="centered">15</td>
+                            <td class="centered">6.1</td>
+                            <td class="centered">4.4</td>
                         </tr>
                     </table>
 
@@ -475,28 +479,31 @@ hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=</code></pre>
                     <h3>Browser support for Subresource Integrity</h3>
                     <table>
                         <tr>
-                            <td><img src="../_assets/images/browserlogos/chrome.png" alt="Google Chrome"></td>
-                            <td><img src="../_assets/images/browserlogos/firefox.png" alt="Mozilla Firefox"></td>
-                            <td><img src="../_assets/images/browserlogos/ie.png" alt="Internet Explorer"></td>
-                            <td><img src="../_assets/images/browserlogos/opera.png" alt="Opera"></td>
-                            <td><img src="../_assets/images/browserlogos/safari.png" alt="Safari (OS X/iOS)"></td>
-                            <td><img src="../_assets/images/browserlogos/android.png" alt="Android Stock Browser"></td>
+                            <td class="centered"><img src="../_assets/images/browserlogos/chrome.png" alt="Google Chrome"></td>
+                            <td class="centered"><img src="../_assets/images/browserlogos/firefox.png" alt="Mozilla Firefox"></td>
+                            <td class="centered"><img src="../_assets/images/browserlogos/ie.png" alt="Internet Explorer"></td>
+                            <td class="centered"><img src="../_assets/images/browserlogos/opera.png" alt="Opera"></td>
+                            <td class="centered"><img src="../_assets/images/browserlogos/safari.png" alt="Safari"><br><small>macOS</small></td>
+                            <td class="centered"><img src="../_assets/images/browserlogos/safari.png" alt="Safari"><br><small>iOS</small></td>
+                            <td class="centered"><img src="../_assets/images/browserlogos/android.png" alt="Android Stock Browser"></td>
                         </tr>
                         <tr>
-                            <td style="text-align:center;">45</td>
-                            <td style="text-align:center;">43</td>
-                            <td style="text-align:center;">–</td>
-                            <td style="text-align:center;">32</td>
-                            <td style="text-align:center;">–</td>
-                            <td style="text-align:center;">5</td>
+                            <td class="centered">45</td>
+                            <td class="centered">43</td>
+                            <td class="centered">*</td>
+                            <td class="centered">32</td>
+                            <td class="centered">11</td>
+                            <td class="centered">**</td>
+                            <td class="centered">5</td>
                         </tr>
                     </table>
 
                     <a href="http://caniuse.com/#search=subresource-integrity&feature_sort=score">caniuse.com</a>
                     <p>
                         <small>
-                            MS Edge status: <a href="http://status.modern.IE/subresourceintegrity">Under Consideration</a><br>
-                            WebKit status: <a href="http://webkit.org/status.html#feature-subresource-integrity">Under Consideration</a>
+                            <sup>*</sup> MS Edge status: <a href="http://status.modern.IE/subresourceintegrity">Windows Insider Preview Build</a><br>
+                            <sup>**</sup> WebKit status: <a href="http://webkit.org/status.html#feature-subresource-integrity">Supported In Preview</a><br>
+                            (as of September 2017)
                         </small>
                     </p>
                 </section>
