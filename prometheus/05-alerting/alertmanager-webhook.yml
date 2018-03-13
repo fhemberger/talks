@@ -1,0 +1,32 @@
+# The root route on which each incoming alert enters.
+route:
+  # The labels by which incoming alerts are grouped together. For example,
+  # multiple alerts coming in for cluster=A and alertname=LatencyHigh would
+  # be batched into a single group.
+  group_by: ['alertname', 'cluster', 'service']
+
+  # Just for demo purposes, keep the default to 30s
+  group_wait: 1s
+
+  # If an alert has successfully been sent, wait 'repeat_interval' to
+  # resend them.
+  repeat_interval: 10s
+
+  # A default receiver
+  receiver: webhook
+
+# Inhibition rules allow to mute a set of alerts given that another alert is
+# firing. We use this to mute any warning-level notifications if the same
+# alert is already critical.
+inhibit_rules:
+- source_match:
+    severity: 'critical'
+  target_match:
+    severity: 'warning'
+  # Apply inhibition if the alertname is the same.
+  equal: ['alertname']
+
+receivers:
+  - name: 'webhook'
+    webhook_configs:
+      - url: 'http://127.0.0.1:4000'

@@ -1,0 +1,9 @@
+{{ define "email.plaintext" }}
+{{ .CommonAnnotations.description }}
+
+{{ range $key, $value := .CommonLabels }}
+{{ $key }}: {{ $value }}
+
+{{ end }}
+
+{{ end }}

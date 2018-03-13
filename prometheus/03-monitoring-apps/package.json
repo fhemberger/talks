@@ -1,0 +1,9 @@
+{
+  "name": "prometheus-demo-app",
+  "description": "",
+  "private": true,
+  "version": "1.0.0",
+  "dependencies": {
+    "prom-client": "^10.2.2"
+  }
+}
