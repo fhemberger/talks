@@ -1,12 +1,12 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
     <head>
         <meta charset="utf-8">
         <title>Talk: Dealing with Cross Site Scripting (XSS) – FrOSCon 2015 | Frederic Hemberger</title>
         <meta name="author" content="Frederic Hemberger">
 
-        <meta name="apple-mobile-web-app-capable" content="yes" />
-        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
         <link rel="canonical" href="https://frederic-hemberger.de/talks/concat-websecurity/">
@@ -246,7 +246,7 @@
                     <h3>
                         Bad idea #1:<br>
                         Filter out &lt;script&gt;, onload, onerror, etc.
-                    <h3>
+                    </h3>
                 </section>
 
                 <section>
@@ -336,6 +336,7 @@ return $('&lt;div/&gt;').html('&lt;div&gt;My HTML string&lt;/div&gt;').text();
                             <li>First example works in jQuery 1.8.3; released in November 2012</li>
                             <li>75% of Alexaʼs top 100,000 sites use a jQuery version older than that.</li>
                             <li>One of the loopholes is closed in jQuery 3.0, others still exist (feature vs. security)</li>
+                        </ul>
                     </aside>
                 </section>
 
